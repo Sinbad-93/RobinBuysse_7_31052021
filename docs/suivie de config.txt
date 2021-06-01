@@ -1,0 +1,11 @@
+après avoir créer P7 et init dépot git avec docs,
+
+installation de vue
+npm install vue@next
+
+cd front-end/
+installation de vue cli :
+mettre a jour la version globale : 
+npm install -g @vue/cli
+creer le projet : 
+winpty vue.cmd create projet7
