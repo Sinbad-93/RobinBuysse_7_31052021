@@ -1,5 +1,6 @@
 <template>
-  <form class="login__container" action="javascript:void(0)">
+  <form class="login__container" action="javascript:void(0)"
+  @submit="createAccount">
     <h2 class="auth__title" v-if="mode == 'login'">Connexion</h2>
     <h2 class="auth__title" v-else>Inscription</h2>
     
@@ -53,6 +54,8 @@
       <!-- inscription button -->
       <input class="button" :class="{'button--disabled' : !validatedFields}" 
       v-else id="validation" type="submit" value="Inscription">
+      <span v-if="status == 'loadingCreate'">Création en cours...</span>
+      <span v-else-if="status == 'loadingConnect'">Connexion en cours...</span>
 
     </div>
   </form>
@@ -72,19 +75,17 @@ export default {
       prenom: '',
       nom: '',
       password: '',
-      /* en attendant */
-      validatedFields : 1,
-      status : 1,
-    }
+      validatedFields : 1
+      }
   },
  /*mounted: function () {
     if (this.$store.state.user.userId != -1) {
       this.$router.push('/profile');
       return ;
     }
-  },
+  },*/
   computed: {
-    validatedFields: function () {
+    /*validatedFields: function () {
       if (this.mode == 'create') {
         if (this.email != "" && this.prenom != "" && this.nom != "" && this.password != "") {
           return true;
@@ -98,9 +99,9 @@ export default {
           return false;
         }
       }
-    },
+    },*/
     ...mapState(['status'])
-  },*/
+  },
   methods: {
     switchToCreateAccount: function () {
       this.mode = 'create';
@@ -111,34 +112,35 @@ export default {
       showPassword() {
     this.visibility = 'text';
 },
-
-  hidePassword() {
+    hidePassword() {
     this.visibility = 'password';
 },
-    /*login: function () {
-      const self = this;
+    login: function () {
       this.$store.dispatch('login', {
         email: this.email,
         password: this.password,
-      }).then(function () {
-        self.$router.push('/profile');
-      }, function (error) {
-        console.log(error);
-      })
+      }) 
+      this.$emit('connect');
+        
     },
     createAccount: function () {
       const self = this;
+      console.table(this.email);
+      if (this.mode === 'create'){
       this.$store.dispatch('createAccount', {
+        id : 12,
         email: this.email,
-        nom: this.nom,
-        prenom: this.prenom,
-        password: this.password,
-      }).then(function () {
+        name: this.prenom,
+        famillyName: this.nom,
+        password: this.password
+      })
+      .then(function () {
         self.login();
       }, function (error) {
         console.log(error);
-      })
-    },*/
+      })}
+      else { this.login()}
+    }
   }
 }
 </script>
