@@ -16,10 +16,12 @@
             </div>
             </div>
 
-          <div class="message" ref="message">
-              <span>Utilisateur Fox :</span>
-              <span>titre</span>
-              <img src="../assets/groupomania.png" alt="">
+          <div v-for="(data,index) in publicationsData"
+          :key="data" 
+          :index="index" class="message" ref="message">
+              <span>{{data.utilisateur}}</span>
+              <span>{{data.title}}</span>
+              <img :src="data.image" alt="">
               <span class="comment"> Commentaires</span>
           </div>
           
@@ -38,7 +40,11 @@ export default {
   data() {
       return {
           News : true,
-          newPostInProgress : false,
+          newPostInProgress : false, 
+          publicationsData : [
+          {utilisateur : 'John',title : 'chat',image :require('../assets/IMG_0368.jpg')},
+          {utilisateur : 'Joe',title : 'félin',image :require('../assets/IMG_0368.jpg')},
+          {utilisateur : 'Johnny',title : 'animal',image :require('../assets/IMG_0368.jpg')}]
       }
   },
   methods : {
@@ -47,13 +53,16 @@ export default {
       },
       newPost(){
           this.newPostInProgress = !this.newPostInProgress;}
-      },
+      ,
       publish(){
-          
+          console.log('publish');
+        this.publicationsData.splice(0, 0, 
+        {utilisateur : 'New',title :'NewPublication',image :require('../assets/IMG_0368.jpg')});
+      }
       }
 };
 </script>
-<style>
+<style scoped>
 @media screen and (max-width : 768px) {
 .discussion {
     height: 480px;
@@ -64,11 +73,12 @@ export default {
 .message{
     display: grid;
     width: 100%;
-    grid-template-rows: 1fr 1fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr 8fr 1fr;
     justify-items: center;
     align-items: center;
     border: 1px black solid;
-    height: 170px;
+    height: 220px;
+    margin-bottom : 20px;
 }
 .comment{
     border: 1px solid black;
@@ -77,6 +87,9 @@ export default {
 }
 .search {
     margin: 5px 0 10px 0;
+}
+img {
+    max-width: 70%;
 }
 }
 </style>

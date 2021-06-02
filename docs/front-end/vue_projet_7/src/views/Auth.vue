@@ -43,7 +43,7 @@ export default {
     })
 }}
 </script>
-<style>
+<style scoped>
 
 @media screen and (max-width : 768px) {
 .auth_page{
