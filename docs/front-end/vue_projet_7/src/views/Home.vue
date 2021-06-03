@@ -4,18 +4,20 @@
           <li> <router-link to="Profile">Mon profil</router-link> </li>
           <li> <router-link to="/">Deconnexion</router-link></li>
       </ul>
-      <Publications></Publications>
+      <Publications>
+      </Publications>
       </div>
-    
 </template>
 
 <script>
 import Publications from "@/components/Publications.vue";
 
+
 export default {
   name: "Home",
   components: {
-      Publications
+      Publications,
+
   },
   data() {
       return {
@@ -23,9 +25,7 @@ export default {
       }
   },
   methods : {
-      newPost(){
-          
-      }
+      
   }
 }
 </script>
