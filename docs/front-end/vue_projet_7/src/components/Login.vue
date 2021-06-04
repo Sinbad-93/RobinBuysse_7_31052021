@@ -1,6 +1,6 @@
 <template>
   <form class="login__container" action="javascript:void(0)"
-  @submit="createAccount">
+  @submit="createAccountTest">
     <h2 class="auth__title" v-if="mode == 'login'">Connexion</h2>
     <h2 class="auth__title" v-else>Inscription</h2>
     
@@ -140,6 +140,18 @@ export default {
         console.log(error);
       })}
       else { this.login()}
+    },
+    createAccountTest: function () {
+      const self = this;
+      console.table(this.email);
+      if (this.mode === 'create'){
+      this.$store.dispatch('postUserInfos', {
+        name: this.prenom,
+        famillyName: this.nom,
+        email: this.email,
+        password: this.password
+      })
+      }
     }
   }
 }

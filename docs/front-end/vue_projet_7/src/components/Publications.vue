@@ -13,7 +13,7 @@
           <input v-model="newImg" placeholder='lien vers votre image'/>
           <div>
             <button @click="publish"> publier </button>
-            <button @click="newPost"> annuler </button>
+            <button @click="newPostInProgress = !newPostInProgress"> annuler </button>
             </div>
             </div>
             <div v-for="(data,index) in publicationsData"

@@ -1,0 +1,45 @@
+postUserInfos(identifiant, password, email) {
+  //console.log('INSCRIPTION');
+  if (this.dataVerify.some(el => email.includes(el))){
+        alert('vote e-mail est déjà utilisé, veuillez le modifier pour continuer');
+        return
+      }
+  else if (this.dataVerify.some(el => identifiant.includes(el))){
+        alert('vote identifiant est déjà utilisé, veuillez le modifier pour continuer');
+        return
+      }
+  else if(!(identifiant === "") && !(password === "") && !(email === "")
+      ){
+  // POST request using fetch with error handlingvar 
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ identifiant : identifiant, password :password, email : email })};
+  fetch('http://rob-developpeur.site/insert', requestOptions)
+    .then(response => {
+      // check for error response
+      if (!response.ok) {
+        // get error message from body or default to response status
+        const error = (data && data.message) || response.status;
+        //console.log('not response ok, error : ' + error);
+        alert('une erreur innattendue s\'est produite');
+        return Promise.reject(error); 
+        }
+      const data = response.json()
+      .then(data => this.dataGet = data['data'])
+      .then(/*data =>*/ //console.log( "Formulaire réponse : " + this.dataGet ),
+       // à faire : mettre un load spinner voir une fenetre de choix 
+      //console.log('inscription réuissie...'),
+      this.newPass = password,
+      this.newMail = email,
+      this.proposeLogin());})
+      .catch(error => {
+      this.errorMessage = error;
+      console.error('Formulaires, error : ', error);
+      return});
+      }
+      //si un champ est resté vide on ne passe pas dans fetch
+    else{
+      //console.log('veuillez remplir tous les champs')
+      }
+},
