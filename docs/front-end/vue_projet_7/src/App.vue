@@ -15,6 +15,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;800&display=swap');
 #app {
   max-width: 100%;
+  height: 620px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -27,7 +28,8 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding:32px;
+  padding:0 16px;
+
 }
 
 * {

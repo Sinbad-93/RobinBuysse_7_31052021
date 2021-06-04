@@ -4,7 +4,7 @@
           <li> <router-link to="Profile">Mon profil</router-link> </li>
           <li> <router-link to="/">Deconnexion</router-link></li>
       </ul>
-      <Publications>
+      <Publications :adminConnected="adminConnected">
       </Publications>
       </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
   data() {
       return {
-
+          adminConnected : false,
       }
   },
   methods : {
@@ -44,6 +44,10 @@ ul{
 }
 li{
     list-style: none;
+    font-size: 15px;
+}
+a {
+    text-decoration: none;
 }
 }
 </style>
