@@ -6,6 +6,8 @@ cd docs/front-end/vue-projet7
 npm install
 npm run serve
 
+Lancer le back-end :
+
 cd docs/server 
 npm install 
 nodemon server
