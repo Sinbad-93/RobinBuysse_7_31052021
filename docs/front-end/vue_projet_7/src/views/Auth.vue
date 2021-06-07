@@ -28,7 +28,6 @@ export default {
   }},
   methods : {
     routerMethod(){
-      console.log('evenement');
         this.$router.push('/profile');
     }
   },

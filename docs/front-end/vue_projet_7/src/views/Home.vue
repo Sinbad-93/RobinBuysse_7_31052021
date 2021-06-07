@@ -4,7 +4,8 @@
           <li> <router-link to="Profile">Mon profil</router-link> </li>
           <li> <router-link to="/">Deconnexion</router-link></li>
       </ul>
-      <Publications :adminConnected="adminConnected">
+      bienvenue {{userName}}
+      <Publications :adminConnected="adminConnected" :userName="userName">
       </Publications>
       </div>
 </template>
@@ -22,11 +23,41 @@ export default {
   data() {
       return {
           adminConnected : false,
+          userConnectedInfos : false,
+          userName: 'example',
       }
   },
-  methods : {
-      
+  methods :{
+/*vérifier si un élément existe dans notre local storage, return true || false*/
+    isKeyExist(obj, key) {
+  return obj.hasOwnProperty(key);
+},
+/*vérifier si le panier existe, sinon l'initialiser*/
+    checkConnexion() {
+  if (this.isKeyExist(localStorage, "connectedUser")){
+      this.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
+      return true
   }
+}
+  },
+    beforeCreate(){
+    console.log('BEFORE CREATED');
+    },
+    created(){
+    console.log('CREATED');
+    },
+    beforeMount(){
+    console.log('BEFORE MOUNTED');
+    },
+    mounted() {
+    console.log('MOUNTED');
+    console.log(localStorage);
+    if (this.checkConnexion() === true){
+        console.log(this.userConnectedInfos['name']);
+        this.userName = this.userConnectedInfos['name'];
+    }
+},
+
 }
 </script>
 <style>

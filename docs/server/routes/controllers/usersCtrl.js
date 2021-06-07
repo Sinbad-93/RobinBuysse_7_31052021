@@ -23,7 +23,7 @@ const maskEmailOptions = {
   maxMaskedCharactersAfterAtTheRate: 10,
 };
 
-// controller pour l'inscription
+// controller pour INSCRIPTION ------------------
 exports.signup = (request, response, next) => {
   //console.log(request.body.email);
     bcrypt.genSalt(10, function(err, salt) {
@@ -35,44 +35,34 @@ exports.signup = (request, response, next) => {
      const result = db.insertNewUser(name, familly_name, email, pass);
 result
     .then(data => response.json({ data: data}))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
 });});};
 
-exports.login = (req, res, next) => {
-  // crypter l'email
-  const userCrypt = crypto.encrypt(req.body.email);
-  console.log(crypto.decrypt(userCrypt));
-  // On compare l'email crypté de la requete avec celui de mongo DB
-  User.findOne({ email: userCrypt })
-    .then((user) => {
-      if (!user) {
-        console.log("introuvable");
-        return res.status(401).json({ error: "Utilisateur non trouvé !" });
-      }
-      // récupération d'informations masqués, par exemple pour afficher sur la page profil
-      const showInfos = user.masquedInfo;
-      console.log("RECUPERATION DES INFORMATIONS MASQUES : " + showInfos);
-      // vérifier le mdp
-      bcrypt
-        .compare(req.body.password, user.password)
-        .then((valid) => {
-          if (!valid) {
-            console.log("Mot de passe incorrect !");
-            return res.status(401).json({ error: "Mot de passe incorrect !" });
-          }
-          res.status(200).json({
-            userId: user._id,
-            //si la connexion est réussie transformer l'id user en token avec une expiration
-            token: jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
-              expiresIn: "1h",
-            }),
-          });
-        })
-        .catch((error) => res.status(500).json({ error }));
-    })
-    .catch((error) => res.status(500).json({ error }));
-};
+// controller pour LE LOGIN ----------------------
+exports.login = (request, response, next) => {
+    const { email, password } = request.body;
+    const db = dbService.getDbServiceInstance();
+    const result = db.getUserLogin(email);
+    result.then(data =>
+      bcrypt.compare(password, data[0].password, 
+        function(err, res) {
+    console.log(res); //response.json({data : [res, data[0]]})
+    response.status(200).json({
+      data :[res,
+      data[0]],
+      //si la connexion est réussie transformer l'id user en token avec une expiration
+      token: jwt.sign({ userId: data[0].iduser }, process.env.SECRET_KEY, {
+        expiresIn: "1h",
+      })
+    });
+                            }
+                    )
+               )
+   .catch((err) => console.log(err) )
+   //return response.status(401).json({ error: "email non trouvé !" });
+                                      }
 
+//BROUILLON---------------------------------------------------
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 
 en localhost, on va donc simuler le travail sur l'ip en utilisant l'adresse mail*/
 // const userIP = require('user-ip');

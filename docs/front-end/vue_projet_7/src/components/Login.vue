@@ -1,6 +1,6 @@
 <template>
   <form class="login__container" action="javascript:void(0)"
-  @submit="createAccountTest">
+  @submit="submitMethod()">
     <h2 class="auth__title" v-if="mode == 'login'">Connexion</h2>
     <h2 class="auth__title" v-else>Inscription</h2>
     
@@ -21,8 +21,8 @@
     </div>
     <!-- Nom Prénom si inscription -->
     <div class="form-row" v-if="mode == 'create'">
-      <input v-model="prenom" class="form-row__input" type="text" placeholder="Prénom"/>
-      <input v-model="nom" class="form-row__input" type="text" placeholder="Nom"/>
+      <input v-model="name" class="form-row__input" type="text" placeholder="Prénom"/>
+      <input v-model="famillyName" class="form-row__input" type="text" placeholder="Nom"/>
     </div>
     <div class="form-row relative">
       <!-- Password -->
@@ -72,8 +72,8 @@ export default {
       mode: 'login',
       visibility :'password',
       email: '',
-      prenom: '',
-      nom: '',
+      name: '',
+      famillyName: '',
       password: '',
       validatedFields : 1
       }
@@ -103,10 +103,100 @@ export default {
     ...mapState(['status'])
   },
   methods: {
-    switchToCreateAccount: function () {
+    // SUBMIT FORM ------------------------------------------------
+    submitMethod(){
+      if(this.mode === 'login'){
+        this.loginUser()}
+      else {
+        this.createAccount()
+      }
+    },
+    // INSCRIPTION ------------------------------------------------
+    async fetchPostUser() {
+       if(!(this.name === "") 
+       && !(this.famillyName === "") 
+       && !(this.password === "") 
+       && !(this.email === "")
+          ){
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name : this.name, familly_name : this.famillyName,  
+          email : this.email,password : this.password  })};
+      let response = await fetch('http://localhost:3000/auth/signup', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();}  //si un champ est resté vide on ne passe pas dans fetch
+            else{
+              console.log('veuillez remplir tous les champs')
+              }},
+
+      createAccount(){
+      this.fetchPostUser().then((data) => {
+      this.$store.dispatch('createAccount');
+      if(data){
+      this.loginUser();}
+      }).catch(e => console.log(e));},
+
+    // CONNEXION -------------------------------------------------
+       async fetchLogin() {
+       if(! (this.password === "") 
+       && !(this.email === "")
+          ){
+
+        const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({  email : this.email,
+        password : this.password  })};
+      let response = await fetch('http://localhost:3000/auth/login', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();}  //si un champ est resté vide on ne passe pas dans fetch
+            else{
+              console.log('veuillez remplir tous les champs')
+              }},
+
+      loginUser(){
+      this.fetchLogin().then((data) => {
+        console.log(data['token']);
+      //bcrypt compare va renvoyer true ou false.
+      if(data['data'][0] === true){
+        this.storeSendLogin(
+        data['data'][1].email,
+        data['data'][1].name,
+        data['data'][1].familly_name,
+        data['token'])
+      }
+      }).catch(e => console.log(e));},
+
+      // SPEAK WITH STORE ------------------------------------
+  
+     storeSendLogin( email, name, familly_name, token ) {
+      this.$store.dispatch('login', {
+        email: email,
+        name: name,
+        familly_name : familly_name,
+        token : token
+      });
+      this.$emit('connect'); 
+    },
+
+    //FUNCTIONS ---------------------------------------
+    switchToCreateAccount() {
       this.mode = 'create';
     },
-    switchToLogin: function () {
+    switchToLogin() {
       this.mode = 'login';
     },
       showPassword() {
@@ -115,44 +205,7 @@ export default {
     hidePassword() {
     this.visibility = 'password';
 },
-    login: function () {
-      this.$store.dispatch('login', {
-        email: this.email,
-        password: this.password,
-      }) 
-      this.$emit('connect');
-        
-    },
-    createAccount: function () {
-      const self = this;
-      console.table(this.email);
-      if (this.mode === 'create'){
-      this.$store.dispatch('createAccount', {
-        id : 12,
-        email: this.email,
-        name: this.prenom,
-        famillyName: this.nom,
-        password: this.password
-      })
-      .then(function () {
-        self.login();
-      }, function (error) {
-        console.log(error);
-      })}
-      else { this.login()}
-    },
-    createAccountTest: function () {
-      const self = this;
-      console.table(this.email);
-      if (this.mode === 'create'){
-      this.$store.dispatch('postUserInfos', {
-        name: this.prenom,
-        famillyName: this.nom,
-        email: this.email,
-        password: this.password
-      })
-      }
-    }
+    
   }
 }
 </script>
