@@ -96,25 +96,11 @@ async getAllPublicationsData() {
     console.log('dbservice : ' + error);
     }}
 
-// GET ALL COMMENT AND ANSWER ------------------
+// GET ALL COMMENT  ------------------
 
-/*SELECT * FROM TABLE*/
-async getAllPublicationsData() {
+async getAllCommentsData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM publications LEFT JOIN user ON publications.publication_user_id = user.iduser; ";
-    connection.query(query, (err, results) => {
-    if (err) reject(new Error(err.message));
-    resolve(results);})});
-    // console.log(response); 
-    return response;} 
-    catch (error) {
-        console.log('dbservice : ' + error); 
-        }}
-        
-/*SELECT * FROM TABLE*/
-async getAllCommentsAnswersData() {
-    try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser; ";
+    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser WHERE comment !='none' ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -124,8 +110,19 @@ async getAllCommentsAnswersData() {
         console.log('dbservice : ' + error); 
         }}   
         
-        
+// GET ALL ANSWERS  ------------------        
 
+async getAllAnswersData() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser WHERE answer !='none' ";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}   
 
 // BROUILLON -------------------------------
 /*SELECT * FROM TABLE*/

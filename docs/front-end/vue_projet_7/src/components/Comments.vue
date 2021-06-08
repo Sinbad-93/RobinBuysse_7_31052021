@@ -3,7 +3,6 @@
       
       <div ref="comments" class="comments" >
           <button class="littleHeight btn-grad" :disabled="postComment" @click="postComment = !postComment">poster un commentaire</button>
-<button @click="testo">FETCH</button>
         <div v-if="postComment" class="comment" ref="newPublication">
           <span>Utilisateur name :</span>
           <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
@@ -15,7 +14,7 @@
             <div v-else-if="(loading) && !(postComment)" class="comment loading" 
             >LOADING</div>
 
-          <div  :id_db="data.id_comment_and_answer" v-bind:class="checkParentId(data.parent_id) ? 'comment ' : 'notVisible'" ref="comment" v-for="(data,index) in commentsData"
+          <div  :id_comment_db="data.id_comment_and_answer" v-bind:class="checkParentId(data.parent_id) ? 'comment ' : 'notVisible'" ref="comment" v-for="(data,index) in commentsData"
           :key="data"
           :index="index" >
           <div :index="index" v-if="checkParentId(data.parent_id)">
@@ -30,8 +29,8 @@
               <i class="fas fa-exclamation-triangle"></i>
               <i v-if="adminConnected" class="fas fa-trash-alt"></i></div>
                             
-              <button class="answerButton" @click="seeAnswer = !seeAnswer">Réponses 7</button>
-               </div>   <Answer :adminConnected="adminConnected" v-if="seeAnswer"></Answer>
+              <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses 7</button>
+               </div>   <Answer :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
           </div>
         </div>
 </div>
@@ -49,13 +48,13 @@ export default {
   data() {
       return {
           isSpread : false,
-          seeAnswer : false,
           postComment : false,
           newTitle : 'new',
           loading : false,
           comment : '',
           answer : 'none',
           parent_id : null,
+          focusIndex : [],
          commentsData : [
           {utilisateur : 'Charoux',comment : 'génial ta publication'},]
       }
@@ -164,7 +163,24 @@ export default {
           else{
               event.target.style.color = 'black'
           }
-      }
+      },
+      openAnswersFunction(index){
+          //si les answers sont déjà visibles et qu'on clique
+          if (this.focusIndex.includes(index)){
+              var position = this.focusIndex.indexOf(index);
+            if (position > -1) {
+                // alors on retire l'index de la liste pour masquer les answers
+                this.focusIndex.splice(position, 1);
+            }
+          }
+          // si les answers sont masqués
+          else {
+        //inserer l'index dans la liste, donc les answers sont visibles
+          this.focusIndex.push(index);}
+      },
+      indexCheck(index){
+          if (this.focusIndex.includes(index)){ return true}
+      },
     
 
 }}
@@ -234,6 +250,9 @@ button{
 }
 .notVisible{
     display: none;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
 }
 }
 </style>

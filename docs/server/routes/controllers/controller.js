@@ -59,17 +59,26 @@ result
     .then(data => response.json({ data: data}))
     .catch(err => console.log(err))};
 
-// requete GET pour tous les comment or answer ------------------------
-exports.getAllCommentsAnswers = (request, response, next) => {
+// requete GET pour tous les comments  ------------------------
+exports.getAllComments = (request, response, next) => {
   /*creer la demande */
   const db = dbService.getDbServiceInstance();
   /*configure la demande*/
-  const result = db.getAllCommentsAnswersData();
+  const result = db.getAllCommentsData();
 result
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));
 }
-
+// requete GET pour tous les answers ------------------------
+exports.getAllAnswers = (request, response, next) => {
+  /*creer la demande */
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.getAllAnswersData();
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}
 // requete GET pour une sauce-----
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({

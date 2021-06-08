@@ -1,32 +1,34 @@
 <template>
 <div class="container" >
       
-      <div class="answers">
+      <div class="answers" ref="answers">
           <button class="littleHeight btn-grad "
               @click="postAnswer = !postAnswer">répondre</button>
-
+<button @click="testo">FETCH</button>
               <div v-if="postAnswer" class="answer" ref="newPublication">
           <span>Utilisateur name :</span>
-          <textarea v-model="newAnswer" name="" id="" cols="30" rows="10"></textarea>
+          <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
             <button @click="publishAnswer"> publier </button>
             <button @click="postAnswer = !postAnswer"> annuler </button>
             </div>
             </div>
-
+            <div v-else-if="(loading) && !(postComment)" class="answer loading" 
+            >LOADING</div>
           <div class="answer" v-for="(data,index) in answersData"
           :key="data"
           :index="index" >
+          <div :index="index" v-if="checkParentId(data.parent_id)">
               <span ref="userAnswer " 
-              class="userAnswer metal radial">{{data.utilisateur}} 
+              class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
-              <span class="answerMessage" >{{data.message}}</span>
+              <span class="answerMessage" >{{data.answer}}</span>
               <div class="icons">
               <i @click="arrowFunction" ref="topArrow" class="fas fa-arrow-alt-circle-up"></i> 8
               <i @click="arrowFunction" class="fas fa-arrow-alt-circle-down"></i> 1
               <i class="fas fa-exclamation-triangle"></i>
               <i v-if="adminConnected" class="fas fa-trash-alt"></i>
-              
+              </div> 
               </div>              
           </div>
         </div>
@@ -40,33 +42,57 @@ export default {
   name: "Answer",
   components: {
   },
-  props: ['viewComment','adminConnected'],
+  props: ['viewComment','adminConnected','user','objectSize'],
   data() {
       return {
           isSpread : false,
           seeAnswer : false,
           postAnswer : false,
+          loading : false,
           newTitle : 'new',
           newAnswer : '',
+          comment : 'none',
+          answer : '',
+          parent_id :null,
          answersData : [
-          {utilisateur : 'Charouxlamagnifiqueetsublimetuesparfaite',message : 'génial ta publication'},
-          {utilisateur : 'Elvis',message : 'Waow extra, c\'est vriament bien trouvé, je vais essayé de publier quelque chose de sympa également'},
-          {utilisateur : 'Fox',message : 'Alors ça, je dis oui !'},{utilisateur : 'Charoux',message : 'génial ta publication'},
-          {utilisateur : 'Elvis',message : 'Waow extra'},
-          {utilisateur : 'Fox',message : 'Alors ça, je dis oui blablablablablablablalblablablbalbalblablbalbalbalblablbalbalbalblba !'},
-          {utilisateur : 'Charoux',message : 'génial ta publication'},
-          {utilisateur : 'Elvis',message : 'Waow extra'},
-          {utilisateur : 'Fox',message : 'Alors ça, je dis oui !'}]
+          {utilisateur : 'Elvis',answer : 'Waow extra'},
+          {utilisateur : 'Fox',answer : 'Alors ça, je dis oui !'}]
       }
   },
+   mounted() {
+      this.findAllAnswers()
+  },
   methods : {
-        // POST ANSWERS ----------------------------------------------
+      // FUNCTIONS ---------------------------------
+      checkParentId(number){
+          if(!number){
+              return false
+          };
+        var el= this.$refs.answers.parentNode.parentNode;
+        //console.log(el.getAttribute('id_db'));
+        var parent_id = el.getAttribute('id_comment_db');
+          if(number == parent_id){
+              return true
+          }
+          else {
+            return false
+          }
+      },
+      testo(){
+        var el = this.$refs.answers.parentNode.parentNode;
+        console.log(el);
+        //console.log(el.getAttribute('id_comment_db'));
+        this.parent_id = el.getAttribute('id_comment_db');
+      },
+
+    // POST ANSWERS ----------------------------------------------
+        
     async fetchPostAnswer() {
        if(!(this.comment === "")
          ){
-        var el = this.$refs.comments.parentNode.parentNode.firstChild;
-        console.log(el.getAttribute('id_db'));
-        this.parent_id = el.getAttribute('id_db');
+        var el = this.$refs.answers.parentNode.parentNode;
+        //console.log(el.getAttribute('id_comment_db'));
+        this.parent_id = el.getAttribute('id_comment_db');
 
         const requestOptions = {
         method : 'POST',
@@ -91,23 +117,23 @@ export default {
             else{
               console.log('veuillez remplir tous les champs')
               }},
-              
+
         // publish answers ----------------
-    publishtAnswer(){
+    publishAnswer(){
       this.fetchPostAnswer().then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;
         this.loading = true;
         // rafraichir les données
-        this.findAllComments()
+        this.findAllAnswers()
       }).catch(e => console.log(e));},
 
     // GET ANSWERS ----------------------------------------------
 
     async fetchGetAnswers() {
 
-        let response = await fetch('http://localhost:3000/publish/find_comments');
+        let response = await fetch('http://localhost:3000/publish/find_answers');
           if (!response.ok) {
             // get error message from body or default to response status
             const error = (data && data.message) || response.status;
@@ -121,12 +147,12 @@ export default {
     findAllAnswers(){
       this.fetchGetAnswers().then((data) => {
         console.log(data);
-        this.commentsData = [];
+        this.answersData = [];
         var size = this.objectSize(data['data']);
         size = size.reverse();
         //console.log(size);
         size.forEach(size => {
-            this.commentsData.push(data['data'][size])
+            this.answersData.push(data['data'][size])
         });
         //this.publicationsData.slice().reverse();    
         this.loading = false;
@@ -197,6 +223,8 @@ span{
     display: flex;
     justify-content: space-around;
 }
-
+.loading{
+    background-color: rgb(255, 255, 255);
+}
 }
 </style>

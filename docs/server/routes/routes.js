@@ -11,7 +11,8 @@ const multer = require("../middleware/multer-config");
 /* Toutes les routes produits de notre API, relié aux différentes parties du code, 
 notament l'authentification*/
 router.get("/find_publications", publicationCtrl.getAllPublications);
-router.get("/find_comments", publicationCtrl.getAllCommentsAnswers);
+router.get("/find_comments", publicationCtrl.getAllComments);
+router.get("/find_answers", publicationCtrl.getAllAnswers);
 
 router.post("/publication", multer, publicationCtrl.publication);
 router.post("/commentAndAnswer", publicationCtrl.commentAndAnswer);
