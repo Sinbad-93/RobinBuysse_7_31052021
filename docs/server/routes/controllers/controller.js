@@ -1,19 +1,76 @@
-const Sauce = require("../../models/sauce.js");
-// module pour autoriser l'app acceder et modifier contenu de nos dossiers (suppression image)
-const fs = require("fs"); /*file system*/
+/* packages */
+// permet de crypter le mdp*/
+const bcrypt = require("bcrypt");
+// permet de creer un token de connexion
+const jwt = require("jsonwebtoken");
+// permet de masquer des informations dans la base de donnée
+const MaskData = require("maskdata");
+// chemin de fichiers
+const dbService = require("../../models/dbService");
 
-// requete GET pour toutes les sauces
-exports.getAllSauces = (req, res, next) => {
-  Sauce.find()
-    .then((sauces) => {
-      res.status(200).json(sauces);
-    })
-    .catch((error) => {
-      res.status(400).json({
-        error: error,
-      });
-    });
+const crypto = require("../../middleware/crypto");
+
+const ipAddress = require("../../models/ip");
+// variables d'environnement
+require("dotenv").config();
+/* defini comment l'adresse sera masquée dans le champ emailMasked*/
+const maskEmailOptions = {
+  maskWith: "*",
+  unmaskedStartCharacters: 3,
+  unmaskedEndCharacters: 2,
+  maskAtTheRate: false,
+  maxMaskedCharactersBeforeAtTheRate: 10,
+  maxMaskedCharactersAfterAtTheRate: 10,
 };
+
+const fs = require("fs"); /*file system*/
+exports.publication = (request, response, next) => {
+console.log(request.body);
+  const post = {
+    title: request.body.title,
+    user_id: request.body.user_id,
+    imageUrl: request.body.title && request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
+};
+const db = dbService.getDbServiceInstance();
+     const result = db.insertPublication(post);
+result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err))};
+
+// requete POST publication
+exports.publication2 = (request, response, next) => {
+  console.log(request.body);
+  const { publication_user_id, publication_title } = request.body;
+  const publication_media = 'falseUrl';
+    const db = dbService.getDbServiceInstance();
+     const result = db.insertPublication(publication_user_id, publication_title, publication_media);
+result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err))};
+
+  /*const sauce = new Sauce({
+    ...sauceObject,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
+  });
+  sauce
+    .save()
+    .then(() => res.status(201).json({ message: "Sauce enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
+};*/
+
+
+// requete GET pour toutes les publications
+exports.getAllPublications = (request, response, next) => {
+  /*creer la demande */
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.getAllPublicationsData();
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}
 
 // requete GET pour une sauce
 exports.getOneSauce = (req, res, next) => {
@@ -30,21 +87,6 @@ exports.getOneSauce = (req, res, next) => {
     });
 };
 
-// requete POST pour une sauce
-exports.createSauce = (req, res, next) => {
-  const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject._id;
-  const sauce = new Sauce({
-    ...sauceObject,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`,
-  });
-  sauce
-    .save()
-    .then(() => res.status(201).json({ message: "Sauce enregistré !" }))
-    .catch((error) => res.status(400).json({ error }));
-};
 
 // requete POST pour le like ou dislike d'une sauce
 exports.likeSauce = (req, res, next) => {

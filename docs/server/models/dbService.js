@@ -51,6 +51,39 @@ async getUserLogin(email, pass) {
         console.log('dbservice : ' + error);
         }}
 
+  // PUBLICATION insertPublication
+
+  async insertPublication(post) {
+    try {const dateAdded = new Date();
+    const response = await new Promise((resolve, reject) => {
+    const query = "INSERT INTO publications (publication_user_id, publication_title, publication_media, date_added) VALUES (?,?,?,?);";
+    connection.query(query, [post.user_id, post.title, post.imageUrl, dateAdded] , (err, result) => {
+    if (err) reject(new Error(err.message));
+    resolve(result);})});
+    return  response;} 
+    catch (error) {
+    console.log('dbservice : ' + error);
+    response.status(400);
+    //return error.message;
+        // a tenté de renvoyer au front, ne fonctionne pas 
+        //res.status(400).send({error: 'This email account is already in use.'})
+    }}
+
+// GET ALL PUBLICATIONS ------------------
+
+/*SELECT * FROM TABLE*/
+async getAllPublicationsData() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT * FROM publications;";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response);
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}
+
 // BROUILLON -------------------------------
 /*SELECT * FROM TABLE*/
 async getAllData() {

@@ -84,7 +84,7 @@ app.use(express.json());
 // To remove suspected xss data, use:
 
 app.use("/images", express.static(path.join(__dirname, "images")));
-app.use("/sauces", sauceRoutes);
+app.use("/publish", sauceRoutes);
 app.use("/auth", userRoutes);
 
 module.exports = app;

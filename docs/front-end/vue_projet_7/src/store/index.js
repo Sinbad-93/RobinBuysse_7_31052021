@@ -41,6 +41,7 @@ export default createStore({
     falseuser : falseuser._returnLastUser(),
     newuser :'New',
     userConnectedInfos :{
+      id_user : '1',
       name : '',
       famillyName : '',
       email : '',
@@ -60,6 +61,7 @@ export default createStore({
       state.userConnectedInfos.name =  userInfos.name;
       state.userConnectedInfos.famillyName =  userInfos.familly_name;
       state.userConnectedInfos.email =  userInfos.email;
+      state.userConnectedInfos.id_user =  userInfos.id_user;
       state.userConnectedInfos.token =  userInfos.token;
     }
   },

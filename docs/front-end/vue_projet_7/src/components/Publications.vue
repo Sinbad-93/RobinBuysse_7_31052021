@@ -1,6 +1,6 @@
 <template>
 <div>
-      <h1 class="mainTitle">Fil d'actualité</h1>
+      <h1 class="mainTitle">Fil d'actualité</h1> <button @click="findAllPublications">FETCH</button>
       <div><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
       <input class="search" type="text" :placeholder="searching">
@@ -10,19 +10,23 @@
           <div v-if="newPostInProgress" class="message" ref="newPublication">
           <span>Utilisateur name :</span>
           <input v-model="newTitle" placeholder='votre titre'/>
-          <input v-model="newImg" placeholder='lien vers votre image'/>
+          <input v-if="!newUrl" type="file" accept="image/*" @change="addImg" />
+          <input v-else type="button" value="retirer" @click="removeImg" />
+            <img v-if="newUrl" :src="newUrl" />
           <div>
-            <button @click="publish"> publier </button>
+            <button @click="publishPublication"> publier </button>
             <button @click="newPostInProgress = !newPostInProgress"> annuler </button>
             </div>
             </div>
+            <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
+            ref="newPublication">LOADING</div>
             <div v-for="(data,index) in publicationsData"
           :key="data" 
           :index="index">
           <div :index="index"  class="message" :ref="'message'+index">
-              <span class="user metal radial">{{data.utilisateur}} : </span>
-              <span class="messageTitle">{{data.title}}</span>
-              <img :src="data.image" alt="">
+              <span class="user metal radial">{{data.publication_user_id}} : </span>
+              <span class="messageTitle">{{data.publication_title}}</span>
+              <img :src="data.publication_media" alt="">
               <span class="reactions"> 
                   <i  @click="likeFunction(event)" class="far fa-heart interactiveIcons"></i> 21
                   <i :index="index" @click="smileFunction(event)" class="fas fa-grin-beam interactiveIcons"></i> 22
@@ -41,6 +45,7 @@
 
 <script>
 import Comments from '../components/Comments.vue';
+import { mapState } from 'vuex'
 
 export default {
   name: "Home",
@@ -55,30 +60,119 @@ export default {
           newPostInProgress : false, 
           searchingSwitch : 'post',
           newTitle : '',
-          newImg : '',
+          image : null,
+          newUrl: null,
           like : false,
           smile : false,
           laugh : false,
+          loading : false,
           viewComment : false,
           focusIndex : [],
           publicationsData : [
-          {utilisateur : 'John',title : 'chat',image :require('../assets/IMG_0368.jpg')},
-          {utilisateur : 'Joe',title : 'félin',image :require('../assets/IMG_0368.jpg')},
-          {utilisateur : 'Johnny',title : 'animal',image :require('../assets/IMG_0368.jpg')}]
+          {publication_user_id : 'John',publication_title : 'chat',publication_media :require('../assets/IMG_0368.jpg')},
+          {publication_user_id : 'Joe',publication_title: 'félin',publication_media :require('../assets/IMG_0368.jpg')},
+          {publication_user_id : 'Johnny',publication_title : 'animal',publication_media :require('../assets/IMG_0368.jpg')}]
       }
   },
   methods : {
-      switchDiscussion(){
+    // POST PUBLICATIONS ----------------------------------------------
+    async fetchPostPublication() {
+       if(! (this.newTitle === "") 
+       && !(this.newUrl === "")
+         ){
+        const formData = new FormData();
+        formData.append("image", this.image);
+        formData.append("title", this.newTitle);
+        formData.append("user_id",this.user.id_user)
+        
+        const requestOptions = {
+        method: 'POST',
+        body: formData
+            };
+
+        let response = await fetch('http://localhost:3000/publish/publication', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();}  
+            //si un champ est resté vide on ne passe pas dans fetch
+            else{
+              console.log('veuillez remplir tous les champs')
+              }},
+
+    publishPublication(){
+      this.fetchPostPublication().then((data) => {
+        console.log(data);
+        //fermer la fenetre de publication
+        this.newPostInProgress = false;
+        this.loading = true;
+        // rafraichir les données
+        this.findAllPublications()
+      }).catch(e => console.log(e));},
+
+    // GET PUBLICATIONS ----------------------------------------------
+
+    async fetchGetPublications() {
+
+        let response = await fetch('http://localhost:3000/publish/find_publications');
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();},
+    
+    // display publications
+    findAllPublications(){
+      this.fetchGetPublications().then((data) => {
+        this.publicationsData = [];
+        var size = this.objectSize(data['data']);
+        //console.log(size);
+        size.forEach(size => {
+            this.publicationsData.push(data['data'][size])
+        });
+        //this.publicationsData.slice().reverse();    
+        this.loading = false;
+      }).catch(e => console.log(e));},
+
+    switchDiscussion(){
           this.News = !this.News;
       },
-      publish(){
+
+    publish(){
           console.log('publish');
-        if (this.newTitle != '' && this.newImg != ''){
+        if (this.newTitle != '' && this.newUrl != ''){
         this.publicationsData.splice(0, 0, 
-        {utilisateur : 'New',title : this.newTitle,image :this.newImg});}
+        {utilisateur : 'New',title : this.newTitle,image :this.newUrl});}
         else { alert('veuillez ajouter un titre et une image')}
       },
-      openCommentsFunction(index){
+    addImg(e) {
+      const file = e.target.files[0]
+      this.image = file
+      this.newUrl = URL.createObjectURL(file)
+                },
+    removeImg(){
+      this.newUrl = null;
+      this.image = null;
+        },
+    
+    objectSize (obj) {
+        var size = [];
+        var itération = 0,
+        key;
+        for (key in obj) {
+             if (obj.hasOwnProperty(key))  itération++ ; size.push(itération-1);
+                         }
+        return size;
+        },
+
+    openCommentsFunction(index){
           //si les commentaires sont déjà visibles et qu'on clique
           if (this.focusIndex.includes(index)){
               var position = this.focusIndex.indexOf(index);
@@ -92,10 +186,12 @@ export default {
         //inserer l'index dans la liste, donc les commentaires sont visibles
           this.focusIndex.push(index);}
       },
-      indexCheck(index){
+
+    indexCheck(index){
           if (this.focusIndex.includes(index)){ return true}
       },
-      smileFunction(){
+
+    smileFunction(){
           if(event.target.style.color === 'rgb(255, 174, 0)'){
               event.target.style.color = 'rgba(0, 0, 0,0.6)'
           }
@@ -104,13 +200,15 @@ export default {
           }
           
       },
-      likeFunction(){
+
+    likeFunction(){
           event.target.classList.toggle('fas') 
           event.target.classList.toggle('far') 
           event.target.classList.toggle('full-heart') 
           
       },
-      typeOfSearch(){
+
+    typeOfSearch(){
           if (this.searchingUser === true){
               this.searching ="Chercher un utilisateur"
               this.searchingSwitch ="user"}
@@ -120,7 +218,12 @@ export default {
                     this.searchingUser = !this.searchingUser;
                     }
         
-    }
+    },
+    computed: {
+    ...mapState({
+      user: 'userConnectedInfos',
+    })
+  }
 };
 </script>
 <style >
@@ -152,6 +255,9 @@ export default {
     height: 280px;
     margin-top : 70px;
     margin-bottom : 60px;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
 }
 .user {
 justify-self: flex-start;
