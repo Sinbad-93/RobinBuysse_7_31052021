@@ -24,18 +24,21 @@ static getDbServiceInstance() {return instance ? instance : new DbService();}
 // INSCRIPTION -------------------------------
 async insertNewUser(name, familly_name, email, password) {
     try {const dateAdded = new Date();
+    const queryCheck = "SELECT * FROM user WHERE email=?;";
+    if (connection.query(queryCheck, email)){
+        console.log('email existant')
+    }
+    else {
+        console.log('email inexistant')
+    }
     const response = await new Promise((resolve, reject) => {
     const query = "INSERT INTO user (name, familly_name, email, password, date_added) VALUES (?,?,?,?,?);";
     connection.query(query, [name, familly_name, email, password, dateAdded] , (err, result) => {
     if (err) reject(new Error(err.message));
     resolve(result);})});
-    return  response;} 
+    return response;} 
     catch (error) {
     console.log('dbservice : ' + error);
-    response.status(400);
-    //return error.message;
-        // a tenté de renvoyer au front, ne fonctionne pas 
-        //res.status(400).send({error: 'This email account is already in use.'})
     }}
 
 // CONNEXION -------------------------------
@@ -54,7 +57,10 @@ async getUserLogin(email, pass) {
   // PUBLICATION insertPublication
 
   async insertPublication(post) {
-    try {const dateAdded = new Date();
+    try {var dateAdded = new Date();
+    var options = {weekday: "long", year: "numeric", month: "long", 
+    day: "2-digit", hour: '2-digit', minute:'2-digit'};
+    dateAdded = dateAdded.toLocaleDateString("fr-FR", options);
     const response = await new Promise((resolve, reject) => {
     const query = "INSERT INTO publications (publication_user_id, publication_title, publication_media, date_added) VALUES (?,?,?,?);";
     connection.query(query, [post.user_id, post.title, post.imageUrl, dateAdded] , (err, result) => {
@@ -63,10 +69,6 @@ async getUserLogin(email, pass) {
     return  response;} 
     catch (error) {
     console.log('dbservice : ' + error);
-    response.status(400);
-    //return error.message;
-        // a tenté de renvoyer au front, ne fonctionne pas 
-        //res.status(400).send({error: 'This email account is already in use.'})
     }}
 
 // GET ALL PUBLICATIONS ------------------
@@ -74,11 +76,11 @@ async getUserLogin(email, pass) {
 /*SELECT * FROM TABLE*/
 async getAllPublicationsData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM publications;";
+    const query = "SELECT * FROM publications LEFT JOIN user ON publications.publication_user_id = user.iduser; ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
-    // console.log(response);
+    // console.log(response); 
     return response;} 
     catch (error) {
         console.log('dbservice : ' + error); 

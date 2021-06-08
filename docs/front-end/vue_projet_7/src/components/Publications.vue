@@ -24,8 +24,9 @@
           :key="data" 
           :index="index">
           <div :index="index"  class="message" :ref="'message'+index">
-              <span class="user metal radial">{{data.publication_user_id}} : </span>
+              <span class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
               <span class="messageTitle">{{data.publication_title}}</span>
+              <span class="messageHour">{{data.date_added}}</span>
               <img :src="data.publication_media" alt="">
               <span class="reactions"> 
                   <i  @click="likeFunction(event)" class="far fa-heart interactiveIcons"></i> 21
@@ -133,6 +134,7 @@ export default {
       this.fetchGetPublications().then((data) => {
         this.publicationsData = [];
         var size = this.objectSize(data['data']);
+        size = size.reverse();
         //console.log(size);
         size.forEach(size => {
             this.publicationsData.push(data['data'][size])
@@ -247,7 +249,7 @@ export default {
     display: grid;
     width: 100%;
     background-color: rgb(212, 253, 253);
-    grid-template-rows: 1fr 1fr 8fr 1fr ;
+    grid-template-rows: 1fr 1fr 1fr 8fr 1fr ;
     justify-items: center;
     align-items: center;
     border: 1px black solid;
@@ -255,6 +257,9 @@ export default {
     height: 280px;
     margin-top : 70px;
     margin-bottom : 60px;
+}
+.messageHour{
+    font-size: 12px;
 }
 .loading{
     background-color: rgb(255, 255, 255);

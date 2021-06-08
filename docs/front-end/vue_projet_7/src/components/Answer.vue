@@ -92,12 +92,12 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-wrap: break-word;
-    overflow-x: hidden;
+    overflow-x: visible;
     width: 100%;
     justify-items: center;
     align-items: center;
     /*border: 1px black solid;*/
-    height: 220px;
+    height: auto;
     margin-bottom : 20px;
     background-color: transparent;
 }
