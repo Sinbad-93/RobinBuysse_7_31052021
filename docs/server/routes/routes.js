@@ -11,11 +11,11 @@ const multer = require("../middleware/multer-config");
 /* Toutes les routes produits de notre API, relié aux différentes parties du code, 
 notament l'authentification*/
 router.get("/find_publications", publicationCtrl.getAllPublications);
-router.get("/:id", auth, publicationCtrl.getOneSauce);
+router.get("/find_comments", publicationCtrl.getAllCommentsAnswers);
 
 router.post("/publication", multer, publicationCtrl.publication);
+router.post("/commentAndAnswer", publicationCtrl.commentAndAnswer);
 
-router.post("/:id/like", auth, multer, publicationCtrl.likeSauce);
 router.put("/:id", auth, multer, publicationCtrl.modifySauce);
 router.delete("/:id", auth, publicationCtrl.deleteSauce);
 

@@ -1,6 +1,6 @@
 <template>
 <div>
-      <h1 class="mainTitle">Fil d'actualité</h1> <button @click="findAllPublications">FETCH</button>
+      <h1 class="mainTitle">Fil d'actualité</h1> <!--button @click="findAllPublications">FETCH</button!-->
       <div><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
       <input class="search" type="text" :placeholder="searching">
@@ -19,11 +19,11 @@
             </div>
             </div>
             <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
-            ref="newPublication">LOADING</div>
+                >LOADING</div>
             <div v-for="(data,index) in publicationsData"
           :key="data" 
           :index="index">
-          <div :index="index"  class="message" :ref="'message'+index">
+          <div :index="index" :id_db="data.id_publication" name="lenom" class="message" :ref="'message'+index">
               <span class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
               <span class="messageTitle">{{data.publication_title}}</span>
               <span class="messageHour">{{data.date_added}}</span>
@@ -35,7 +35,7 @@
                   <i v-if="adminConnected" class="fas fa-trash-alt interactiveIcons"></i>
                 <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button> 
                   </span></div>
-                  <Comments :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+                  <Comments :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
                   :ref="'comment'+index"
                    ></Comments></div>
           
@@ -69,11 +69,11 @@ export default {
           loading : false,
           viewComment : false,
           focusIndex : [],
-          publicationsData : [
-          {publication_user_id : 'John',publication_title : 'chat',publication_media :require('../assets/IMG_0368.jpg')},
-          {publication_user_id : 'Joe',publication_title: 'félin',publication_media :require('../assets/IMG_0368.jpg')},
-          {publication_user_id : 'Johnny',publication_title : 'animal',publication_media :require('../assets/IMG_0368.jpg')}]
+          publicationsData : []
       }
+  },
+  mounted() {
+      this.findAllPublications()
   },
   methods : {
     // POST PUBLICATIONS ----------------------------------------------
@@ -145,14 +145,6 @@ export default {
 
     switchDiscussion(){
           this.News = !this.News;
-      },
-
-    publish(){
-          console.log('publish');
-        if (this.newTitle != '' && this.newUrl != ''){
-        this.publicationsData.splice(0, 0, 
-        {utilisateur : 'New',title : this.newTitle,image :this.newUrl});}
-        else { alert('veuillez ajouter un titre et une image')}
       },
     addImg(e) {
       const file = e.target.files[0]

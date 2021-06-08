@@ -23,17 +23,10 @@ static getDbServiceInstance() {return instance ? instance : new DbService();}
 
 // INSCRIPTION -------------------------------
 async insertNewUser(name, familly_name, email, password) {
-    try {const dateAdded = new Date();
-    const queryCheck = "SELECT * FROM user WHERE email=?;";
-    if (connection.query(queryCheck, email)){
-        console.log('email existant')
-    }
-    else {
-        console.log('email inexistant')
-    }
-    const response = await new Promise((resolve, reject) => {
-    const query = "INSERT INTO user (name, familly_name, email, password, date_added) VALUES (?,?,?,?,?);";
-    connection.query(query, [name, familly_name, email, password, dateAdded] , (err, result) => {
+    try {const datetime = new Date();
+    response = await new Promise((resolve, reject) => {
+    const query = "INSERT INTO user (name, familly_name, email, password, datetime) VALUES (?,?,?,?,?);";
+    connection.query(query, [name, familly_name, email, password, datetime] , (err, result) => {
     if (err) reject(new Error(err.message));
     resolve(result);})});
     return response;} 
@@ -85,6 +78,54 @@ async getAllPublicationsData() {
     catch (error) {
         console.log('dbservice : ' + error); 
         }}
+
+  // POST insert COMMENT AND ANSWER
+
+  async insertCommentAndAnswer(parent_id,user_id, comment, answer) {
+    try {var date_posted = new Date();
+    var options = {weekday: "long", year: "numeric", month: "long", 
+    day: "2-digit", hour: '2-digit', minute:'2-digit'};
+    date_posted = date_posted.toLocaleDateString("fr-FR", options);
+    const response = await new Promise((resolve, reject) => {
+    const query = "INSERT INTO comment_and_answer (parent_id,user_id, comment, answer, date_posted) VALUES (?,?,?,?,?);";
+    connection.query(query, [parent_id, user_id, comment, answer, date_posted] , (err, result) => {
+    if (err) reject(new Error(err.message));
+    resolve(result);})});
+    return  response;} 
+    catch (error) {
+    console.log('dbservice : ' + error);
+    }}
+
+// GET ALL COMMENT AND ANSWER ------------------
+
+/*SELECT * FROM TABLE*/
+async getAllPublicationsData() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT * FROM publications LEFT JOIN user ON publications.publication_user_id = user.iduser; ";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}
+        
+/*SELECT * FROM TABLE*/
+async getAllCommentsAnswersData() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser; ";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}   
+        
+        
+
 
 // BROUILLON -------------------------------
 /*SELECT * FROM TABLE*/

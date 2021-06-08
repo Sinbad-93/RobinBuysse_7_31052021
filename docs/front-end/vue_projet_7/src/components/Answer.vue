@@ -60,15 +60,78 @@ export default {
       }
   },
   methods : {
-        publishAnswer(){
-          console.log('publish');
-        if (this.newTitle != '' && this.newAnswer != ''){
-        this.answersData.splice(0, 0, 
-        {utilisateur : 'New',message : this.newAnswer});
-        this.postAnswer = !this.postAnswer;
-        }
-        else { alert('veuillez ajouter un titre et une image')}
-      },
+        // POST ANSWERS ----------------------------------------------
+    async fetchPostAnswer() {
+       if(!(this.comment === "")
+         ){
+        var el = this.$refs.comments.parentNode.parentNode.firstChild;
+        console.log(el.getAttribute('id_db'));
+        this.parent_id = el.getAttribute('id_db');
+
+        const requestOptions = {
+        method : 'POST',
+        headers : { "Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            parent_id : this.parent_id,
+            user_id : this.user.id_user,
+            comment : this.comment,
+            answer : this.answer,
+          })};
+
+        let response = await fetch('http://localhost:3000/publish/commentAndAnswer', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();}  
+            //si un champ est resté vide on ne passe pas dans fetch
+            else{
+              console.log('veuillez remplir tous les champs')
+              }},
+              
+        // publish answers ----------------
+    publishtAnswer(){
+      this.fetchPostAnswer().then((data) => {
+        console.log(data);
+        //fermer la fenetre de publication
+        this.postComment = false;
+        this.loading = true;
+        // rafraichir les données
+        this.findAllComments()
+      }).catch(e => console.log(e));},
+
+    // GET ANSWERS ----------------------------------------------
+
+    async fetchGetAnswers() {
+
+        let response = await fetch('http://localhost:3000/publish/find_comments');
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();},
+    
+    // display answers ------------------
+    findAllAnswers(){
+      this.fetchGetAnswers().then((data) => {
+        console.log(data);
+        this.commentsData = [];
+        var size = this.objectSize(data['data']);
+        size = size.reverse();
+        //console.log(size);
+        size.forEach(size => {
+            this.commentsData.push(data['data'][size])
+        });
+        //this.publicationsData.slice().reverse();    
+        this.loading = false;
+      }).catch(e => console.log(e));},
+
       arrowFunction(){
            if((event.target.style.color === 'black') && 
            (event.target.classList.value == this.$refs.topArrow.classList.value)){

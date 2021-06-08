@@ -31,7 +31,6 @@ exports.signup = (request, response, next) => {
     const pass = hash;
     const { name, familly_name, email, password } = request.body;
     const db = dbService.getDbServiceInstance();
-
      const result = db.insertNewUser(name, familly_name, email, pass);
 result
     .then(data => response.json({ data: data}))
