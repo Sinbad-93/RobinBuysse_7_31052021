@@ -124,6 +124,53 @@ async getAllAnswersData() {
         console.log('dbservice : ' + error); 
         }}   
 
+// POST REACTIONS  ------------------     
+async insertReaction(reaction, id_parent_publication,heart, smile, laugh, id_user) {
+    try {
+        const response = await new Promise((resolve, reject) => {
+    if (reaction === 'heart'){
+        const query = "INSERT INTO reactions (id_parent_publication,heart, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication,heart, id_user] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result);})
+    }
+    else if ( reaction === 'smile'){
+        const query = "INSERT INTO reactions (id_parent_publication, smile, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication, smile, id_user] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result);})
+    }
+    else if ( reaction === 'laugh'){
+        const query = "INSERT INTO reactions (id_parent_publication,laugh, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication,laugh, id_user] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result);})
+    }
+    
+    
+  
+});
+    return  response;} 
+    catch (error) {
+    console.log('dbservice : ' + error);
+    }}
+
+// GET ALL REACTIONS  ------------------        
+
+async getAllReactionsData() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT * FROM reactions";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}   
+    
+
+
 // BROUILLON -------------------------------
 /*SELECT * FROM TABLE*/
 async getAllData() {

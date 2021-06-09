@@ -79,22 +79,26 @@ result
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));
 }
-// requete GET pour une sauce-----
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({
-    _id: req.params.id,
-  })
-    .then((sauce) => {
-      res.status(200).json(sauce);
-    })
-    .catch((error) => {
-      res.status(404).json({
-        error: error,
-      });
-    });
-};
 
+// requete POST comment or answer -----------------------------
+exports.postReaction = (request, response, next) => {
+  console.log(request.body);
+  const { reaction, id_parent_publication,heart, smile, laugh, id_user } = request.body;
+    const db = dbService.getDbServiceInstance();
+     const result = db.insertReaction(reaction, id_parent_publication,heart, smile, laugh, id_user);
+result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err))};
 
+exports.getAllReactions = (request, response, next) => {
+  /*creer la demande */
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.getAllReactionsData();
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}    
 // requete POST pour le like ou dislike d'une sauce
 exports.likeSauce = (req, res, next) => {
   /*console.log( 'REQUETE:'+'-id sauce = '+req.params.id );

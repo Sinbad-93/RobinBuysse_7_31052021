@@ -4,12 +4,12 @@
       <div class="answers" ref="answers">
           <button class="littleHeight btn-grad "
               @click="postAnswer = !postAnswer">répondre</button>
-<button @click="testo">FETCH</button>
+<button @click="findAllAnswers">FETCH</button>
               <div v-if="postAnswer" class="answer" ref="newPublication">
           <span>Utilisateur name :</span>
           <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button @click="publishAnswer"> publier </button>
+            <button :id_comment_db="id_comment_db" @click="publishAnswer(id_comment_db)"> publier </button>
             <button @click="postAnswer = !postAnswer"> annuler </button>
             </div>
             </div>
@@ -18,7 +18,7 @@
           <div class="answer" v-for="(data,index) in answersData"
           :key="data"
           :index="index" >
-          <div :index="index" v-if="checkParentId(data.parent_id)">
+          <div :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id)">
               <span ref="userAnswer " 
               class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
@@ -42,7 +42,7 @@ export default {
   name: "Answer",
   components: {
   },
-  props: ['viewComment','adminConnected','user','objectSize'],
+  props: ['viewComment','adminConnected','user','objectSize','id_comment_db'],
   data() {
       return {
           isSpread : false,
@@ -64,13 +64,10 @@ export default {
   },
   methods : {
       // FUNCTIONS ---------------------------------
-      checkParentId(number){
+      checkParentId(number, parent_id){
           if(!number){
               return false
           };
-        var el= this.$refs.answers.parentNode.parentNode;
-        //console.log(el.getAttribute('id_db'));
-        var parent_id = el.getAttribute('id_comment_db');
           if(number == parent_id){
               return true
           }
@@ -78,21 +75,13 @@ export default {
             return false
           }
       },
-      testo(){
-        var el = this.$refs.answers.parentNode.parentNode;
-        console.log(el);
-        //console.log(el.getAttribute('id_comment_db'));
-        this.parent_id = el.getAttribute('id_comment_db');
-      },
-
     // POST ANSWERS ----------------------------------------------
         
-    async fetchPostAnswer() {
+    async fetchPostAnswer(number) {
        if(!(this.comment === "")
          ){
-        var el = this.$refs.answers.parentNode.parentNode;
-        //console.log(el.getAttribute('id_comment_db'));
-        this.parent_id = el.getAttribute('id_comment_db');
+        
+        this.parent_id = number;
 
         const requestOptions = {
         method : 'POST',
@@ -119,8 +108,8 @@ export default {
               }},
 
         // publish answers ----------------
-    publishAnswer(){
-      this.fetchPostAnswer().then((data) => {
+    publishAnswer(number){
+      this.fetchPostAnswer(number).then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;

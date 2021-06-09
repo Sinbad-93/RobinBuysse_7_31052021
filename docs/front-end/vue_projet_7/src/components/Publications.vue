@@ -23,19 +23,20 @@
             <div v-for="(data,index) in publicationsData"
           :key="data" 
           :index="index">
-          <div :index="index" :id_db="data.id_publication" name="lenom" class="message" :ref="'message'+index">
+          <div :index="index" :id_db="data.id_publication" class="message" :ref="'message'+index">
               <span class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
               <span class="messageTitle">{{data.publication_title}}</span>
               <span class="messageHour">{{data.date_added}}</span>
               <img :src="data.publication_media" alt="">
-              <span class="reactions"> 
-                  <i  @click="likeFunction(event)" class="far fa-heart interactiveIcons"></i> 21
-                  <i :index="index" @click="smileFunction(event)" class="fas fa-grin-beam interactiveIcons"></i> 22
-                  <i :index="index" @click="smileFunction(event)" class="far fa-grin-squint-tears interactiveIcons "></i> 12
-                  <i v-if="adminConnected" class="fas fa-trash-alt interactiveIcons"></i>
-                <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button> 
-                  </span></div>
-                  <Comments :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+              
+              <div class="reactions_container">
+                <Reactions :id_db="data.id_publication" :user="user" :index="index" class="reactions"> </Reactions>
+              
+              <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button>
+              </div>
+          </div>
+               
+                  <Comments :id_db="data.id_publication" :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
                   :ref="'comment'+index"
                    ></Comments></div>
           
@@ -46,12 +47,13 @@
 
 <script>
 import Comments from '../components/Comments.vue';
+import Reactions from '../components/Reactions.vue';
 import { mapState } from 'vuex'
 
 export default {
   name: "Home",
   components: {
-      Comments
+      Comments, Reactions
   },
   props : ['adminConnected'],
   data() {
@@ -63,9 +65,6 @@ export default {
           newTitle : '',
           image : null,
           newUrl: null,
-          like : false,
-          smile : false,
-          laugh : false,
           loading : false,
           viewComment : false,
           focusIndex : [],
@@ -184,24 +183,6 @@ export default {
     indexCheck(index){
           if (this.focusIndex.includes(index)){ return true}
       },
-
-    smileFunction(){
-          if(event.target.style.color === 'rgb(255, 174, 0)'){
-              event.target.style.color = 'rgba(0, 0, 0,0.6)'
-          }
-          else{
-              event.target.style.color = 'rgb(255, 174, 0)'
-          }
-          
-      },
-
-    likeFunction(){
-          event.target.classList.toggle('fas') 
-          event.target.classList.toggle('far') 
-          event.target.classList.toggle('full-heart') 
-          
-      },
-
     typeOfSearch(){
           if (this.searchingUser === true){
               this.searching ="Chercher un utilisateur"
@@ -282,7 +263,11 @@ img {
     width: 100%;
     height: 100%;
 }
-
+.reactions_container {
+    display: flex;
+    width : 100%;
+    justify-content: space-between;
+}
 .search {
     margin: 5px 0 10px 5px;
 }

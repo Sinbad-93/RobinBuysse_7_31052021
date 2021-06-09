@@ -7,7 +7,7 @@
           <span>Utilisateur name :</span>
           <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button  @click="publishComment"> publier </button>
+            <button :id_db="data.id_publication"  @click="publishComment(id_db)"> publier </button>
             <button @click="postComment = !postComment"> annuler </button>
             </div>
             </div>
@@ -30,7 +30,7 @@
               <i v-if="adminConnected" class="fas fa-trash-alt"></i></div>
                             
               <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses 7</button>
-               </div>   <Answer :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
+               </div>   <Answer :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
           </div>
         </div>
 </div>
@@ -44,7 +44,7 @@ export default {
   components: {
       Answer
   },
-  props: ['viewComment','adminConnected','user', 'objectSize'],
+  props: ['viewComment','adminConnected','user', 'objectSize','id_db'],
   data() {
       return {
           isSpread : false,
@@ -64,12 +64,10 @@ export default {
   },
   methods : {
           // POST COMMENTS ----------------------------------------------
-    async fetchPostComment() {
+    async fetchPostComment(number) {
        if(!(this.comment === "")
          ){
-        var el = this.$refs.comments.parentNode.parentNode.firstChild;
-        console.log(el.getAttribute('id_db'));
-        this.parent_id = el.getAttribute('id_db');
+        this.parent_id = number;
 
         const requestOptions = {
         method : 'POST',
@@ -95,8 +93,8 @@ export default {
               console.log('veuillez remplir tous les champs')
               }},
     // publish comments----------------
-    publishComment(){
-      this.fetchPostComment().then((data) => {
+    publishComment(number){
+      this.fetchPostComment(number).then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;

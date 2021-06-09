@@ -13,9 +13,11 @@ notament l'authentification*/
 router.get("/find_publications", publicationCtrl.getAllPublications);
 router.get("/find_comments", publicationCtrl.getAllComments);
 router.get("/find_answers", publicationCtrl.getAllAnswers);
+router.get("/find_reactions", publicationCtrl.getAllReactions);
 
 router.post("/publication", multer, publicationCtrl.publication);
 router.post("/commentAndAnswer", publicationCtrl.commentAndAnswer);
+router.post("/postReaction", publicationCtrl.postReaction);
 
 router.put("/:id", auth, multer, publicationCtrl.modifySauce);
 router.delete("/:id", auth, publicationCtrl.deleteSauce);
