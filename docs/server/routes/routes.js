@@ -19,7 +19,6 @@ router.post("/publication", multer, publicationCtrl.publication);
 router.post("/commentAndAnswer", publicationCtrl.commentAndAnswer);
 router.post("/postReaction", publicationCtrl.postReaction);
 
-router.put("/:id", auth, multer, publicationCtrl.modifySauce);
-router.delete("/:id", auth, publicationCtrl.deleteSauce);
+router.delete("/deleteReaction", publicationCtrl.deleteReaction);
 
 module.exports = router;

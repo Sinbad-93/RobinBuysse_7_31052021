@@ -169,6 +169,35 @@ async getAllReactionsData() {
         console.log('dbservice : ' + error); 
         }}   
     
+/*"DELETE FROM names WHERE id = ?"*/
+async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_user) {
+    try {
+        const response = await new Promise((resolve, reject) => {
+    if (reaction === 'heart'){
+        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND heart =?;";
+        connection.query(query, [id_parent_publication,id_user,heart] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result.affectedRows);})
+    }
+    else if ( reaction === 'smile'){
+        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND smile =?;";
+        connection.query(query, [id_parent_publication,id_user,smile] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result.affectedRows);})
+    }
+    else if ( reaction === 'laugh'){
+        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND laugh =?;";
+        connection.query(query, [id_parent_publication,id_user,laugh] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result.affectedRows);})
+    }
+});
+/* affectedRows permet de renvoyer true si des lignes ont été suppr de mysql*/
+    return response === 1 ? true : false;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        return false;}}
+
 
 
 // BROUILLON -------------------------------
@@ -229,17 +258,6 @@ async insertReserve(rdv_date, publications) {
         console.log('dbservice : ' + error); 
         }}
 
-/*"DELETE FROM names WHERE id = ?"*/
-async deleteRdv(rdv_date) {
-try { const response = await new Promise((resolve, reject) => {
-const query = "DELETE FROM rendez_vous WHERE rdv_date = ?";
-connection.query(query, [rdv_date] , (err, result) => {
-if (err) reject(new Error(err.message));
-resolve(result.affectedRows);})});/* affectedRows permet de renvoyer true si des lignes ont été suppr de mysql*/
-return response === 1 ? true : false;} 
-
-catch (error) {
-    console.log('dbservice : ' + error); 
-    return false;}}}
+}
 
 module.exports = DbService;

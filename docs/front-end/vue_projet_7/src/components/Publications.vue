@@ -201,7 +201,7 @@ export default {
   }
 };
 </script>
-<style >
+<style scoped>
 @media screen and (max-width : 768px) {
 .mainTitle{
     font-size: 20px;
@@ -272,24 +272,6 @@ img {
     margin: 5px 0 10px 5px;
 }
 
-.fa-heart {
-  position: relative;
-  cursor: pointer;
-  font-size: 15px;
-  color: red;
-}
-.full-heart {
-    color: red;
-}
-.fa-grin-beam {
-    color: rgba(12, 9, 9, 0.6);
-}
-.fa-grin-squint-tears{
-    color: rgba(0, 0, 0,0.6);
-}
-.interactiveIcons{
-margin: 5px 0 5px 10px;
-}
 .commentButton {
     margin-left: auto;
     margin-right: 5px;
