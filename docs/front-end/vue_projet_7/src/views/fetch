@@ -43,3 +43,11 @@ postUserInfos(identifiant, password, email) {
       //console.log('veuillez remplir tous les champs')
       }
 },
+
+
+:class="user.userReactions[28].reactions[0] === 1 ?
+        'fas fa-heart interactiveIcons full-heart':'far fa-heart interactiveIcons'"
+
+<button :id_db="id_db" @click="testo(id_db)">testo</button>
+    <button @click="findAllReactions">test</button>
+        <button @click="testo">test</button>

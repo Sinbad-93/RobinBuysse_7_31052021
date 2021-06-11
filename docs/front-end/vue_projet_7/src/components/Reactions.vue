@@ -2,44 +2,36 @@
 
 <template>
 <div class="reactions" ref="reactions" :id_db="id_db" > 
-    
-    <button @click="findAllReactions">test</button>
-    <i :id_db="id_db"  @click="likeFunction(id_db)" 
-        v-for="(data,index) in userReactions" :key="data" 
-          :index="index"
-        :class="[((userReactions[index].id === id_db) &&(userReactions[index].reactions[0] === 1))?
-        'fas fa-heart interactiveIcons full-heart':'no_display ',
-        index === 1 ? 'far fa-heart interactiveIcons':null]"></i> 
-         
 
-        <span v-for="(data,index) in parentReactions"
-          :key="data" 
-          :index="index"
-          :style="(parentReactions[index].id !== id_db)?{'display':'none'}:null"
-          > 
-              {{parentReactions[index].reactions[0]}}
+    <i v-if="fnTest(0)" :id_db="id_db"  @click="likeFunction(id_db)" 
+    class='fas fa-heart interactiveIcons full-heart'>
+        </i>
+    <i  v-else :id_db="id_db" :index="index" @click="likeFunction(id_db)" 
+        class="far fa-heart interactiveIcons"></i> 
 
+        <span v-if="fnTest_2(0)" :id_db="id_db" > 
+              {{parentReactions[0]}}
         </span>
 
 
-        <i :id_db="id_db" :index="index" @click="smileFunction(id_db)" 
-        class="fas fa-grin-beam interactiveIcons"></i> 
+        <i  v-if="fnTest(1)" :id_db="id_db" :index="index" @click="smileFunction(id_db)" 
+        class='fas fa-grin-beam interactiveIcons orange'></i> 
+
+        <i  v-else :id_db="id_db" :index="index" @click="smileFunction(id_db)" 
+        class="fas fa-grin-beam interactiveIcons black "></i> 
         
-        <span v-for="(data,index) in parentReactions"
-          :key="data" 
-          :index="index"
-          :style="(parentReactions[index].id !== id_db)?{'display':'none'}:null"> 
-              {{parentReactions[index].reactions[1]}}
+        <span v-if="fnTest_2(1)"> 
+              {{parentReactions[1]}}
         </span>
         
-        <i :id_db="id_db" :index="index" @click="laughFunction(id_db)" 
-        class="far fa-grin-squint-tears interactiveIcons "></i>
+        <i v-if="fnTest(2)" :id_db="id_db" :index="index" @click="laughFunction(id_db)" 
+        class="far fa-grin-squint-tears interactiveIcons orange"></i>
+
+        <i v-else :id_db="id_db" :index="index" @click="laughFunction(id_db)" 
+        class="far fa-grin-squint-tears interactiveIcons black"></i>
         
-        <span v-for="(data,index) in parentReactions"
-          :key="data" 
-          :index="index"
-          :style="(parentReactions[index].id !== id_db)?{'display':'none'}:null"> 
-              {{parentReactions[index].reactions[2]}}
+        <span v-if="fnTest_2(2)"> 
+              {{parentReactions[2]}}
         </span>
         
         <i v-if="adminConnected" 
@@ -48,13 +40,13 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 
 export default {
   name: "Reactions",
   components: {
   },
-  props: ['user','index','adminConnected',"id_db"],
+  props: ['index','adminConnected',"id_db"],
   data() {
       return {
         heart : false,
@@ -63,16 +55,96 @@ export default {
         id_user : null,
         id_parent_publication : null,
         reaction :"",
-        parentReactions : [],
-        userReactions: [],
+        parentReactions : {0:0,1:0,2:0},
   }
   },
+mounted(){
+    
+  },
+  computed:  {
+    ...mapState({
+      user: 'userConnectedInfos',
+    }),
+    userState() {
+      console.log(user)
+     console.log(this.$store.getters.getUser);
+
+      // Getters
+      return this.$store.getters.getUser;
+    }},
   methods : {
       // FUNCTIONS --------------------------------,
-      testo(){
-        var el = this.$refs.reactions.parentNode.parentNode;
-        //console.log(el.getAttribute('id_db'));
-        this.id_parent_publication = el.getAttribute('id_db');
+      testo(id_db){
+       console.log(this.user);
+       console.log(this.user.userReactions);
+       console.log(id_db);
+      },
+      isObjEmpty(obj) {
+  for (var prop in obj) {
+    if (obj.hasOwnProperty(prop)) return false;
+  }
+
+  return true;
+},
+isKeyExists(obj,key){
+    if( obj[key] == undefined ){
+        return false;
+    }else{
+        return true;
+    }
+},
+      fnTest(number){
+
+        //console.table(this.user);
+        //console.log(this.isObjEmpty(this.user.userReactions));
+        if (this.isObjEmpty(this.user.userReactions) === true){
+        switch(number){
+        case(0):
+        this.heart = false;
+        case(1):
+        this.smile = false;
+        case(2):
+        this.laugh = false;}
+        return false}
+        else if(this.isKeyExists(this.user.userReactions, this.id_db)){
+          if(this.user.userReactions[this.id_db].reactions[number] === 1){
+            if(number === 0){
+              this.heart = true;
+            }
+            else if(number === 1){
+              this.smile= true;
+            }
+            else if(number === 2){
+              this.laugh = true;
+            }
+        return true}
+          }
+        else {
+          switch(number){
+        case(0):
+        this.heart = false;
+        case(1):
+        this.smile = false;
+        case(2):
+        this.laugh = false;}
+          return false
+        }
+        
+      },
+      fnTest_2(number){
+
+        //console.table(this.user);
+        //console.log(this.isObjEmpty(this.user.userReactions));
+        if (this.isObjEmpty(this.user.numberOfReactions) === true){
+        return false}
+        else if(this.isKeyExists(this.user.numberOfReactions, this.id_db)){
+         this.parentReactions[number] =  this.user.numberOfReactions[this.id_db].reactions[number]; 
+        return true
+          }
+        else {
+          return false
+        }
+        
       },
 
     // POST REACTIONS ----------------------------------------------
@@ -106,31 +178,12 @@ export default {
         // publish REACTIONS ----------------
     publishReaction(number){
       this.fetchPostReaction(number).then((data) => {
-        console.log(data);
-
+        console.log('pub'+ data);
+      this.$store.dispatch("findAllReactions");
         //this.findAllReactions()
       }).catch(e => console.log(e));},
 
-    // GET REACTIONS ----------------------------------------------
-
-    async fetchGetReactions() {
-
-        let response = await fetch('http://localhost:3000/publish/find_reactions');
-          if (!response.ok) {
-            // get error message from body or default to response status
-            const error = (data && data.message) || response.status;
-            //console.log('not response ok, error : ' + error);
-            alert('une erreur innattendue s\'est produite');
-            return Promise.reject(error); 
-            }
-            return await response.json();},
     
-    // display REACTIONS ------------------
-    findAllReactions(){
-        this.fetchGetReactions().then((data) => {
-        this.sortReactions(data);
-
-      }).catch(e => console.log(e));},
     
 // DELETE REACTIONS ----------------------------------------------
         
@@ -163,146 +216,79 @@ export default {
         // Cancel Reaction  ----------------
     cancelReaction(number){
       this.fetchDeleteReaction(number).then((data) => {
-        console.log(data);
+        console.log('del' + data);
+        this.$store.dispatch("findAllReactions");
 
         //this.findAllReactions()
       }).catch(e => console.log(e));},
       
 
     likeFunction(number){
-        this.heart = !this.heart;
+        //this.heart = !this.heart;
         event.target.classList.toggle('fas') ;
         event.target.classList.toggle('far') ;
         event.target.classList.toggle('full-heart');
         //var number = event.target.getAttribute('id_db');
-        console.log(number);
+         console.log(this.heart);
         this.reaction = 'heart';
         if (this.heart === false){
+        this.heart = !this.heart;
         this.publishReaction(number);}
         else {
+          this.heart = !this.heart;
             this.cancelReaction(number);
         }
           
       },
     smileFunction(number){
 
-          this.smile = !this.smile;
-          if(event.target.style.color === 'rgb(255, 174, 0)'){
-              event.target.style.color = 'rgba(0, 0, 0,0.6)'
-          }
-          else{
-              event.target.style.color = 'rgb(255, 174, 0)'
-                };
-
-        console.log(number);
+        event.target.classList.toggle('orange') ;
+        event.target.classList.toggle('black') ;
+        console.log(this.smile);
         this.reaction = 'smile';
-        this.publishReaction(number);
+        if (this.smile === false){
+        this.smile = !this.smile;
+        this.publishReaction(number);}
+        else {
+          this.smile = !this.smile;
+            this.cancelReaction(number);
+        }
 
             },
     laughFunction(number){
-          this.laugh = !this.laugh;
-          if(event.target.style.color === 'rgb(255, 174, 0)'){
-              event.target.style.color = 'rgba(0, 0, 0,0.6)'
-          }
-          else{
-              event.target.style.color = 'rgb(255, 174, 0)'
-                };
-        console.log(number);
+          
+        event.target.classList.toggle('orange') ;
+        event.target.classList.toggle('black') ;
+        console.log(this.laugh);
         this.reaction = 'laugh';
-        this.publishReaction(number);
+        if (this.laugh === false){
+        this.laugh = !this.laugh;
+        this.publishReaction(number);}
+        else {
+          this.laugh = !this.laugh;
+            this.cancelReaction(number);
+        }
 
             },
-      sortReactions(data){
-        /* on va récuperer toutes les réactions et on va les trier 
-        dans parentReactions pour qu'elles soient regroupés par commentaire */
-        //console.log(data);
-        var reactionsObject = data['data'];
-        var userReactionsMiror = [];
-        var parentReactionsMiror = [];
-        var countSameId = [];
-        var countSameId2 = []
-        //console.log(reactionsObject[0]['id_parent_publication']);
-        reactionsObject.forEach((key) => {
-            // 0 : {rdv_date : 'string'}
-            // 0 is key and rdv is i
-                //console.log(i);
-                //console.log(this.parentReactions);
-                //console.log(key['id_parent_publication']);
-// rassembler les réactions de l'utilisateur connecté pour colorer à la connexion 
-            if(this.user.id_user == key['id_user']){
 
-                if (!countSameId2.includes(key['id_parent_publication'])){
-
-                countSameId2 += key['id_parent_publication'];
-                userReactionsMiror.push({
-                id : key['id_parent_publication'], 
-                reactions : [
-                key['heart'],
-                key['smile'],
-                key['laugh']
-                ], user : key['id_user']
-                });
-                }
-                else{
-
-                userReactionsMiror.forEach((index) =>{
-                if( index.id === key['id_parent_publication']){
-                    if (key['heart'] === 1){
-                        index.reactions[0] = 1;
-                    }
-                    if (key['smile'] === 1){
-                        index.reactions[1] = 1;
-                    }
-                    if (key['laugh'] === 1){
-                        index.reactions[2] = 1;
-                    }
-                }
-                });}}
-
-    // rassembler toutes les reactions et trier en fonction de l'id de la publication 
-            if (!countSameId.includes(key['id_parent_publication'])){
-                countSameId += key['id_parent_publication'];
-                
-                parentReactionsMiror.push({
-                id :key['id_parent_publication'], 
-                reactions : [
-                key['heart'],
-                key['smile'],
-                key['laugh']
-                ], user : key['id_user']
-                })
-            }
-            else {
-                //console.log(this.parentReactions);
-                parentReactionsMiror.forEach((index) =>{
-                //console.log(index[i]);
-                //console.log(key['id_parent_publication']);
-
-                if (index.id === 
-                key['id_parent_publication'])
-                { 
-                    if (key['heart'] === 1 ){
-                        index.reactions[0] += 1;
-                    }
-                    if (key['smile'] === 1 ){
-                        index.reactions[1] += 1;
-                    }
-                    if (key['laugh'] === 1 ){
-                        index.reactions[2] += 1;
-                    }
-                }
-            
-            
-            })
-                }
+      notClicked(){
+        
+        /*var value = '' + id_db
+        //console.log(value);
+        value='\''+ value + '\''
+        setTimeout(() => {
+        var test = document.querySelector(`i[id='notclicked'][id_db=${value}]`);
+        console.log(test);
+        //console.log(test.parentNode.childNodes);
+        test = test.parentNode.childNodes;
+        test.forEach(element => {
+          if(element.className.includes('full-heart')){
+            return false
+          }
         });
-        this.userReactions = userReactionsMiror;
-        this.parentReactions = parentReactionsMiror;
-        //console.log(this.parentReactions);
-        //console.log(this.userReactions);
-      },
-      NotClicked(id_db){
-          return true
+        
+//console.log(test);
+        }, 2000);*/
       }
 
 
@@ -321,11 +307,11 @@ export default {
 .full-heart {
     color: red;
 }
-.fa-grin-beam {
-    color: rgba(12, 9, 9, 0.6);
+.orange{
+  color:orange
 }
-.fa-grin-squint-tears{
-    color: rgba(0, 0, 0,0.6);
+.black{
+color: rgba(0, 0, 0,0.6);
 }
 .interactiveIcons{
 margin: 5px 0 5px 10px;

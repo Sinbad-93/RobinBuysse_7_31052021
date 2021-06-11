@@ -52,6 +52,7 @@ export default {
     mounted() {
     console.log('MOUNTED');
     console.log(localStorage);
+    this.$store.dispatch("findAllReactions");
     if (this.checkConnexion() === true){
         console.log(this.userConnectedInfos['name']);
         this.userName = this.userConnectedInfos['name'];

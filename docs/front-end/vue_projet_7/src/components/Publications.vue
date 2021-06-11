@@ -1,5 +1,6 @@
 <template>
 <div>
+
       <h1 class="mainTitle">Fil d'actualité</h1> <!--button @click="findAllPublications">FETCH</button!-->
       <div><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
@@ -72,9 +73,20 @@ export default {
       }
   },
   mounted() {
-      this.findAllPublications()
+      this.findAllPublications();
   },
+  computed:  {
+    userState() {
+
+     console.log(this.$store.getters.getUser);
+
+      // Getters
+      return this.$store.getters.getUser;
+    }},
   methods : {
+    testo(){
+      console.log(this.$store.getters.getUser)
+    },
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
        if(! (this.newTitle === "") 

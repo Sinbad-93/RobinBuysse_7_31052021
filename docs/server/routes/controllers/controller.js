@@ -102,13 +102,13 @@ result
   .catch(err => console.log(err));
 }
 
-
+// DELETE REACTIONS
 exports.deleteReaction = (request, response, next) => {
   const { reaction, id_parent_publication,heart, smile, laugh, id_user } = request.body;
   /*creer la demande */
   const db = dbService.getDbServiceInstance();
   /*configure la demande*/
-  const result = db.deleteReaction();
+  const result = db.deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_user);
 result
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));

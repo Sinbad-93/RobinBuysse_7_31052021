@@ -36,6 +36,7 @@ let falseuser = new FakeUser();
 export default createStore({
   //state
   state: {
+    data : null,
     status : '',
     user : fakeUser21,
     falseuser : falseuser._returnLastUser(),
@@ -45,10 +46,16 @@ export default createStore({
       name : '',
       famillyName : '',
       email : '',
-      password: ''
+      password: '',
+      userReactions : {},
+      numberOfReactions : {},
     }
   },
-  getters:{},
+  getters:{
+    getUser(state) {
+      return state.userConnectedInfos;
+    },
+  },
   // mutations
   mutations: {
     saveUser(state){
@@ -63,7 +70,122 @@ export default createStore({
       state.userConnectedInfos.email =  userInfos.email;
       state.userConnectedInfos.id_user =  userInfos.id_user;
       state.userConnectedInfos.token =  userInfos.token;
+    },
+    sortReactions(state, data){
+      /* on va récuperer toutes les réactions et on va les trier 
+      dans parentReactions pour qu'elles soient regroupés par commentaire */
+
+      //A RETIRER LORSQUE LA CONNEXION SERA OBLIGATOIRE
+      state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
+
+      //console.log(data);
+      var reactionsObject = data['data'];
+      var userReactionsMiror = [];
+      var numberOfReactionsMiror = [];
+      var countSameId = [];
+      var countSameId2 = [];
+      //console.log(reactionsObject);
+      //console.log(reactionsObject[0]['id_parent_publication']);
+      reactionsObject.forEach((key) => {
+          // 0 : {rdv_date : 'string'}
+          // 0 is key and rdv is i
+              //console.log(i);
+              //console.log(this.parentReactions);
+              //console.log(key['id_parent_publication']);
+  // rassembler les réactions de l'utilisateur connecté pour colorer à la connexion 
+          if(state.userConnectedInfos.id_user == key['id_user']){
+  
+              if (!countSameId2.includes(key['id_parent_publication'])){
+  
+              countSameId2 += key['id_parent_publication'];
+              userReactionsMiror.push({
+              id : key['id_parent_publication'], 
+              reactions : [
+              key['heart'],
+              key['smile'],
+              key['laugh']
+              ], user : key['id_user']
+              });
+              }
+              else{
+  
+              userReactionsMiror.forEach((index) =>{
+              if( index.id === key['id_parent_publication']){
+                  if (key['heart'] === 1){
+                      index.reactions[0] = 1;
+                  }
+                  if (key['smile'] === 1){
+                      index.reactions[1] = 1;
+                  }
+                  if (key['laugh'] === 1){
+                      index.reactions[2] = 1;
+                  }
+              }
+              });}}
+  
+  // rassembler toutes les reactions et trier en fonction de l'id de la publication 
+          if (!countSameId.includes(key['id_parent_publication'])){
+              countSameId += key['id_parent_publication'];
+              
+              numberOfReactionsMiror.push({
+              id :key['id_parent_publication'], 
+              reactions : [
+              key['heart'],
+              key['smile'],
+              key['laugh']
+              ], user : key['id_user']
+              })
+          }
+          else {
+              //console.log(this.parentReactions);
+              numberOfReactionsMiror.forEach((index) =>{
+              //console.log(index[i]);
+              //console.log(key['id_parent_publication']);
+  
+              if (index.id === 
+              key['id_parent_publication'])
+              { 
+                  if (key['heart'] === 1 ){
+                      index.reactions[0] += 1;
+                  }
+                  if (key['smile'] === 1 ){
+                      index.reactions[1] += 1;
+                  }
+                  if (key['laugh'] === 1 ){
+                      index.reactions[2] += 1;
+                  }
+              }
+          
+          
+          })
+              }
+      });
+      //this.userReactions = userReactionsMiror;
+      //this.parentReactions = parentReactionsMiror;
+      //console.log(this.parentReactions);
+      //console.log(userReactionsMiror);
+      var packets = {};
+      for(let index = 0; index < userReactionsMiror.length; ++index){
+  packets[userReactionsMiror[index].id] = {
+  reactions: userReactionsMiror[index].reactions,
+  user: userReactionsMiror[index].user
+  };
+  }
+
+  var packets_2 = {};
+  for(let index = 0; index < numberOfReactionsMiror.length; ++index){
+    packets_2[numberOfReactionsMiror[index].id] = {
+    reactions: numberOfReactionsMiror[index].reactions,
+    user: numberOfReactionsMiror[index].user
+    };
     }
+    
+    state.userConnectedInfos.userReactions= packets;
+    state.userConnectedInfos.numberOfReactions= packets_2;
+    console.log(state.user);
+    },
+    
+    
   },
   //actions
   actions: {
@@ -78,7 +200,34 @@ export default createStore({
     createAccount: ({commit}) => {
       commit('setStatus', 'loadingCreate');
       //commit('saveUser');
-      }
-    },
+      },
+    
+      // GET REACTIONS ----------------------------------------------
+    fetchGetReactions:async() =>{
+
+      let response = await fetch('http://localhost:3000/publish/find_reactions');
+        if (!response.ok) {
+          // get error message from body or default to response status
+          const error = (data && data.message) || response.status;
+          //console.log('not response ok, error : ' + error);
+          alert('une erreur innattendue s\'est produite');
+          return Promise.reject(error); 
+          }
+          return await response.json();},
+  
+  // display REACTIONS ------------------
+  findAllReactions:({ commit, dispatch })=>{
+     dispatch('fetchGetReactions').then((data) => {
+      console.log(data);
+      commit('sortReactions', data);
+      
+}).catch(e => console.log(e));},
+  },
+
+  
+    
+    
+  
   modules: {},
 });
+

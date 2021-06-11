@@ -6,9 +6,7 @@
     <img alt="Vue logo" src="../assets/groupomania.png" />
     <h1 id="logo__title">Groupomania Social Network</h1>   </div>
 {{user}}
-{{falseuser}}
-{{newuser}}
-{{test}}
+
     <Login @connect="routerMethod" ></Login>
   </div>
 </template>
@@ -36,7 +34,7 @@ export default {
     },
   computed: {
     ...mapState({
-      user: 'user',
+      user: 'userConnectedInfos',
       falseuser :'falseuser',
       newuser : 'newuser'
     })
