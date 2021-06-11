@@ -60,6 +60,15 @@ exports.login = (request, response, next) => {
    .catch((err) => console.log(err) )
    //return response.status(401).json({ error: "email non trouvé !" });
                                       }
+// GET One User ----------------------
+exports.getOneUser = (request, response, next) => {
+  const {id} = request.params;
+  console.log(id);
+  const db = dbService.getDbServiceInstance();
+  const result = db.getOneUser(id);
+  result.then(data => response.status(200).json({data :data}))
+ .catch((err) => console.log(err) )
+                                    }
 
 //BROUILLON---------------------------------------------------
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 

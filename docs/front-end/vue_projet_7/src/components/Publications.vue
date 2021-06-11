@@ -1,6 +1,6 @@
 <template>
 <div>
-
+<button  @click="testo()">testo</button>
       <h1 class="mainTitle">Fil d'actualité</h1> <!--button @click="findAllPublications">FETCH</button!-->
       <div><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
@@ -25,10 +25,16 @@
           :key="data" 
           :index="index">
           <div :index="index" :id_db="data.id_publication" class="message" :ref="'message'+index">
-              <span class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
+              <span :index="index" ref="username" 
+              @click="focusIndexFn(index,data.publication_user_id)" 
+              class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
               <span class="messageTitle">{{data.publication_title}}</span>
               <span class="messageHour">{{data.date_added}}</span>
               <img :src="data.publication_media" alt="">
+              <UsersCardInfos @close="focusIndexUser = null"
+              :index="index" :id_db="data.id_publication" 
+              v-if="openInfos(index)" class="userWindowInfos"></UsersCardInfos>
+              
               
               <div class="reactions_container">
                 <Reactions :id_db="data.id_publication" :user="user" :index="index" class="reactions"> </Reactions>
@@ -49,12 +55,13 @@
 <script>
 import Comments from '../components/Comments.vue';
 import Reactions from '../components/Reactions.vue';
+import UsersCardInfos from '../components/UsersCardInfos.vue';
 import { mapState } from 'vuex'
 
 export default {
   name: "Home",
   components: {
-      Comments, Reactions
+      Comments, Reactions, UsersCardInfos
   },
   props : ['adminConnected'],
   data() {
@@ -68,7 +75,9 @@ export default {
           newUrl: null,
           loading : false,
           viewComment : false,
+          userWindowInfos : false,
           focusIndex : [],
+          focusIndexUser : null,
           publicationsData : []
       }
   },
@@ -85,7 +94,7 @@ export default {
     }},
   methods : {
     testo(){
-      console.log(this.$store.getters.getUser)
+      console.log(this.$refs.username.getAttribute('index'))
     },
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
@@ -191,6 +200,18 @@ export default {
         //inserer l'index dans la liste, donc les commentaires sont visibles
           this.focusIndex.push(index);}
       },
+      focusIndexFn(number, id){
+        console.log(id);
+        
+        this.$store.dispatch('getOneUser', id)
+        this.focusIndexUser = number;
+        //console.log(this.focusIndexUser);
+      },
+      openInfos(number){
+        if(this.focusIndexUser != null){
+        if(this.focusIndexUser === number ){return true}}
+        return false
+      },
 
     indexCheck(index){
           if (this.focusIndex.includes(index)){ return true}
@@ -246,6 +267,7 @@ export default {
 .messageHour{
     font-size: 12px;
 }
+
 .loading{
     background-color: rgb(255, 255, 255);
 }

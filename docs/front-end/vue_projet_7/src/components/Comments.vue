@@ -14,7 +14,10 @@
             <div v-else-if="(loading) && !(postComment)" class="comment loading" 
             >LOADING</div>
 
-          <div  :id_comment_db="data.id_comment_and_answer" v-bind:class="checkParentId(data.parent_id) ? 'comment ' : 'notVisible'" ref="comment" v-for="(data,index) in commentsData"
+          <div  :id_comment_db="data.id_comment_and_answer" 
+          v-bind:class="checkParentId(data.parent_id) ? 'comment ' : 'notVisible'" 
+          ref="comment" 
+          v-for="(data,index) in commentsData"
           :key="data"
           :index="index" >
           <div :index="index" v-if="checkParentId(data.parent_id)">

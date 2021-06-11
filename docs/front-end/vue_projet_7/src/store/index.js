@@ -49,15 +49,31 @@ export default createStore({
       password: '',
       userReactions : {},
       numberOfReactions : {},
+    },
+    userPickedInfos :{
+      id_user : '0',
+      name : '0',
+      famillyName : '0',
+      email : '0',
+      password: '0',
+      userReactions : {},
+      numberOfReactions : {},
     }
   },
   getters:{
+  
     getUser(state) {
       return state.userConnectedInfos;
     },
   },
   // mutations
   mutations: {
+    oneUser(state,data){
+      state.userPickedInfos.name =  data.name;
+      state.userPickedInfos.famillyName =  data.familly_name;
+      state.userPickedInfos.email =  data.email;
+      
+    },
     saveUser(state){
       state.newuser = state.falseuser._returnLastUser();
     },
@@ -204,7 +220,6 @@ export default createStore({
     
       // GET REACTIONS ----------------------------------------------
     fetchGetReactions:async() =>{
-
       let response = await fetch('http://localhost:3000/publish/find_reactions');
         if (!response.ok) {
           // get error message from body or default to response status
@@ -222,7 +237,28 @@ export default createStore({
       commit('sortReactions', data);
       
 }).catch(e => console.log(e));},
-  },
+  // FETCH TO USER ----------------------------------------------
+  async fetchGetOneUser({ commit, dispatch }, id) {
+    console.log(id);
+    let response = await fetch('http://localhost:3000/auth/' + id );
+      if (!response.ok) {
+        // get error message from body or default to response status
+        const error = (data && data.message) || response.status;
+        //console.log('not response ok, error : ' + error);
+        alert('une erreur innattendue s\'est produite');
+        return Promise.reject(error); 
+        }
+        return await response.json();},
+
+// GET ONE USER ------------------
+getOneUser:({ commit, dispatch }, id)=>{
+  dispatch('fetchGetOneUser', id).then((data) => {
+    console.log(data);
+    commit('oneUser', data['data']);
+    
+}).catch(e => console.log(e));},
+},
+
 
   
     

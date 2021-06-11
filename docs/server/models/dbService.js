@@ -47,6 +47,20 @@ async getUserLogin(email, pass) {
         console.log('dbservice : ' + error);
         }}
 
+// GET ONE USER
+async getOneUser(id) {
+    console.log(id);
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT name, familly_name, email FROM user WHERE iduser=?; ";
+    connection.query(query, [id], (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}
+
   // PUBLICATION insertPublication
 
   async insertPublication(post) {
