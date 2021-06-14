@@ -5,11 +5,16 @@
       <!--button @click="findAllPublications">FETCH</button!-->
       <div class="interactiveCont"><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
-      <div class="searchCont"><input class="search" type="text" :placeholder="searching" 
-      @focus="searchWindow = true" @blur="searchWindow = false" v-model="search">
-       <div class="searchWindow" v-if="searchWindow">
-       <span v-for="findUser in allUsersState" :key="findUser" >{{findUser.name}} {{findUser.famillyName}}</span>
+      <div  class="searchCont"><input class="search" type="text" :placeholder="searching" 
+      @focus="searchWindow = true" v-model="search">
+       <div class="searchWindowCont" v-if="searchWindow">
+       <div class="searchWindow">
+       <span @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
+       :key="findUser" >{{findUser.iduser}} {{findUser.name}} {{findUser.famillyName}}</span></div>
+       <button @click="searchWindow = false" class="searchQuit">quit</button>
        </div>
+        <UsersCardInfos @close="findingUser = false" 
+              v-if="findingUser" class="userWindowInfos"></UsersCardInfos>
       </div>
       <button @click="typeOfSearch" > {{searchingSwitch}}</button>
      </div>
@@ -95,6 +100,7 @@ export default {
           userWindowInfos : false,
           focusIndex : [],
           focusIndexUser : null,
+          findingUser : true,
           publicationsData : [],
           search : '',
           userList : [
@@ -110,9 +116,6 @@ export default {
     ...mapState({
       user: 'userConnectedInfos',
     }),
-    filteredList() {
-      
-    },
     userState() {
 
      console.log(this.$store.getters.getUser);
@@ -122,12 +125,13 @@ export default {
     },
     allUsersState() {
       let loopsBox;
-      var usersList = []
+      var usersList = [];
      console.log(this.$store.getters.getAllUsers);
      loopsBox = this.$store.getters.getAllUsers;
      for ( let i =0; i < loopsBox.length; i++){
        //console.log(loopsBox[i].name);
-        //console.log(loopsBox[i].familly_name);
+        console.log(loopsBox[i].familly_name);
+        console.log(loopsBox[i].iduser);
         usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].iduser));
 
      }
@@ -247,10 +251,18 @@ export default {
       },
       focusIndexFn(number, id){
         console.log(id);
-        
-        this.$store.dispatch('getOneUser', id)
+        this.getOneUser('byClick',id);
+        //this.$store.dispatch('getOneUser', id)
+        this.findingUser = false;
         this.focusIndexUser = number;
         //console.log(this.focusIndexUser);
+      },
+      getOneUser(type,id){
+        //console.log(findUser.iduser);
+        console.log(id);
+        this.$store.dispatch('getOneUser', id);
+        if (type === 'bySearch'){
+        this.findingUser = true;}
       },
       openInfos(number){
         if(this.focusIndexUser != null){
@@ -352,18 +364,32 @@ img {
 .search {
     margin: 5px 0 10px 5px;
 }
-.searchWindow {
+.searchWindowCont{
   position: absolute;
+  z-index: 5;
+  right: 0;
+  height: 200px;
+  width: 95%;
+}
+.searchWindow {
+  
   padding-left: 8px;
   overflow: scroll;
   display: flex;
   flex-wrap: wrap;
-  right: 0;
   background-color: white;
   border: 1px black solid;
   height: 200px;
-  width: 95%;
-  z-index: 5;
+  width: 100%;
+  
+  
+}
+.searchQuit {
+  position: absolute;
+  left: 0;
+  bottom: -20px;
+  width: 100%;
+
 }
     
 
