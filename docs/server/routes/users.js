@@ -9,7 +9,8 @@ const verifyEmail = require('../middleware/verifyEmail');
 /* Routes utilisateurs de notre API, pour inscription et connexion */
 //on verifie la validité de l'email et mdp à l'inscription avec deux middlewaere
 router.post('/signup', userCtrl.signup);
-router.get('/:id' , userCtrl.getOneUser);
+router.get('/oneUser/:id' , userCtrl.getOneUser);
+router.get('/allUsers' , userCtrl.getAllUsers);
 /* on verifie le nombre de connexion d'affilés,
 et si besoin on stop les tentatives avant la connexion*/
 router.post('/login' , userCtrl.login);

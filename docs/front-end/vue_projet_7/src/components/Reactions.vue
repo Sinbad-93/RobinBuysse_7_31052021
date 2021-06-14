@@ -8,9 +8,15 @@
         </i>
     <i  v-else :id_db="id_db" :index="index" @click="likeFunction(id_db)" 
         class="far fa-heart interactiveIcons"></i> 
-
+        <!-- ici on utlise v-if car on ne peut pas afficher 
+        userState.numberOfReactions[id_db].reactions[0] 
+        tant que l'objet numberOfReactions est vide, cela crée une erreur !--> 
         <span v-if="fnTest_2(0)" :id_db="id_db" > 
               {{parentReactions[0]}}
+        <!-- equivalent à  {{userState.numberOfReactions[id_db].reactions[0]}} !-->
+        </span>
+         <span v-else> 
+              0
         </span>
 
 
@@ -21,7 +27,11 @@
         class="fas fa-grin-beam interactiveIcons black "></i> 
         
         <span v-if="fnTest_2(1)"> 
-              {{parentReactions[1]}}
+              {{parentReactions[1]}} 
+               <!-- equivalent à  {{userState.numberOfReactions[id_db].reactions[1]}} !-->
+        </span>
+         <span v-else> 
+              0
         </span>
         
         <i v-if="fnTest(2)" :id_db="id_db" :index="index" @click="laughFunction(id_db)" 
@@ -30,8 +40,12 @@
         <i v-else :id_db="id_db" :index="index" @click="laughFunction(id_db)" 
         class="far fa-grin-squint-tears interactiveIcons black"></i>
         
-        <span v-if="fnTest_2(2)"> 
-              {{parentReactions[2]}}
+        <span v-if="fnTest_2(2)" :id_db="id_db"> 
+              {{parentReactions[2]}} 
+              <!-- equivalent à  {{userState.numberOfReactions[id_db].reactions[2]}} !-->
+        </span>
+        <span v-else> 
+              0
         </span>
         
         <i v-if="adminConnected" 
@@ -66,7 +80,7 @@ mounted(){
       user: 'userConnectedInfos',
     }),
     userState() {
-      console.log(user)
+
      console.log(this.$store.getters.getUser);
 
       // Getters

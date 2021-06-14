@@ -58,21 +58,37 @@ export default createStore({
       password: '0',
       userReactions : {},
       numberOfReactions : {},
-    }
+    },
+    allUsers : [],
   },
   getters:{
   
     getUser(state) {
       return state.userConnectedInfos;
     },
+    getAllUsers(state) {
+      return state.allUsers;
+    },
+    getUserPickedInfos(state){
+      return state.userPickedInfos;
+    }
   },
   // mutations
   mutations: {
     oneUser(state,data){
-      state.userPickedInfos.name =  data.name;
-      state.userPickedInfos.famillyName =  data.familly_name;
-      state.userPickedInfos.email =  data.email;
       
+      state.userPickedInfos.name =  data[0].name;
+      state.userPickedInfos.famillyName =  data[0].familly_name;
+      state.userPickedInfos.email =  data[0].email;
+      
+    },
+    allUsers(state,data){
+      
+     //console.log(data);
+     for (let i = 0; i < data.length; ++i) {
+       console.log(i);
+      state.allUsers.push(data[i]);}
+      //console.log(state.allUsers);
     },
     saveUser(state){
       state.newuser = state.falseuser._returnLastUser();
@@ -240,7 +256,7 @@ export default createStore({
   // FETCH TO USER ----------------------------------------------
   async fetchGetOneUser({ commit, dispatch }, id) {
     console.log(id);
-    let response = await fetch('http://localhost:3000/auth/' + id );
+    let response = await fetch('http://localhost:3000/auth/oneUser/' + id );
       if (!response.ok) {
         // get error message from body or default to response status
         const error = (data && data.message) || response.status;
@@ -256,6 +272,26 @@ getOneUser:({ commit, dispatch }, id)=>{
     console.log(data);
     commit('oneUser', data['data']);
     
+}).catch(e => console.log(e));},
+
+// FETCH ALL USERS ----------------------------------------------
+async fetchGetAllUsers({ commit, dispatch }) {
+  let response = await fetch('http://localhost:3000/auth/allUsers');
+    if (!response.ok) {
+      // get error message from body or default to response status
+      const error = (data && data.message) || response.status;
+      //console.log('not response ok, error : ' + error);
+      alert('une erreur innattendue s\'est produite');
+      return Promise.reject(error); 
+      }
+      return await response.json();},
+
+// GET ALL USERS ------------------
+getAllUsers:({ commit, dispatch })=>{
+dispatch('fetchGetAllUsers').then((data) => {
+  console.log(data);
+  commit('allUsers', data['data']);
+  
 }).catch(e => console.log(e));},
 },
 

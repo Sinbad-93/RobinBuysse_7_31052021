@@ -3,9 +3,9 @@
     
               <div class="userWindowInfos " >
                   <i @click="$emit('close')" class="far fa-times-circle"></i>
-                <span> prenom : {{userPickedInfos.name}}</span>
-                <span> nom : {{userPickedInfos.familly_name}}</span>
-                <span> mail : {{userPickedInfos.email}}</span>
+                <span> prenom : {{userState.name}}</span>
+                <span> nom : {{userState.famillyName}}</span>
+                <span> mail : {{userState.email}}</span>
                 <span> photo :</span>
                 <span> description :</span>
               </div>
@@ -22,27 +22,24 @@ export default {
   props: [],
   data() {
       return {
-        userPickedInfos :{
-      id_user : '0',
-      name : '0',
-      famillyName : '0',
-      email : '0',
-      password: '0',
-      userReactions : {},
-      numberOfReactions : {},
-    }
       }
   },
    mounted() {
   },
   methods : {
+    
       
 },
 computed: {
     ...mapState({
        userPickedInfos: ' userPickedInfos',
-    })
-  }}
+    }),
+    userState() {
+     console.log(this.$store.getters.getUserPickedInfos);
+     return this.$store.getters.getUserPickedInfos;}
+  },
+  
+  }
 </script>
 
 <style scoped>

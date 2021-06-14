@@ -21,6 +21,8 @@ class DbService {
 /*permet de creer des demandes uniques à chaque fois ? */
 static getDbServiceInstance() {return instance ? instance : new DbService();}
 
+//---------------------USERS DATA-----------------------------
+
 // INSCRIPTION -------------------------------
 async insertNewUser(name, familly_name, email, password) {
     try {const datetime = new Date();
@@ -49,7 +51,7 @@ async getUserLogin(email, pass) {
 
 // GET ONE USER
 async getOneUser(id) {
-    console.log(id);
+    //console.log(id);
     try {const response = await new Promise((resolve, reject) => {
     const query = "SELECT name, familly_name, email FROM user WHERE iduser=?; ";
     connection.query(query, [id], (err, results) => {
@@ -61,6 +63,21 @@ async getOneUser(id) {
         console.log('dbservice : ' + error); 
         }}
 
+// GET ALL USERS
+async getAllUsers() {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = "SELECT name, familly_name, iduser FROM user ";
+    connection.query(query, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}
+
+
+//-------------------------------PUBLICATIONS DATA-----------------------------
   // PUBLICATION insertPublication
 
   async insertPublication(post) {

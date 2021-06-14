@@ -1,11 +1,18 @@
 <template>
 <div>
 <button  @click="testo()">testo</button>
-      <h1 class="mainTitle">Fil d'actualité</h1> <!--button @click="findAllPublications">FETCH</button!-->
-      <div><button :disabled="newPostInProgress" class="btn-grad"
+      <h1 class="mainTitle">Fil d'actualité</h1> 
+      <!--button @click="findAllPublications">FETCH</button!-->
+      <div class="interactiveCont"><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
-      <input class="search" type="text" :placeholder="searching">
-      <button @click="typeOfSearch"> {{searchingSwitch}}</button></div>
+      <div class="searchCont"><input class="search" type="text" :placeholder="searching" 
+      @focus="searchWindow = true" @blur="searchWindow = false" v-model="search">
+       <div class="searchWindow" v-if="searchWindow">
+       <span v-for="findUser in allUsersState" :key="findUser" >{{findUser.name}} {{findUser.famillyName}}</span>
+       </div>
+      </div>
+      <button @click="typeOfSearch" > {{searchingSwitch}}</button>
+     </div>
       <div class="discussion" ref="discussion">
           
           <div v-if="newPostInProgress" class="message" ref="newPublication">
@@ -24,7 +31,8 @@
             <div v-for="(data,index) in publicationsData"
           :key="data" 
           :index="index">
-          <div :index="index" :id_db="data.id_publication" class="message" :ref="'message'+index">
+          <div :index="index" :id_db="data.id_publication" class="message" 
+          :ref="'message'+index">
               <span :index="index" ref="username" 
               @click="focusIndexFn(index,data.publication_user_id)" 
               class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
@@ -58,6 +66,14 @@ import Reactions from '../components/Reactions.vue';
 import UsersCardInfos from '../components/UsersCardInfos.vue';
 import { mapState } from 'vuex'
 
+class User {
+  constructor(name, famillyName,id) {
+    this.name = name;
+    this.famillyName =famillyName;
+    this.id = id;
+  }
+}
+
 export default {
   name: "Home",
   components: {
@@ -71,6 +87,7 @@ export default {
           newPostInProgress : false, 
           searchingSwitch : 'post',
           newTitle : '',
+          searchWindow : false,
           image : null,
           newUrl: null,
           loading : false,
@@ -78,23 +95,51 @@ export default {
           userWindowInfos : false,
           focusIndex : [],
           focusIndexUser : null,
-          publicationsData : []
+          publicationsData : [],
+          search : '',
+          userList : [
+            new User('blabla1', 'blaba2'),
+            new User('blabla3', 'blalbla4') ]
       }
   },
   mounted() {
       this.findAllPublications();
+      this.$store.dispatch('getAllUsers');
   },
   computed:  {
+    ...mapState({
+      user: 'userConnectedInfos',
+    }),
+    filteredList() {
+      
+    },
     userState() {
 
      console.log(this.$store.getters.getUser);
 
       // Getters
       return this.$store.getters.getUser;
+    },
+    allUsersState() {
+      let loopsBox;
+      var usersList = []
+     console.log(this.$store.getters.getAllUsers);
+     loopsBox = this.$store.getters.getAllUsers;
+     for ( let i =0; i < loopsBox.length; i++){
+       //console.log(loopsBox[i].name);
+        //console.log(loopsBox[i].familly_name);
+        usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].iduser));
+
+     }
+     console.log(usersList);
+      // Getters
+      return usersList.filter(user => {
+        return user.name.toLowerCase().includes(this.search.toLowerCase())
+      })
     }},
   methods : {
     testo(){
-      console.log(this.$refs.username.getAttribute('index'))
+      this.$store.dispatch('getAllUsers');
     },
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
@@ -225,14 +270,8 @@ export default {
              this.searchingSwitch ="post"}
                     this.searchingUser = !this.searchingUser;
                     }
-        
-    },
-    computed: {
-    ...mapState({
-      user: 'userConnectedInfos',
-    })
   }
-};
+    }
 </script>
 <style scoped>
 @media screen and (max-width : 768px) {
@@ -302,9 +341,31 @@ img {
     width : 100%;
     justify-content: space-between;
 }
+.interactiveCont {
+  display: flex;
+
+}
+.searchCont {
+  position: relative;
+
+}
 .search {
     margin: 5px 0 10px 5px;
 }
+.searchWindow {
+  position: absolute;
+  padding-left: 8px;
+  overflow: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  right: 0;
+  background-color: white;
+  border: 1px black solid;
+  height: 200px;
+  width: 95%;
+  z-index: 5;
+}
+    
 
 .commentButton {
     margin-left: auto;

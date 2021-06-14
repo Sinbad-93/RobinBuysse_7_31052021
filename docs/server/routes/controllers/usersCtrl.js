@@ -63,12 +63,21 @@ exports.login = (request, response, next) => {
 // GET One User ----------------------
 exports.getOneUser = (request, response, next) => {
   const {id} = request.params;
-  console.log(id);
+  //console.log(id);
   const db = dbService.getDbServiceInstance();
   const result = db.getOneUser(id);
   result.then(data => response.status(200).json({data :data}))
  .catch((err) => console.log(err) )
                                     }
+                                   
+// GET ALL Users ----------------------
+exports.getAllUsers = (request, response, next) => {
+  const db = dbService.getDbServiceInstance();
+  const result = db.getAllUsers();
+  result.then(data => response.status(200).json({data :data}))
+ .catch((err) => console.log(err) )
+                                    }
+
 
 //BROUILLON---------------------------------------------------
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 
