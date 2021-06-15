@@ -5,7 +5,6 @@
     <div class="presentation">
     <img alt="Vue logo" src="../assets/groupomania.png" />
     <h1 id="logo__title">Groupomania Social Network</h1>   </div>
-{{user}}
 
     <Login @connect="routerMethod" ></Login>
   </div>

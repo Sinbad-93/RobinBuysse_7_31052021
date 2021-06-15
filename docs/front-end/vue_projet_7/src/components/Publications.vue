@@ -2,13 +2,22 @@
 <div>
 <button  @click="testo()">testo</button>
       <h1 class="mainTitle">Fil d'actualité</h1> 
+      {{optionBinder}}
       <!--button @click="findAllPublications">FETCH</button!-->
-      <div class="interactiveCont"><button :disabled="newPostInProgress" class="btn-grad"
-       @click="newPostInProgress = !newPostInProgress">Publication</button>
+      <div class="interactiveCont">
+        
+        <select ref="select" v-model="selected" name="sort" id="sort-select">
+    <option value="default">Date : récente</option>
+    <option value="old">Date : ancienne</option>
+    <option value="heart">le plus de coeur</option>
+    <option value="smile">le plus de sourire</option>
+    <option value="laugh">le plus de rire</option>
+    <option value="reactions">le plus de réactions</option>
+</select>
+
       <div  class="searchCont">
       <input class="search" type="text" :placeholder="searching" 
       @focus="checkSearchMode()" v-model="search">
-      <button v-if="viewAll === false" @click="viewAll = true">view all</button>
        <div class="searchWindowCont" v-if="searchWindow&&(searchingSwitch==='user')">
        <div class="searchWindow">
        <span @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
@@ -20,6 +29,8 @@
       </div>
       <button @click="typeOfSearch" > {{searchingSwitch}}</button>
      </div>
+     <button :disabled="newPostInProgress" class="btn-grad"
+       @click="newPostInProgress = !newPostInProgress">Publication</button>
       <div class="discussion" ref="discussion">
           
           <div v-if="newPostInProgress" class="message" ref="newPublication">
@@ -36,38 +47,9 @@
             <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
                 >LOADING</div>
 <!----V IF (mode search desactivé)-----AFFICHAGE TOTAL DE TOUTES LES PUBLICATIONS----------!-->
-            <div v-if="viewAll" class="publicationsCont">
-            <div v-for="(data,index) in publicationsData"
-          :key="data" 
-          :index="index">
-          <div :index="index" :id_db="data.id_publication" class="message" 
-          :ref="'message'+index">
-              <span :index="index" ref="username" 
-              @click="focusIndexFn(index,data.publication_user_id)" 
-              class="user metal radial">{{data.name}} {{data.familly_name}} : </span>
-              <span class="messageTitle">{{data.publication_title}}</span>
-              <span class="messageHour">{{data.date_added}}</span>
-              <img :src="data.publication_media" alt="">
-              <UsersCardInfos @close="focusIndexUser = null"
-              :index="index" :id_db="data.id_publication" 
-              v-if="openInfos(index)" class="userWindowInfos"></UsersCardInfos>
-              
-              
-              <div class="reactions_container">
-                <Reactions :id_db="data.id_publication" :user="user" :index="index" class="reactions"> </Reactions>
-              
-              <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button>
-              </div>
-          </div>
-               
-                  <Comments :id_db="data.id_publication" :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
-                  :ref="'comment'+index"
-                   ></Comments>
-                   </div></div>
-                   
-                   
+          
 <!--------------V ELSE-------------- AFFICHAGE FILTRE AVEC SEARCH INPUT  -----------------!-->
-                   <div class="publicationsCont" v-else>
+
                      <div v-for="(findPublication, index) in filterPublications"
           :key="findPublication" :index="index" :id_db="findPublication.id"
           > 
@@ -95,7 +77,7 @@
                   :ref="'comment'+index"
                    ></Comments>
           
-                   </div></div>
+                   </div>
 <!-------------------------------------------------------!-->
       </div>
     
@@ -116,7 +98,7 @@ class User {
   }
 }
 
-class PublicationsTitle {
+class PublicationsObject {
   constructor(title, name, familly, id, date, media,user) {
     this.title = title;
     this.name = name;
@@ -149,16 +131,19 @@ export default {
           userWindowInfos : false,
           focusIndex : [],
           focusIndexUser : null,
-          findingUser : true,
+          findingUser : false,
           publicationsData : [],
+          isMounted : false,
+          option : 'Trier par',
           search : '',
-          viewAll : true,
+          selected : 'default',
           userList : [
             new User('blabla1', 'blaba2'),
             new User('blabla3', 'blalbla4') ]
       }
   },
   mounted() {
+    this.isMounted = true;
       this.findAllPublications();
       this.$store.dispatch('getAllUsers');
   },
@@ -173,6 +158,7 @@ export default {
       // Getters
       return this.$store.getters.getUser;
     },
+
     allUsersState() {
       let loopsBox;
       var usersList = [];
@@ -191,29 +177,69 @@ export default {
         return user.name.toLowerCase().includes(this.search.toLowerCase())
       })
     },
+    optionBinder(){
+      /*if(this.isMounted === true){
+      this.option = this.$refs.select.options[this.$refs.select.selectedIndex].text;}
+      return this.option;*/
+      return this.selected
+    },
     filterPublications() {
+      //selecteur de tri
       let loopsBox;
-      var publicationsTitlesList = [];
+      var publicationsObject = [];
      //console.log('filter for : ', this.publicationsData);
      loopsBox = this.publicationsData;
      for ( let i =0; i < loopsBox.length; i++){
        //console.log(loopsBox[i].name);
-        console.log(loopsBox[i].publication_title);
-        publicationsTitlesList.push(new PublicationsTitle(loopsBox[i].publication_title,
+        //console.log(loopsBox[i].publication_title);
+        publicationsObject.push(new PublicationsObject(loopsBox[i].publication_title,
         loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id_publication,
         loopsBox[i].date_added, loopsBox[i].publication_media, loopsBox[i].publication_user_id));
 
      }
-     console.log(publicationsTitlesList);
+     //console.log(publicationsObject);
+     console.log(this.option);
       // Getters
-      return publicationsTitlesList.filter(publicationsTitle => {
+      if((this.searchingSwitch === "post") && (this.selected === 'default')){
+      return publicationsObject.filter(publicationsTitle => {
         return publicationsTitle.title.toLowerCase().includes(this.search.toLowerCase())
       })
+    } 
+      else if( this.selected === 'old'){
+          return publicationsObject.reverse()
+        }
+        else if( this.selected === 'heart'){
+          var allId = [];
+          for ( let i =0; i < loopsBox.length; i++){
+           allId.push(loopsBox[i].id_publication);
+           if (this.user.numberOfReactions[loopsBox[i].id_publication]){
+              console.log(this.user.numberOfReactions[loopsBox[i].id_publication]);
+             console.log(this.user.numberOfReactions[loopsBox[i].id_publication].reactions[0]);
+           }
+           
+          }
+
+          //console.log(this.user.numberOfReactions[28].reactions[0]);
+          return publicationsObject
+        }
+        else if( this.selected === 'smile'){
+          return publicationsObject
+        }
+        else if( this.selected === 'laught'){
+          return publicationsObject
+        }
+        else if( this.selected === 'reactions'){
+          return publicationsObject
+        }
+      else if (this.searchingSwitch === "user"){
+        return publicationsObject
+      }
     },
         },
   methods : {
-    testo(){
-      this.$store.dispatch('getAllUsers');
+    testo(){//this.$store.dispatch('getAllUsers');
+    console.log(this.user.numberOfReactions[28].reactions[1]);
+      
     },
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
@@ -286,7 +312,7 @@ export default {
         if(this.searchingSwitch === 'user')
         {this.searchWindow = true};
         if(this.searchingSwitch === 'post')
-        {this.viewAll = false};
+        {this.searchWindow = false};
       },
 
     switchDiscussion(){
@@ -366,7 +392,7 @@ export default {
 @media screen and (max-width : 768px) {
 .mainTitle{
     font-size: 20px;
-    margin: 30px 0;
+    margin: 10px 0;
     border-radius: 5px;
     background-color: rgb(212, 253, 253);
 }
@@ -432,14 +458,16 @@ img {
 }
 .interactiveCont {
   display: flex;
+  margin-bottom: 8px;
 
 }
 .searchCont {
   position: relative;
+  height: 25px;
 
 }
 .search {
-    margin: 5px 0 10px 5px;
+    /*margin: 5px 0 10px 5px;*/
 }
 .searchWindowCont{
   position: absolute;

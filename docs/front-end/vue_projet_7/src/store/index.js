@@ -86,7 +86,7 @@ export default createStore({
       
      //console.log(data);
      for (let i = 0; i < data.length; ++i) {
-       console.log(i);
+       //console.log(i);
       state.allUsers.push(data[i]);}
       //console.log(state.allUsers);
     },
@@ -249,13 +249,13 @@ export default createStore({
   // display REACTIONS ------------------
   findAllReactions:({ commit, dispatch })=>{
      dispatch('fetchGetReactions').then((data) => {
-      console.log(data);
+      //console.log(data);
       commit('sortReactions', data);
       
 }).catch(e => console.log(e));},
   // FETCH TO USER ----------------------------------------------
   async fetchGetOneUser({ commit, dispatch }, id) {
-    console.log(id);
+    //console.log(id);
     let response = await fetch('http://localhost:3000/auth/oneUser/' + id );
       if (!response.ok) {
         // get error message from body or default to response status
@@ -289,7 +289,7 @@ async fetchGetAllUsers({ commit, dispatch }) {
 // GET ALL USERS ------------------
 getAllUsers:({ commit, dispatch })=>{
 dispatch('fetchGetAllUsers').then((data) => {
-  console.log(data);
+  //console.log(data);
   commit('allUsers', data['data']);
   
 }).catch(e => console.log(e));},

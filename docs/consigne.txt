@@ -1,1 +1,23 @@
-voici les consignes : 
+travail restant :
+
+obligatoire : 
+-replacer numberOfReactions à l'exterieur de user
+-pouvoir supprimer son compte
+-pouvoir supprimer un post avec admin
+-rester connecté 
+-changer sa photo de profil
+- sécurité
+- accessibilité
+- modeler le desgin
+-responsive tablette and desktop
+
+optionnel :
+- trier par popularité
+
+- filtrer par utilisateur
+
+- signaler un contenu 
+
+- blogging news ---------- site perso
+
+- reactions sur commentaire et/ou réponses

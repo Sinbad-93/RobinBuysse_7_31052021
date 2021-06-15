@@ -91,6 +91,8 @@ mounted(){
       testo(id_db){
        console.log(this.user);
        console.log(this.user.userReactions);
+       //console.log(this.user.numberOfReactions[28].reactions[0]);
+       
        console.log(id_db);
       },
       isObjEmpty(obj) {
@@ -284,26 +286,6 @@ isKeyExists(obj,key){
         }
 
             },
-
-      notClicked(){
-        
-        /*var value = '' + id_db
-        //console.log(value);
-        value='\''+ value + '\''
-        setTimeout(() => {
-        var test = document.querySelector(`i[id='notclicked'][id_db=${value}]`);
-        console.log(test);
-        //console.log(test.parentNode.childNodes);
-        test = test.parentNode.childNodes;
-        test.forEach(element => {
-          if(element.className.includes('full-heart')){
-            return false
-          }
-        });
-        
-//console.log(test);
-        }, 2000);*/
-      }
 
 
 }}

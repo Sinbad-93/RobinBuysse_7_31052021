@@ -2,12 +2,13 @@
 <div>
       
       <div ref="comments" class="comments" >
-          <button class="littleHeight btn-grad" :disabled="postComment" @click="postComment = !postComment">poster un commentaire</button>
+          <button class="littleHeight btn-grad" :disabled="postComment" 
+          @click="postComment = !postComment">poster un commentaire</button>
         <div v-if="postComment" class="comment" ref="newPublication">
           <span>Utilisateur name :</span>
           <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button :id_db="data.id_publication"  @click="publishComment(id_db)"> publier </button>
+            <button :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
             <button @click="postComment = !postComment"> annuler </button>
             </div>
             </div>

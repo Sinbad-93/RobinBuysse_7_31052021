@@ -4,7 +4,7 @@
    </div>
     <h1 class="card__title">Mon profil</h1>
     <ul class="card__subtitle">Mes informations :</ul>
-    <li>Prénom: {{user.name}}</li> <li>Nom : {{user.famillyName}} </li><li>E-mail : {{user.email}}</li>
+    <li>Prénom: {{user.name}}</li> <li>Nom : {{user.familly_name}} </li><li>E-mail : {{user.email}}</li>
     <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
     <img src="../assets/IMG_0368.jpg"/>
     <span>changer ma photo de profil</span>
