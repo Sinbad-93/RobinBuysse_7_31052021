@@ -5,9 +5,11 @@
       <!--button @click="findAllPublications">FETCH</button!-->
       <div class="interactiveCont"><button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
-      <div  class="searchCont"><input class="search" type="text" :placeholder="searching" 
-      @focus="searchWindow = true" v-model="search">
-       <div class="searchWindowCont" v-if="searchWindow">
+      <div  class="searchCont">
+      <input class="search" type="text" :placeholder="searching" 
+      @focus="checkSearchMode()" v-model="search">
+      <button v-if="viewAll === false" @click="viewAll = true">view all</button>
+       <div class="searchWindowCont" v-if="searchWindow&&(searchingSwitch==='user')">
        <div class="searchWindow">
        <span @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
        :key="findUser" >{{findUser.iduser}} {{findUser.name}} {{findUser.famillyName}}</span></div>
@@ -33,6 +35,8 @@
             </div>
             <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
                 >LOADING</div>
+<!----V IF (mode search desactivé)-----AFFICHAGE TOTAL DE TOUTES LES PUBLICATIONS----------!-->
+            <div v-if="viewAll" class="publicationsCont">
             <div v-for="(data,index) in publicationsData"
           :key="data" 
           :index="index">
@@ -58,8 +62,41 @@
                
                   <Comments :id_db="data.id_publication" :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
                   :ref="'comment'+index"
-                   ></Comments></div>
+                   ></Comments>
+                   </div></div>
+                   
+                   
+<!--------------V ELSE-------------- AFFICHAGE FILTRE AVEC SEARCH INPUT  -----------------!-->
+                   <div class="publicationsCont" v-else>
+                     <div v-for="(findPublication, index) in filterPublications"
+          :key="findPublication" :index="index" :id_db="findPublication.id"
+          > 
+            <div :index="index" :id_db="findPublication.id" class="message" 
+          :ref="'message'+index">
+              <span :index="index" ref="username" 
+              @click="focusIndexFn(index,findPublication.user)" 
+              class="user metal radial">{{findPublication.name}} {{findPublication.familly}} : </span>
+              <span class="messageTitle">{{findPublication.title}}</span>
+              <span class="messageHour">{{findPublication.date}}</span>
+              <img :src="findPublication.media" alt="">
+              <UsersCardInfos @close="focusIndexUser = null"
+              :index="index" :id_db="findPublication.id" 
+              v-if="openInfos(index)" class="userWindowInfos"></UsersCardInfos>
+              
+              
+              <div class="reactions_container">
+                <Reactions :id_db="findPublication.id" :user="user" :index="index" class="reactions"> </Reactions>
+              
+              <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button>
+              </div>
+          </div>
+               
+                  <Comments :id_db="findPublication.id" :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+                  :ref="'comment'+index"
+                   ></Comments>
           
+                   </div></div>
+<!-------------------------------------------------------!-->
       </div>
     
   </div>
@@ -76,6 +113,18 @@ class User {
     this.name = name;
     this.famillyName =famillyName;
     this.id = id;
+  }
+}
+
+class PublicationsTitle {
+  constructor(title, name, familly, id, date, media,user) {
+    this.title = title;
+    this.name = name;
+    this.familly = familly;
+    this.id = id;
+    this.date = date;
+    this.media = media;
+    this.user = user;
   }
 }
 
@@ -103,6 +152,7 @@ export default {
           findingUser : true,
           publicationsData : [],
           search : '',
+          viewAll : true,
           userList : [
             new User('blabla1', 'blaba2'),
             new User('blabla3', 'blalbla4') ]
@@ -130,17 +180,37 @@ export default {
      loopsBox = this.$store.getters.getAllUsers;
      for ( let i =0; i < loopsBox.length; i++){
        //console.log(loopsBox[i].name);
-        console.log(loopsBox[i].familly_name);
-        console.log(loopsBox[i].iduser);
+       // console.log(loopsBox[i].familly_name);
+        //console.log(loopsBox[i].iduser);
         usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].iduser));
 
      }
-     console.log(usersList);
+     //console.log(usersList);
       // Getters
       return usersList.filter(user => {
         return user.name.toLowerCase().includes(this.search.toLowerCase())
       })
-    }},
+    },
+    filterPublications() {
+      let loopsBox;
+      var publicationsTitlesList = [];
+     //console.log('filter for : ', this.publicationsData);
+     loopsBox = this.publicationsData;
+     for ( let i =0; i < loopsBox.length; i++){
+       //console.log(loopsBox[i].name);
+        console.log(loopsBox[i].publication_title);
+        publicationsTitlesList.push(new PublicationsTitle(loopsBox[i].publication_title,
+        loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id_publication,
+        loopsBox[i].date_added, loopsBox[i].publication_media, loopsBox[i].publication_user_id));
+
+     }
+     console.log(publicationsTitlesList);
+      // Getters
+      return publicationsTitlesList.filter(publicationsTitle => {
+        return publicationsTitle.title.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
+        },
   methods : {
     testo(){
       this.$store.dispatch('getAllUsers');
@@ -211,6 +281,13 @@ export default {
         //this.publicationsData.slice().reverse();    
         this.loading = false;
       }).catch(e => console.log(e));},
+
+      checkSearchMode(){
+        if(this.searchingSwitch === 'user')
+        {this.searchWindow = true};
+        if(this.searchingSwitch === 'post')
+        {this.viewAll = false};
+      },
 
     switchDiscussion(){
           this.News = !this.News;

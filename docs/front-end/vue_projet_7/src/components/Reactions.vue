@@ -2,7 +2,7 @@
 
 <template>
 <div class="reactions" ref="reactions" :id_db="id_db" > 
-
+<button :id_db="id_db"  @click="testo(id_db)">testo</button>
     <i v-if="fnTest(0)" :id_db="id_db"  @click="likeFunction(id_db)" 
     class='fas fa-heart interactiveIcons full-heart'>
         </i>
@@ -60,7 +60,7 @@ export default {
   name: "Reactions",
   components: {
   },
-  props: ['index','adminConnected',"id_db"],
+  props: ['index','adminConnected',"id_db","id_2"],
   data() {
       return {
         heart : false,
