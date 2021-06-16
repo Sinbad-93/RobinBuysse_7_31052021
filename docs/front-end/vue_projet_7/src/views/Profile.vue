@@ -6,9 +6,17 @@
     <ul class="card__subtitle">Mes informations :</ul>
     <li>Prénom: {{user.name}}</li> <li>Nom : {{user.familly_name}} </li><li>E-mail : {{user.email}}</li>
     <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
-    <img src="../assets/IMG_0368.jpg"/>
-    <span>changer ma photo de profil</span>
+    <img v-if="!newUrl" :src="user.photo||basicUrl" />
+    <img v-else :src="newUrl" alt="">
+    <span @click="changePhoto = !changePhoto">changer ma photo de profil</span>
+    
+    <div v-if="changePhoto">
+    <input v-if="!newUrl" type="file" accept="image/*" @change="addImg" />
+    <input v-else type="button" value="retirer" @click="removeImg" />
+    </div>
+    
     <div class="form-row">
+      
       <router-link to="/"><button @click="logout()" class="button">
         Déconnexion  
       </button></router-link>
@@ -25,7 +33,11 @@ export default {
   name: 'Profile',
   data(){
       return {
-          suppression : false
+          suppression : false,
+          changePhoto : false,
+          newUrl : null,
+          basicUrl : require('../assets/userImg.png'),
+          image : null,
       }
   },
   /*mounted: function () {
@@ -40,13 +52,23 @@ export default {
     ...mapState({
       user: 'userConnectedInfos',
     })
-  },/*
+  },
   methods: {
-    logout: function () {
-      this.$store.commit('logout');
-      this.$router.push('/');
-    }
-  }*/
+     addImg(e) {
+      const file = e.target.files[0];
+      this.image = file;
+      this.changePhoto = false;
+      this.newUrl = URL.createObjectURL(file);
+      this.$store.dispatch('newPhoto',{
+        image: this.image,
+        id: this.user.id_user,
+      });
+                },
+    removeImg(){
+      this.newUrl = null;
+      this.image = null;
+        },
+  }
 }
 </script>
 
@@ -65,6 +87,7 @@ img {
   border-radius: 8px;
 }
 button{
+  margin-top: 10px;
     background-color: white;
     width: 150px;
     height: 30px;

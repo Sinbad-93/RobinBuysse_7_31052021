@@ -105,7 +105,7 @@ export default createStore({
     },
     sortReactions(state, data){
       /* on va récuperer toutes les réactions et on va les trier 
-      dans parentReactions pour qu'elles soient regroupés par commentaire */
+      dans parentReactions pour qu'elles soient regroupés par publications */
 
       //A RETIRER LORSQUE LA CONNEXION SERA OBLIGATOIRE
       state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
@@ -129,7 +129,7 @@ export default createStore({
   
               if (!countSameId2.includes(key['id_parent_publication'])){
   
-              countSameId2 += key['id_parent_publication'];
+              countSameId2.push(key['id_parent_publication']);
               userReactionsMiror.push({
               id : key['id_parent_publication'], 
               reactions : [
@@ -153,11 +153,13 @@ export default createStore({
                       index.reactions[2] = 1;
                   }
               }
-              });}}
+              });}
+            //console.log(countSameId2);
+            }
   
   // rassembler toutes les reactions et trier en fonction de l'id de la publication 
           if (!countSameId.includes(key['id_parent_publication'])){
-              countSameId += key['id_parent_publication'];
+              countSameId.push(key['id_parent_publication']);
               
               numberOfReactionsMiror.push({
               id :key['id_parent_publication'], 
@@ -198,6 +200,7 @@ export default createStore({
       //console.log(userReactionsMiror);
       var packets = {};
       for(let index = 0; index < userReactionsMiror.length; ++index){
+        //console.log(userReactionsMiror[index].id,userReactionsMiror[index].reactions);
   packets[userReactionsMiror[index].id] = {
   reactions: userReactionsMiror[index].reactions,
   user: userReactionsMiror[index].user
@@ -293,6 +296,38 @@ dispatch('fetchGetAllUsers').then((data) => {
   commit('allUsers', data['data']);
   
 }).catch(e => console.log(e));},
+
+//FETCH URL
+
+
+// POST PUBLICATIONS ----------------------------------------------
+async fetchPostNewPhotoUrl({ commit, dispatch }, object){
+   const formData = new FormData();
+   formData.append("image", object.image);
+   formData.append("id",object.id);
+   const requestOptions = {
+   method: 'POST',
+   body: formData
+       };
+
+   let response = await fetch('http://localhost:3000/auth/profil_photo', requestOptions);
+     if (!response.ok) {
+       // get error message from body or default to response status
+       const error = (data && data.message) || response.status;
+       //console.log('not response ok, error : ' + error);
+       alert('une erreur innattendue s\'est produite');
+       return Promise.reject(error); 
+       }
+       return await response.json();},
+
+// POST USER PHOTO URL ------------------
+newPhoto:({ commit, dispatch }, object)=>{
+  dispatch('fetchPostNewPhotoUrl', object).then((data) => {
+    console.log(data);
+    
+    
+  }).catch(e => console.log(e));},
+
 },
 
 

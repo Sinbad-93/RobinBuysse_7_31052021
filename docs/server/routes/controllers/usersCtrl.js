@@ -76,7 +76,22 @@ exports.getAllUsers = (request, response, next) => {
   const result = db.getAllUsers();
   result.then(data => response.status(200).json({data :data}))
  .catch((err) => console.log(err) )
-                                    }
+                                    };
+
+
+// POST profile photo ------------------
+const fs = require("fs"); /*file system*/
+exports.postProfilePhoto = (request, response, next) => {
+console.log(request.body.id);
+  const post = {
+    id: request.body.id,
+    imageUrl: request.body.title && request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
+};
+const db = dbService.getDbServiceInstance();
+     const result = db.insertProfilePhoto(post);
+result
+    .then(data => response.json({ data: data}))
+    .catch(err => console.log(err))};
 
 
 //BROUILLON---------------------------------------------------

@@ -1,23 +1,35 @@
 travail restant :
+(-replacer numberOfReactions à l'exterieur de user)
 
 obligatoire : 
--replacer numberOfReactions à l'exterieur de user
+
+-changer sa photo de profil
 -pouvoir supprimer son compte
+
 -pouvoir supprimer un post avec admin
 -rester connecté 
--changer sa photo de profil
+
+
 - sécurité
 - accessibilité
 - modeler le desgin
 -responsive tablette and desktop
 
 optionnel :
-- trier par popularité
+- trier par popularité ✓
 
 - filtrer par utilisateur
 
 - signaler un contenu 
 
-- blogging news ---------- site perso
+- blogging news ---------- site perso (x)
 
-- reactions sur commentaire et/ou réponses
+- reactions sur commentaire et/ou réponses (x)
+
+BDD : 
+users
+reactions : une colonne type enum [];
+utiliser une seul requete avec left join pour publications et left join avec un COUNT
+posts
+
+site d'annonce : jobi joba

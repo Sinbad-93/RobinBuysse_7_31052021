@@ -14,6 +14,6 @@ router.get('/allUsers' , userCtrl.getAllUsers);
 /* on verifie le nombre de connexion d'affilés,
 et si besoin on stop les tentatives avant la connexion*/
 router.post('/login' , userCtrl.login);
-//RAPPEL les inputs seront controllés graçe a mongoSanitize et hemlet
+router.post('/profil_photo', userCtrl.postProfilePhoto);
 
 module.exports = router;

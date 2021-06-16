@@ -90,7 +90,7 @@ mounted(){
       // FUNCTIONS --------------------------------,
       testo(id_db){
        console.log(this.user);
-       console.log(this.user.userReactions);
+       console.log(this.user.userReactions[21]);
        //console.log(this.user.numberOfReactions[28].reactions[0]);
        
        console.log(id_db);

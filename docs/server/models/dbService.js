@@ -74,7 +74,23 @@ async getAllUsers() {
     return response;} 
     catch (error) {
         console.log('dbservice : ' + error); 
-        }}
+        }};
+
+  //  INSERT PROFILE PHOTO
+  
+  async insertProfilePhoto(post) {
+    try {
+        console.log(post.id);
+        console.log(post.imageUrl);
+    const response = await new Promise((resolve, reject) => {
+    const query = "UPDATE user SET photo=? WHERE iduser=? ;";
+    connection.query(query, [post.imageUrl,post.id] , (err, result) => {
+    if (err) reject(new Error(err.message));
+    resolve(result);})});
+    return  response;} 
+    catch (error) {
+    console.log('dbservice : ' + error);
+    }}
 
 
 //-------------------------------PUBLICATIONS DATA-----------------------------

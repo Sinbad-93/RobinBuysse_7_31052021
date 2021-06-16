@@ -187,18 +187,15 @@ export default {
       //selecteur de tri
       let loopsBox;
       var publicationsObject = [];
-     //console.log('filter for : ', this.publicationsData);
      loopsBox = this.publicationsData;
      for ( let i =0; i < loopsBox.length; i++){
-       //console.log(loopsBox[i].name);
-        //console.log(loopsBox[i].publication_title);
+        //console.log(loopsBox[i].id_publication);
         publicationsObject.push(new PublicationsObject(loopsBox[i].publication_title,
         loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id_publication,
         loopsBox[i].date_added, loopsBox[i].publication_media, loopsBox[i].publication_user_id));
 
      }
      //console.log(publicationsObject);
-     console.log(this.option);
       // Getters
       if((this.searchingSwitch === "post") && (this.selected === 'default')){
       return publicationsObject.filter(publicationsTitle => {
@@ -208,28 +205,29 @@ export default {
       else if( this.selected === 'old'){
           return publicationsObject.reverse()
         }
-        else if( this.selected === 'heart'){
-          var allId = [];
-          for ( let i =0; i < loopsBox.length; i++){
-           allId.push(loopsBox[i].id_publication);
-           if (this.user.numberOfReactions[loopsBox[i].id_publication]){
-              console.log(this.user.numberOfReactions[loopsBox[i].id_publication]);
-             console.log(this.user.numberOfReactions[loopsBox[i].id_publication].reactions[0]);
-           }
-           
-          }
-
-          //console.log(this.user.numberOfReactions[28].reactions[0]);
-          return publicationsObject
+      else if( this.selected === 'heart'){
+          var allIdMap = new Map();
+          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,0);
+           let publicationsHeart = [];
+           return this.sortByreactions(publicationsObject,publicationsHeart,allIdMap,loopsBox);
+      }
+      else if( this.selected === 'smile'){
+          var allIdMap = new Map();
+          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,1);
+           let publicationsSmile = [];
+           return this.sortByreactions(publicationsObject,publicationsSmile,allIdMap,loopsBox);
         }
-        else if( this.selected === 'smile'){
-          return publicationsObject
+      else if( this.selected === 'laugh'){
+          var allIdMap = new Map();
+          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,2);
+           let publicationsLaugh = [];
+           return this.sortByreactions(publicationsObject,publicationsLaugh,allIdMap,loopsBox);
         }
-        else if( this.selected === 'laught'){
-          return publicationsObject
-        }
-        else if( this.selected === 'reactions'){
-          return publicationsObject
+      else if( this.selected === 'reactions'){
+          var allIdMap = new Map();
+          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,3);
+           let publicationsTotalReactions = [];
+          return this.sortByreactions(publicationsObject,publicationsTotalReactions,allIdMap,loopsBox);
         }
       else if (this.searchingSwitch === "user"){
         return publicationsObject
@@ -319,9 +317,9 @@ export default {
           this.News = !this.News;
       },
     addImg(e) {
-      const file = e.target.files[0]
-      this.image = file
-      this.newUrl = URL.createObjectURL(file)
+      const file = e.target.files[0];
+      this.image = file;
+      this.newUrl = URL.createObjectURL(file);
                 },
     removeImg(){
       this.newUrl = null;
@@ -371,6 +369,43 @@ export default {
         if(this.focusIndexUser != null){
         if(this.focusIndexUser === number ){return true}}
         return false
+      },
+      sortWithMap(loopsBox,numberOfReactions,allIdMap,numb){
+        if(numb > 2){
+          for ( let i =0; i < loopsBox.length; i++){
+            if (!(numberOfReactions[loopsBox[i].id_publication])){
+              allIdMap.set(loopsBox[i].id_publication , 0);
+            }
+           else if (numberOfReactions[loopsBox[i].id_publication]){
+             allIdMap.set(loopsBox[i].id_publication , (numberOfReactions[loopsBox[i].id_publication].reactions[0]
+             + numberOfReactions[loopsBox[i].id_publication].reactions[1]
+             + numberOfReactions[loopsBox[i].id_publication].reactions[2]));
+           };}
+        }
+        else {
+        for ( let i =0; i < loopsBox.length; i++){
+            if (!(numberOfReactions[loopsBox[i].id_publication])){
+              allIdMap.set(loopsBox[i].id_publication , 0);
+            }
+           else if (numberOfReactions[loopsBox[i].id_publication]){
+             allIdMap.set(loopsBox[i].id_publication , (this.user.numberOfReactions[loopsBox[i].id_publication].reactions[numb]));
+           };}}
+           return allIdMap;
+      },
+      sortByreactions(object, array, mapObject, loopsBox){
+        
+        const allIdMapSorted = new Map([...mapObject.entries()].sort((a, b) => b[1] - a[1]));
+           allIdMapSorted.forEach((value, clé, map) => {
+          //console.log(`map.get('${clé}') = ${value}`);
+          for ( let i =0; i < object.length; i++){
+            if(object[i].id === clé ){;
+              array.push(new PublicationsObject(loopsBox[i].publication_title,
+              loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id_publication,
+              loopsBox[i].date_added, loopsBox[i].publication_media, loopsBox[i].publication_user_id));
+            }
+            }
+            });
+            return array
       },
 
     indexCheck(index){
