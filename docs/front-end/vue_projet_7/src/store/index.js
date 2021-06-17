@@ -47,6 +47,7 @@ export default createStore({
       famillyName : '',
       email : '',
       password: '',
+      photo : null,
       userReactions : {},
       numberOfReactions : {},
     },
@@ -80,6 +81,7 @@ export default createStore({
       state.userPickedInfos.name =  data[0].name;
       state.userPickedInfos.famillyName =  data[0].familly_name;
       state.userPickedInfos.email =  data[0].email;
+      state.userPickedInfos.photo =  data[0].photo;
       
     },
     allUsers(state,data){
@@ -101,6 +103,7 @@ export default createStore({
       state.userConnectedInfos.famillyName =  userInfos.familly_name;
       state.userConnectedInfos.email =  userInfos.email;
       state.userConnectedInfos.id_user =  userInfos.id_user;
+      state.userConnectedInfos.photo =  userInfos.photo;
       state.userConnectedInfos.token =  userInfos.token;
     },
     sortReactions(state, data){
@@ -297,36 +300,6 @@ dispatch('fetchGetAllUsers').then((data) => {
   
 }).catch(e => console.log(e));},
 
-//FETCH URL
-
-
-// POST PUBLICATIONS ----------------------------------------------
-async fetchPostNewPhotoUrl({ commit, dispatch }, object){
-   const formData = new FormData();
-   formData.append("image", object.image);
-   formData.append("id",object.id);
-   const requestOptions = {
-   method: 'POST',
-   body: formData
-       };
-
-   let response = await fetch('http://localhost:3000/auth/profil_photo', requestOptions);
-     if (!response.ok) {
-       // get error message from body or default to response status
-       const error = (data && data.message) || response.status;
-       //console.log('not response ok, error : ' + error);
-       alert('une erreur innattendue s\'est produite');
-       return Promise.reject(error); 
-       }
-       return await response.json();},
-
-// POST USER PHOTO URL ------------------
-newPhoto:({ commit, dispatch }, object)=>{
-  dispatch('fetchPostNewPhotoUrl', object).then((data) => {
-    console.log(data);
-    
-    
-  }).catch(e => console.log(e));},
 
 },
 

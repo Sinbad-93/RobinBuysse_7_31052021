@@ -2,11 +2,13 @@
 <div class="centered" >
     
               <div class="userWindowInfos " >
-                  <i @click="$emit('close')" class="far fa-times-circle"></i>
+               <i @click="$emit('close')" class="far fa-times-circle"></i>
+                <span v-if='!userState.photo'> photo : <img :src="basicUrl" alt=""></span>
+                <span v-else> photo : <img :src="userState.photo" alt=""></span>
                 <span> prenom : {{userState.name}}</span>
                 <span> nom : {{userState.famillyName}}</span>
                 <span> mail : {{userState.email}}</span>
-                <span> photo :</span>
+                
                 <span> description :</span>
               </div>
 </div>
@@ -22,6 +24,7 @@ export default {
   props: [],
   data() {
       return {
+        basicUrl : require('../assets/userImg.png'),
       }
   },
    mounted() {
@@ -71,5 +74,11 @@ computed: {
    margin-right: 5px;
    font-size: 25px;
 }
+img {
+  width: 50px;
+  height: 50px;
+}
+
+
 }
 </style>

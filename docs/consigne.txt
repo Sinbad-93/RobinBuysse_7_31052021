@@ -1,9 +1,11 @@
 travail restant :
 (-replacer numberOfReactions à l'exterieur de user)
+pourquoi search user me renvoi 5* les memes
 
 obligatoire : 
 
--changer sa photo de profil
+-changer sa photo de profil (requete put avec photo par defaut)  ✓
+
 -pouvoir supprimer son compte
 
 -pouvoir supprimer un post avec admin

@@ -53,7 +53,7 @@ async getUserLogin(email, pass) {
 async getOneUser(id) {
     //console.log(id);
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT name, familly_name, email FROM user WHERE iduser=?; ";
+    const query = "SELECT name, familly_name, email, photo FROM user WHERE iduser=?; ";
     connection.query(query, [id], (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -77,7 +77,6 @@ async getAllUsers() {
         }};
 
   //  INSERT PROFILE PHOTO
-  
   async insertProfilePhoto(post) {
     try {
         console.log(post.id);
@@ -91,8 +90,6 @@ async getAllUsers() {
     catch (error) {
     console.log('dbservice : ' + error);
     }}
-
-
 //-------------------------------PUBLICATIONS DATA-----------------------------
   // PUBLICATION insertPublication
 

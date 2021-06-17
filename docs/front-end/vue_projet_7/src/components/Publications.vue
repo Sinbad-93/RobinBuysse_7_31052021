@@ -61,9 +61,11 @@
               <span class="messageTitle">{{findPublication.title}}</span>
               <span class="messageHour">{{findPublication.date}}</span>
               <img :src="findPublication.media" alt="">
-              <UsersCardInfos @close="focusIndexUser = null"
+              <transition name='opacity'>
+                <UsersCardInfos @close="focusIndexUser = null"
               :index="index" :id_db="findPublication.id" 
               v-if="openInfos(index)" class="userWindowInfos"></UsersCardInfos>
+              </transition>
               
               
               <div class="reactions_container">
@@ -244,10 +246,11 @@ export default {
        if(! (this.newTitle === "") 
        && !(this.newUrl === "")
          ){
+           console.log('données :', this.image, this.user.id_user);
         const formData = new FormData();
         formData.append("image", this.image);
         formData.append("title", this.newTitle);
-        formData.append("user_id",this.user.id_user)
+        formData.append("user_id",this.user.id_user);
         
         const requestOptions = {
         method: 'POST',
@@ -547,6 +550,22 @@ img {
   100% {
     opacity: 1;
   }
+}
+
+.opacity-enter-active {
+    animation : enterAnimation 2s ease-in-out;
+}
+.opacity-leave-active {
+    animation : outAnimation 2s ease-in-out;
+}
+
+@keyframes enterAnimation {
+    from { opacity : 0;}
+    to { opacity : 1;}
+}
+@keyframes outAnimation {
+    from { opacity : 1;}
+    to {opacity: 0;}
 }
 
 /* style metal and blue link utilisateur */

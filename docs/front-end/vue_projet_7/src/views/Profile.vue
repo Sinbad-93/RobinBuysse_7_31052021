@@ -6,12 +6,12 @@
     <ul class="card__subtitle">Mes informations :</ul>
     <li>Prénom: {{user.name}}</li> <li>Nom : {{user.familly_name}} </li><li>E-mail : {{user.email}}</li>
     <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
-    <img v-if="!newUrl" :src="user.photo||basicUrl" />
-    <img v-else :src="newUrl" alt="">
+    <img v-if="!user.photo" :src="basicUrl" />
+    <img v-else :src="user.photo" alt="">
     <span @click="changePhoto = !changePhoto">changer ma photo de profil</span>
     
     <div v-if="changePhoto">
-    <input v-if="!newUrl" type="file" accept="image/*" @change="addImg" />
+    <input v-if="!user.photo" type="file" accept="image/*" @change="addImg" />
     <input v-else type="button" value="retirer" @click="removeImg" />
     </div>
     
@@ -54,19 +54,49 @@ export default {
     })
   },
   methods: {
-     addImg(e) {
+            // UPDATE PROFILE PHOTO ----------------------------------------------
+    async fetchPostNewPhotoUrl(){
+      console.log('données :', this.image, this.user.id_user);
+         const formData = new FormData();
+         formData.append("image", this.image);
+         formData.append("id",this.user.id_user);
+         const requestOptions = {
+         method: 'PUT',
+         body: formData
+             };
+
+         let response = await fetch('http://localhost:3000/auth/profil_photo', requestOptions);
+           if (!response.ok) {
+             // get error message from body or default to response status
+             const error = (data && data.message) || response.status;
+             //console.log('not response ok, error : ' + error);
+             alert('une erreur innattendue s\'est produite');
+             return Promise.reject(error); 
+             }
+             return await response.json();},
+
+      // update USER PHOTO URL ------------------
+    newPhoto(){
+        this.fetchPostNewPhotoUrl().then((data) => {
+          console.log(data);
+      }).catch(e => console.log(e));},
+
+    addImg(e) {
       const file = e.target.files[0];
       this.image = file;
       this.changePhoto = false;
       this.newUrl = URL.createObjectURL(file);
-      this.$store.dispatch('newPhoto',{
-        image: this.image,
-        id: this.user.id_user,
-      });
+      this.newPhoto();
+      this.$store.state.userConnectedInfos.photo = this.newUrl ;
+      localStorage.setItem("connectedUser", JSON.stringify(this.$store.state.userConnectedInfos));
                 },
     removeImg(){
       this.newUrl = null;
       this.image = null;
+      this.newPhoto();
+      this.$store.state.userConnectedInfos.photo = null ;
+      localStorage.setItem("connectedUser", JSON.stringify(this.$store.state.userConnectedInfos));
+      
         },
   }
 }

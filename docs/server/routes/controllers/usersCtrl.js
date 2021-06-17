@@ -79,19 +79,20 @@ exports.getAllUsers = (request, response, next) => {
                                     };
 
 
-// POST profile photo ------------------
+// UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/
 exports.postProfilePhoto = (request, response, next) => {
-console.log(request.body.id);
+console.log(request.body);
   const post = {
     id: request.body.id,
-    imageUrl: request.body.title && request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
+    imageUrl: request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
 };
 const db = dbService.getDbServiceInstance();
      const result = db.insertProfilePhoto(post);
 result
     .then(data => response.json({ data: data}))
     .catch(err => console.log(err))};
+
 
 
 //BROUILLON---------------------------------------------------
