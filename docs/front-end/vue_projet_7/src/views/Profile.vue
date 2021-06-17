@@ -6,21 +6,21 @@
     <ul class="card__subtitle">Mes informations :</ul>
     <li>Prénom: {{user.name}}</li> <li>Nom : {{user.familly_name}} </li><li>E-mail : {{user.email}}</li>
     <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
-    <img v-if="!user.photo" :src="basicUrl" />
-    <img v-else :src="user.photo" alt="">
-    <span @click="changePhoto = !changePhoto">changer ma photo de profil</span>
-    
-    <div v-if="changePhoto">
-    <input v-if="!user.photo" type="file" accept="image/*" @change="addImg" />
-    <input v-else type="button" value="retirer" @click="removeImg" />
-    </div>
-    
     <div class="form-row">
       
       <router-link to="/"><button @click="logout()" class="button">
         Déconnexion  
       </button></router-link>
     </div>
+    <img v-if="!user.photo" :src="basicUrl" />
+    <img v-else ref="img" :src="user.photo" alt="">
+    <span @click="changePhoto = !changePhoto">changer ma photo de profil</span>
+    <div v-if="changePhoto">
+    <input v-if="!user.photo" type="file" accept="image/*" @change="addImg" />
+    <input v-else type="button" value="retirer" @click="removeImg" />
+    </div>
+    
+    
     <span @click="suppression=true">supprimer mon compte</span>
     <div v-if="suppression"><span>êtes vous sur ? cette action est défnitive</span>
     <button>confirmer</button> <button  @click="suppression=false">retour</button></div>
@@ -112,7 +112,7 @@ export default {
   height: 600px;
 }
 img {
-    margin: 50px;
+    margin: 20px;
   max-width: 80%;
   border-radius: 8px;
 }
@@ -121,6 +121,13 @@ button{
     background-color: white;
     width: 150px;
     height: 30px;
+}
+span {
+  margin: 10px auto;
+  border: black 1px solid;
+  background-color: white;
+  font-size: 18px;
+  font-weight: bolder;
 }
 }
 </style>

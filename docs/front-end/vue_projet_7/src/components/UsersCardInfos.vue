@@ -9,7 +9,7 @@
                 <span> nom : {{userState.famillyName}}</span>
                 <span> mail : {{userState.email}}</span>
                 
-                <span> description :</span>
+                <span> citation : "Un grand pouvoir implique de grandes responsabilités"</span>
               </div>
 </div>
 </template>

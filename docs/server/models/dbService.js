@@ -90,6 +90,22 @@ async getAllUsers() {
     catch (error) {
     console.log('dbservice : ' + error);
     }}
+
+ //  GET PROFILE PHOTO
+ async getProfilePhoto(post) {
+    try {
+        console.log(post.id);
+        console.log(post.imageUrl);
+    const response = await new Promise((resolve, reject) => {
+    const query = "SELECT photo FROM user where iduser=?";
+    connection.query(query, [post.id] , (err, result) => {
+    if (err) reject(new Error(err.message));
+    resolve(result);})});
+    return  response;} 
+    catch (error) {
+    console.log('dbservice : ' + error);
+    }}
+
 //-------------------------------PUBLICATIONS DATA-----------------------------
   // PUBLICATION insertPublication
 

@@ -24,8 +24,8 @@
        :key="findUser" >{{findUser.iduser}} {{findUser.name}} {{findUser.famillyName}}</span></div>
        <button @click="searchWindow = false" class="searchQuit">quit</button>
        </div>
-        <UsersCardInfos @close="findingUser = false" 
-              v-if="findingUser" class="userWindowInfos"></UsersCardInfos>
+       <transition name='opacity'> <UsersCardInfos @close="findingUser = false" 
+              v-if="findingUser" class="userWindowInfos"></UsersCardInfos></transition>
       </div>
       <button @click="typeOfSearch" > {{searchingSwitch}}</button>
      </div>
@@ -553,10 +553,10 @@ img {
 }
 
 .opacity-enter-active {
-    animation : enterAnimation 2s ease-in-out;
+    animation : enterAnimation 1.5s ease-in;
 }
 .opacity-leave-active {
-    animation : outAnimation 2s ease-in-out;
+    animation : outAnimation 0.4s ease-in-out;
 }
 
 @keyframes enterAnimation {

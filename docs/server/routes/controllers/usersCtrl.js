@@ -78,22 +78,50 @@ exports.getAllUsers = (request, response, next) => {
  .catch((err) => console.log(err) )
                                     };
 
-
 // UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/
 exports.postProfilePhoto = (request, response, next) => {
-console.log(request.body);
   const post = {
     id: request.body.id,
     imageUrl: request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
 };
 const db = dbService.getDbServiceInstance();
-     const result = db.insertProfilePhoto(post);
-result
-    .then(data => response.json({ data: data}))
+      const result1 = db.getProfilePhoto(post);
+      result1
+      .then(data => {
+        if (data[0].photo !== null) {
+            console.log('get photo : ',data[0].photo);
+            const filename = data[0].photo.split('/images/')[1];
+            fs.unlink(`images/${filename}`, function(err) { 
+              if(err) {
+                console.log("unlink failed", err);
+             } else {
+                console.log("file deleted");
+             }
+           }); 
+        }})
+        .catch(error => response.status(400).json({ error }));
+     const result2 = db.insertProfilePhoto(post);
+result2
+    .then(data => 
+      response.json({ data: data}))
     .catch(err => console.log(err))};
-
-
+    
+// GET One User ----------------------
+exports.cleanFolder = (request, response, next) => {
+  const {url} = request.params;
+  console.log(url);
+  console.log('fs');
+  const filename = url.split("/images/")[1];
+  console.log(filename);
+  fs.unlink(`images/${filename}`, function(err) { 
+    if(err) {
+       console.log("unlink failed", err);
+    } else {
+       console.log("file deleted");
+    }
+})
+  }
 
 //BROUILLON---------------------------------------------------
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 
