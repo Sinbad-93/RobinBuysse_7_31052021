@@ -50,7 +50,7 @@ exports.login = (request, response, next) => {
       data :[res,
       data[0]],
       //si la connexion est réussie transformer l'id user en token avec une expiration
-      token: jwt.sign({ userId: data[0].iduser }, process.env.SECRET_KEY, {
+      token: jwt.sign({ userId: data[0].id }, process.env.SECRET_KEY, {
         expiresIn: "1h",
       })
     });

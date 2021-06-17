@@ -53,7 +53,7 @@ async getUserLogin(email, pass) {
 async getOneUser(id) {
     //console.log(id);
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT name, familly_name, email, photo FROM user WHERE iduser=?; ";
+    const query = "SELECT name, familly_name, email, photo FROM user WHERE id=?; ";
     connection.query(query, [id], (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -66,7 +66,7 @@ async getOneUser(id) {
 // GET ALL USERS
 async getAllUsers() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT name, familly_name, iduser FROM user ";
+    const query = "SELECT name, familly_name, id FROM user ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -82,7 +82,7 @@ async getAllUsers() {
         console.log(post.id);
         console.log(post.imageUrl);
     const response = await new Promise((resolve, reject) => {
-    const query = "UPDATE user SET photo=? WHERE iduser=? ;";
+    const query = "UPDATE user SET photo=? WHERE id=? ;";
     connection.query(query, [post.imageUrl,post.id] , (err, result) => {
     if (err) reject(new Error(err.message));
     resolve(result);})});
@@ -97,7 +97,7 @@ async getAllUsers() {
         console.log(post.id);
         console.log(post.imageUrl);
     const response = await new Promise((resolve, reject) => {
-    const query = "SELECT photo FROM user where iduser=?";
+    const query = "SELECT photo FROM user where id=?";
     connection.query(query, [post.id] , (err, result) => {
     if (err) reject(new Error(err.message));
     resolve(result);})});
@@ -129,7 +129,7 @@ async getAllUsers() {
 /*SELECT * FROM TABLE*/
 async getAllPublicationsData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM publications LEFT JOIN user ON publications.publication_user_id = user.iduser; ";
+    const query = "SELECT * FROM publications LEFT JOIN user ON publications.publication_user_id = user.id; ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -160,7 +160,7 @@ async getAllPublicationsData() {
 
 async getAllCommentsData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser WHERE comment !='none' ";
+    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.id WHERE comment !='none' ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -174,7 +174,7 @@ async getAllCommentsData() {
 
 async getAllAnswersData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.iduser WHERE answer !='none' ";
+    const query = "SELECT * FROM comment_and_answer LEFT JOIN user ON comment_and_answer.user_id = user.id WHERE answer !='none' ";
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -229,7 +229,7 @@ async getAllReactionsData() {
         console.log('dbservice : ' + error); 
         }}   
     
-/*"DELETE FROM names WHERE id = ?"*/
+/*"DELETE FROM reactions WHERE id = ?"*/
 async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_user) {
     try {
         const response = await new Promise((resolve, reject) => {
@@ -254,6 +254,21 @@ async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_use
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
     }
+});
+/* affectedRows permet de renvoyer true si des lignes ont été suppr de mysql*/
+    return response === 1 ? true : false;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        return false;}}
+
+// DELETE PUBLICATION WHERE id = ? 
+async deletePublicationData(id) {
+    try {
+        const response = await new Promise((resolve, reject) => {
+        const query = "DELETE FROM publications where id_publication=? ";
+        connection.query(query, [id] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result.affectedRows);})
 });
 /* affectedRows permet de renvoyer true si des lignes ont été suppr de mysql*/
     return response === 1 ? true : false;} 

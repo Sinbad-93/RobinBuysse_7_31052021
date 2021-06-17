@@ -113,3 +113,16 @@ result
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));
 }
+
+// DELETE PUBLICATIONS
+exports.deletePublication = (request, response, next) => {
+  const { id } = request.body;
+  console.log(id);
+  /*creer la demande */
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.deletePublicationData(id);
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}

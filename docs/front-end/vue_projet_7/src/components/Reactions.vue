@@ -48,7 +48,8 @@
               0
         </span>
         
-        <i v-if="adminConnected" 
+        <i v-if="adminConnected"  :id_db="id_db"
+        @click="deletePublication(id_db)"
         class="fas fa-trash-alt interactiveIcons"></i> 
 </div>
 </template>
@@ -237,7 +238,34 @@ isKeyExists(obj,key){
 
         //this.findAllReactions()
       }).catch(e => console.log(e));},
-      
+
+    // FETCH DELETE PUBLICATION ----------------------------------------------
+        
+    async fetchDeletePublication(number) {
+
+        const requestOptions = {
+        method : 'DELETE',
+        headers : { "Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            id : number
+          })};
+
+        let response = await fetch('http://localhost:3000/publish/deletePublication', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();},
+    // DELETE PUBLICATION ----------------------------------------------  
+    deletePublication(number){
+    this.fetchDeletePublication(number).then((data) => {
+        console.log('publication deleted' + data);
+        this.$emit('deletedPost');
+      }).catch(e => console.log(e));},
+
 
     likeFunction(number){
         //this.heart = !this.heart;

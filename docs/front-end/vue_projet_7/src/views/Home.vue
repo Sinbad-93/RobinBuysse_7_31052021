@@ -22,7 +22,7 @@ export default {
   },
   data() {
       return {
-          adminConnected : false,
+          adminConnected : true,
           userConnectedInfos : false,
           userName: 'example',
       }

@@ -21,5 +21,6 @@ router.post("/postReaction", publicationCtrl.postReaction);
 
 
 router.delete("/deleteReaction", publicationCtrl.deleteReaction);
+router.delete("/deletePublication", publicationCtrl.deletePublication);
 
 module.exports = router;

@@ -21,7 +21,7 @@
        <div class="searchWindowCont" v-if="searchWindow&&(searchingSwitch==='user')">
        <div class="searchWindow">
        <span @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
-       :key="findUser" >{{findUser.iduser}} {{findUser.name}} {{findUser.famillyName}}</span></div>
+       :key="findUser" >{{findUser.id}} {{findUser.name}} {{findUser.famillyName}}</span></div>
        <button @click="searchWindow = false" class="searchQuit">quit</button>
        </div>
        <transition name='opacity'> <UsersCardInfos @close="findingUser = false" 
@@ -46,9 +46,8 @@
             </div>
             <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
                 >LOADING</div>
-<!----V IF (mode search desactivé)-----AFFICHAGE TOTAL DE TOUTES LES PUBLICATIONS----------!-->
-          
-<!--------------V ELSE-------------- AFFICHAGE FILTRE AVEC SEARCH INPUT  -----------------!-->
+
+<!---------------------AFFICHAGE TOTAL DE TOUTES LES PUBLICATIONS----------!-->
 
                      <div v-for="(findPublication, index) in filterPublications"
           :key="findPublication" :index="index" :id_db="findPublication.id"
@@ -69,7 +68,9 @@
               
               
               <div class="reactions_container">
-                <Reactions :id_db="findPublication.id" :user="user" :index="index" class="reactions"> </Reactions>
+                <Reactions @deletedPost="findAllPublications"
+                :id_db="findPublication.id" :adminConnected="adminConnected" 
+                :user="user" :index="index" class="reactions"> </Reactions>
               
               <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button>
               </div>
@@ -169,8 +170,8 @@ export default {
      for ( let i =0; i < loopsBox.length; i++){
        //console.log(loopsBox[i].name);
        // console.log(loopsBox[i].familly_name);
-        //console.log(loopsBox[i].iduser);
-        usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].iduser));
+        //console.log(loopsBox[i].id);
+        usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id));
 
      }
      //console.log(usersList);
@@ -362,7 +363,7 @@ export default {
         //console.log(this.focusIndexUser);
       },
       getOneUser(type,id){
-        //console.log(findUser.iduser);
+        //console.log(findUser.id);
         console.log(id);
         this.$store.dispatch('getOneUser', id);
         if (type === 'bySearch'){
