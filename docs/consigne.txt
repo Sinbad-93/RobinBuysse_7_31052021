@@ -1,6 +1,8 @@
 travail restant :
 (-replacer numberOfReactions à l'exterieur de user)
 pourquoi search user me renvoi 5* les memes
+Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
+ meme si la requete fonctionne
 
 obligatoire : 
 
@@ -29,9 +31,16 @@ optionnel :
 - reactions sur commentaire et/ou réponses (x)
 
 BDD : 
-users
+
+Axe d'amélioration : 
 reactions : une colonne type enum [];
-utiliser une seul requete avec left join pour publications et left join avec un COUNT
+**Ne pas trier les données avec le front mais 
+les récupérer déja trier avec la puissance de MySQL
+
+utiliser une seul requete avec left join 
+
+pour publications et left join avec un COUNT
 posts
+
 
 site d'annonce : jobi joba

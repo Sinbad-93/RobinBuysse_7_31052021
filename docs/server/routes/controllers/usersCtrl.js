@@ -121,7 +121,21 @@ exports.cleanFolder = (request, response, next) => {
        console.log("file deleted");
     }
 })
-  }
+  };
+
+  // DELETE USER
+
+exports.deleteAccount = (request, response, next) => {
+  const { id } = request.body;
+  console.log(id);
+  /*creer la demande */
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.deleteAccountData(id);
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}
 
 //BROUILLON---------------------------------------------------
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 

@@ -106,6 +106,22 @@ async getAllUsers() {
     console.log('dbservice : ' + error);
     }}
 
+
+// DELETE ACCOUNT WHERE id = ? 
+async deleteAccountData(id) {
+    try {
+        const response = await new Promise((resolve, reject) => {
+        const query = "DELETE FROM user where id=? ";
+        connection.query(query, [id] , (err, result) => {
+        if (err) reject(new Error(err.message));
+        resolve(result.affectedRows);})
+});
+/* affectedRows permet de renvoyer true si des lignes ont été suppr de mysql*/
+    return response === 1 ? true : false;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        return false;}}
+
 //-------------------------------PUBLICATIONS DATA-----------------------------
   // PUBLICATION insertPublication
 

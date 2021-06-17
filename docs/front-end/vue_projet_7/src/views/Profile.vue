@@ -22,8 +22,8 @@
     
     
     <span @click="suppression=true">supprimer mon compte</span>
-    <div v-if="suppression"><span>êtes vous sur ? cette action est défnitive</span>
-    <button>confirmer</button> <button  @click="suppression=false">retour</button></div>
+    <div v-if="suppression"><span class="text">êtes vous sur ? cette action est défnitive</span>
+    <button @click='deleteAccount(user.id_user)'>confirmer</button> <button  @click="suppression=false">retour</button></div>
   </div>
 </template>
 
@@ -81,6 +81,36 @@ export default {
           console.log(data);
       }).catch(e => console.log(e));},
 
+    // FETCH DELETE USER
+        
+    async fetchDeleteAccount(number) {
+
+        const requestOptions = {
+        method : 'DELETE',
+        headers : { "Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            id : number
+          })};
+
+        let response = await fetch('http://localhost:3000/auth/deleteAccount', requestOptions);
+          if (!response.ok) {
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            //console.log('not response ok, error : ' + error);
+            alert('une erreur innattendue s\'est produite');
+            return Promise.reject(error); 
+            }
+            return await response.json();},
+
+    // DELETE USER
+      deleteAccount(id){
+        this.fetchDeleteAccount(id).then((data) => {
+          console.log(data);
+          if(data["data"] === true){
+            this.logout();
+          }
+      }).catch(e => console.log(e));},
+
     addImg(e) {
       const file = e.target.files[0];
       this.image = file;
@@ -98,6 +128,9 @@ export default {
       localStorage.setItem("connectedUser", JSON.stringify(this.$store.state.userConnectedInfos));
       
         },
+        logout(){
+          this.$router.push('/') 
+        }
   }
 }
 </script>
@@ -128,6 +161,13 @@ span {
   background-color: white;
   font-size: 18px;
   font-weight: bolder;
+}
+.text {
+  margin: 0px auto;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: initial;
 }
 }
 </style>
