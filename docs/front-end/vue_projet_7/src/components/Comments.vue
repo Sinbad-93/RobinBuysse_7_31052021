@@ -34,7 +34,7 @@
               <i v-if="adminConnected" class="fas fa-trash-alt"></i></div>
                             
               <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses 7</button>
-               </div>   <Answer :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
+               </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
           </div>
         </div>
 </div>

@@ -9,7 +9,7 @@
           <span>Utilisateur name :</span>
           <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button :id_comment_db="id_comment_db" @click="publishAnswer(id_comment_db)"> publier </button>
+            <button :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
             <button @click="postAnswer = !postAnswer"> annuler </button>
             </div>
             </div>
@@ -18,7 +18,7 @@
           <div class="answer" v-for="(data,index) in answersData"
           :key="data"
           :index="index" >
-          <div :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id)">
+          <div :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id_answer)">
               <span ref="userAnswer " 
               class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
@@ -42,7 +42,7 @@ export default {
   name: "Answer",
   components: {
   },
-  props: ['viewComment','adminConnected','user','objectSize','id_comment_db'],
+  props: ['viewComment','adminConnected','user','objectSize','id_comment_db', 'id_db'],
   data() {
       return {
           isSpread : false,
@@ -77,17 +77,18 @@ export default {
       },
     // POST ANSWERS ----------------------------------------------
         
-    async fetchPostAnswer(number) {
+    async fetchPostAnswer(number,comment_id) {
        if(!(this.comment === "")
          ){
         
-        this.parent_id = number;
+        this.parent_id = comment_id;
         const requestOptions = {
         method : 'POST',
         headers : { "Content-Type": "application/json", 
         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
-            parent_id : this.parent_id,
+            parent_id : number,
+            parent_id_answer : this.parent_id,
             user_id : this.user.id_user,
             comment : this.comment,
             answer : this.answer,
@@ -108,8 +109,8 @@ export default {
               }},
 
         // publish answers ----------------
-    publishAnswer(number){
-      this.fetchPostAnswer(number).then((data) => {
+    publishAnswer(number,comment_id){
+      this.fetchPostAnswer(number,comment_id).then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;

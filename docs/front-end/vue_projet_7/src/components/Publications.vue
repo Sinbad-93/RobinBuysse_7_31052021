@@ -68,7 +68,7 @@
               
               
               <div class="reactions_container">
-                <Reactions @deletedPost="findAllPublications(this.user.id_user)"
+                <Reactions @deletedpost="findAllPublications(user.id_user)"
                 :id_db="findPublication.id" :adminConnected="adminConnected" 
                 :user="user" :index="index" class="reactions"> </Reactions>
               

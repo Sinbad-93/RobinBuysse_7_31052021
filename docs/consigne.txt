@@ -3,9 +3,12 @@ travail restant :
 
 pourquoi search user me renvoi 5* les memes
 
-pblm route post answer
+pblm route post answer ✓ 
 
-besoin d'actualisation après delete une publication
+pblm avec l'actualisation sur la page profile, au niveau du nom ? Rapport localStorage ?
+
+besoin d'actualisation après delete une publication ✓ 
+(ne pas oublier $emit et ecouteur tj en minuscule)
 
 
 obligatoire : 
@@ -15,13 +18,19 @@ obligatoire :
 -pouvoir supprimer son compte ✓
 
 -pouvoir supprimer un post avec admin ✓
+
 -rester connecté 
 
+- sécurité ✓ (token ok , tester potentielles failles + config vue router)
 
-- sécurité
 - accessibilité
+
+***
 - modeler le desgin
+(améliorer le style sur mobile avant de diviser les logiques)
+à faire entre autre : rendu de commentaire et de réponse, améliorer interface de publication
 -responsive tablette and desktop
+**
 
 optionnel :
 - trier par popularité ✓

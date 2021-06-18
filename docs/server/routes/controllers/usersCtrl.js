@@ -10,7 +10,6 @@ const dbService = require("../../models/dbService");
 
 const crypto = require("../../middleware/crypto");
 
-const ipAddress = require("../../models/ip");
 // variables d'environnement
 require("dotenv").config();
 /* defini comment l'adresse sera masquée dans le champ emailMasked*/

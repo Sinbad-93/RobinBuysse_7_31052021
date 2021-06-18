@@ -157,14 +157,14 @@ async getAllPublicationsData() {
 
   // POST insert COMMENT AND ANSWER
 
-  async insertCommentAndAnswer(parent_id,user_id, comment, answer) {
+  async insertCommentAndAnswer(parent_id, parent_id_answer, user_id, comment, answer) {
     try {var date_posted = new Date();
     var options = {weekday: "long", year: "numeric", month: "long", 
     day: "2-digit", hour: '2-digit', minute:'2-digit'};
     date_posted = date_posted.toLocaleDateString("fr-FR", options);
     const response = await new Promise((resolve, reject) => {
-    const query = "INSERT INTO comment_and_answer (parent_id,user_id, comment, answer, date_posted) VALUES (?,?,?,?,?);";
-    connection.query(query, [parent_id, user_id, comment, answer, date_posted] , (err, result) => {
+    const query = "INSERT INTO comment_and_answer (parent_id,parent_id_answer,user_id, comment, answer, date_posted) VALUES (?,?,?,?,?,?);";
+    connection.query(query, [parent_id, parent_id_answer, user_id, comment, answer, date_posted] , (err, result) => {
     if (err) reject(new Error(err.message));
     resolve(result);})});
     return  response;} 

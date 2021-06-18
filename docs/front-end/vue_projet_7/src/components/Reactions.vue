@@ -266,7 +266,7 @@ isKeyExists(obj,key){
     deletePublication(number){
     this.fetchDeletePublication(number).then((data) => {
         console.log('publication deleted' + data);
-        this.$emit('deletedPost');
+        this.$emit('deletedpost');
       }).catch(e => console.log(e));},
 
 

@@ -10,7 +10,6 @@ const dbService = require("../../models/dbService");
 
 const crypto = require("../../middleware/crypto");
 
-const ipAddress = require("../../models/ip");
 // variables d'environnement
 require("dotenv").config();
 /* defini comment l'adresse sera masquée dans le champ emailMasked*/
@@ -52,9 +51,9 @@ result
 // requete POST comment or answer -----------------------------
 exports.commentAndAnswer = (request, response, next) => {
   console.log(request.body);
-  const { parent_id,user_id, comment, answer, date_posted } = request.body;
+  const { parent_id, parent_id_answer, user_id, comment, answer, date_posted } = request.body;
     const db = dbService.getDbServiceInstance();
-     const result = db.insertCommentAndAnswer(parent_id,user_id, comment, answer);
+     const result = db.insertCommentAndAnswer(parent_id, parent_id_answer, user_id, comment, answer);
 result
     .then(data => response.json({ data: data}))
     .catch(err => console.log(err))};
