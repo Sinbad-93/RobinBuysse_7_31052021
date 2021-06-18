@@ -8,9 +8,9 @@ obligatoire :
 
 -changer sa photo de profil (requete put avec photo par defaut)  ✓
 
--pouvoir supprimer son compte
+-pouvoir supprimer son compte ✓
 
--pouvoir supprimer un post avec admin
+-pouvoir supprimer un post avec admin ✓
 -rester connecté 
 
 

@@ -82,10 +82,10 @@ export default {
          ){
         
         this.parent_id = number;
-
         const requestOptions = {
         method : 'POST',
-        headers : { "Content-Type": "application/json"},
+        headers : { "Content-Type": "application/json", 
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
             parent_id : this.parent_id,
             user_id : this.user.id_user,
@@ -122,7 +122,11 @@ export default {
 
     async fetchGetAnswers() {
 
-        let response = await fetch('http://localhost:3000/publish/find_answers');
+        let response = await fetch('http://localhost:3000/publish/find_answers',
+        {method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+      });
           if (!response.ok) {
             // get error message from body or default to response status
             const error = (data && data.message) || response.status;

@@ -4,6 +4,10 @@ const SECRET_KEY = process.env.SECRET_KEY;
 /* GESTION DU TOKEN : authentification obligatoire à chaque requete de l'api sauce*/
 module.exports = (req, res, next) => {
   try {
+    
+    console.log(req.body.userId);
+    //console.log(process.env.SECRET_KEY);
+    //console.log(req.headers.authorization);
     // récuperer le token dans la req
     const token = req.headers.authorization.split(" ")[1];
     //comparer le token client avec le token de base

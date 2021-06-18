@@ -149,7 +149,6 @@ isKeyExists(obj,key){
         
       },
       fnTest_2(number){
-
         //console.table(this.user);
         //console.log(this.isObjEmpty(this.user.userReactions));
         if (this.isObjEmpty(this.user.numberOfReactions) === true){
@@ -172,7 +171,8 @@ isKeyExists(obj,key){
 
         const requestOptions = {
         method : 'POST',
-        headers : { "Content-Type": "application/json"},
+        headers : { "Content-Type": "application/json",
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
             reaction : this.reaction,
             id_parent_publication : this.id_parent_publication,
@@ -210,7 +210,8 @@ isKeyExists(obj,key){
 
         const requestOptions = {
         method : 'DELETE',
-        headers : { "Content-Type": "application/json"},
+        headers : { "Content-Type": "application/json",
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
             reaction : this.reaction,
             id_parent_publication : this.id_parent_publication,
@@ -245,7 +246,8 @@ isKeyExists(obj,key){
 
         const requestOptions = {
         method : 'DELETE',
-        headers : { "Content-Type": "application/json"},
+        headers : { "Content-Type": "application/json",
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
             id : number
           })};

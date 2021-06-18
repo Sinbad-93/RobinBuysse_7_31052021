@@ -47,6 +47,7 @@ export default createStore({
       famillyName : '',
       email : '',
       password: '',
+      token : null,
       photo : null,
       userReactions : {},
       numberOfReactions : {},
@@ -232,6 +233,7 @@ export default createStore({
       console.log('l\'utilisateur est connecté')
       commit('setStatus', 'loadingConnect');
       localStorage.setItem("connectedUser", JSON.stringify(userInfos));
+      localStorage.setItem("token", JSON.stringify(userInfos.token));
       commit('connectUser',userInfos);
       },
 
@@ -242,7 +244,13 @@ export default createStore({
     
       // GET REACTIONS ----------------------------------------------
     fetchGetReactions:async() =>{
-      let response = await fetch('http://localhost:3000/publish/find_reactions');
+      let response = await fetch('http://localhost:3000/publish/find_reactions',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+      }
+      );
         if (!response.ok) {
           // get error message from body or default to response status
           const error = (data && data.message) || response.status;
@@ -259,10 +267,16 @@ export default createStore({
       commit('sortReactions', data);
       
 }).catch(e => console.log(e));},
-  // FETCH TO USER ----------------------------------------------
+  
+// FETCH TO USER ----------------------------------------------
   async fetchGetOneUser({ commit, dispatch }, id) {
     //console.log(id);
-    let response = await fetch('http://localhost:3000/auth/oneUser/' + id );
+    let response = await fetch('http://localhost:3000/auth/oneUser/' + id,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+    } );
       if (!response.ok) {
         // get error message from body or default to response status
         const error = (data && data.message) || response.status;
@@ -282,7 +296,12 @@ getOneUser:({ commit, dispatch }, id)=>{
 
 // FETCH ALL USERS ----------------------------------------------
 async fetchGetAllUsers({ commit, dispatch }) {
-  let response = await fetch('http://localhost:3000/auth/allUsers');
+  let response = await fetch('http://localhost:3000/auth/allUsers',
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+  });
     if (!response.ok) {
       // get error message from body or default to response status
       const error = (data && data.message) || response.status;

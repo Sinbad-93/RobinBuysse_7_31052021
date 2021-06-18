@@ -10,17 +10,17 @@ const multer = require("../middleware/multer-config");
 
 /* Toutes les routes produits de notre API, relié aux différentes parties du code, 
 notament l'authentification*/
-router.get("/find_publications", publicationCtrl.getAllPublications);
-router.get("/find_comments", publicationCtrl.getAllComments);
-router.get("/find_answers", publicationCtrl.getAllAnswers);
-router.get("/find_reactions", publicationCtrl.getAllReactions);
+router.get("/find_publications", auth, publicationCtrl.getAllPublications);
+router.get("/find_comments", auth, publicationCtrl.getAllComments);
+router.get("/find_answers", auth, publicationCtrl.getAllAnswers);
+router.get("/find_reactions", auth, publicationCtrl.getAllReactions);
 
-router.post("/publication", multer, publicationCtrl.publication);
-router.post("/commentAndAnswer", publicationCtrl.commentAndAnswer);
-router.post("/postReaction", publicationCtrl.postReaction);
+router.post("/publication",auth, multer, publicationCtrl.publication);
+router.post("/commentAndAnswer",auth, publicationCtrl.commentAndAnswer);
+router.post("/postReaction",auth, publicationCtrl.postReaction);
 
 
-router.delete("/deleteReaction", publicationCtrl.deleteReaction);
-router.delete("/deletePublication", publicationCtrl.deletePublication);
+router.delete("/deleteReaction",auth, publicationCtrl.deleteReaction);
+router.delete("/deletePublication",auth, publicationCtrl.deletePublication);
 
 module.exports = router;

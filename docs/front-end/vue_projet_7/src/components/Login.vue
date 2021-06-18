@@ -40,12 +40,14 @@
         class="form-row__input"
         type="text"
         placeholder="Prénom"
+        pattern="[A-Za-z\s'-]{1,50}"
       />
       <input
         v-model="famillyName"
         class="form-row__input"
         type="text"
         placeholder="Nom"
+        pattern="[A-Za-z\s'-]{1,50}"
       />
     </div>
     <div class="form-row relative">
@@ -241,6 +243,7 @@ export default {
     loginUser() {
       this.fetchLogin()
         .then((data) => {
+          console.log(data);
           console.log(data["token"]);
           //bcrypt compare va renvoyer true ou false.
           if (data["data"][0] === true) {

@@ -239,7 +239,9 @@ export default {
         },
   methods : {
     testo(){//this.$store.dispatch('getAllUsers');
-    console.log(this.user.numberOfReactions[28].reactions[1]);
+    //console.log(this.user.numberOfReactions[28].reactions[1]);
+    //console.log(JSON.parse(localStorage.getItem('token')));
+    //console.log(this.user.token);
       
     },
     // POST PUBLICATIONS ----------------------------------------------
@@ -255,6 +257,8 @@ export default {
         
         const requestOptions = {
         method: 'POST',
+        headers : {
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: formData
             };
 
@@ -286,7 +290,11 @@ export default {
 
     async fetchGetPublications() {
 
-        let response = await fetch('http://localhost:3000/publish/find_publications');
+        let response = await fetch('http://localhost:3000/publish/find_publications',
+        {method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+      });
           if (!response.ok) {
             // get error message from body or default to response status
             const error = (data && data.message) || response.status;
