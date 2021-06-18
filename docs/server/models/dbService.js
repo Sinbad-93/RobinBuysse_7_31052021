@@ -79,8 +79,8 @@ async getAllUsers() {
   //  INSERT PROFILE PHOTO
   async insertProfilePhoto(post) {
     try {
-        console.log(post.id);
-        console.log(post.imageUrl);
+        //console.log(post.id);
+        //console.log(post.imageUrl);
     const response = await new Promise((resolve, reject) => {
     const query = "UPDATE user SET photo=? WHERE id=? ;";
     connection.query(query, [post.imageUrl,post.id] , (err, result) => {
@@ -94,8 +94,8 @@ async getAllUsers() {
  //  GET PROFILE PHOTO
  async getProfilePhoto(post) {
     try {
-        console.log(post.id);
-        console.log(post.imageUrl);
+        //console.log(post.id);
+        //console.log(post.imageUrl);
     const response = await new Promise((resolve, reject) => {
     const query = "SELECT photo FROM user where id=?";
     connection.query(query, [post.id] , (err, result) => {
@@ -201,24 +201,24 @@ async getAllAnswersData() {
         }}   
 
 // POST REACTIONS  ------------------     
-async insertReaction(reaction, id_parent_publication,heart, smile, laugh, id_user) {
+async insertReaction(reaction, id_parent_publication,heart, smile, laugh, user_id) {
     try {
         const response = await new Promise((resolve, reject) => {
     if (reaction === 'heart'){
         const query = "INSERT INTO reactions (id_parent_publication,heart, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication,heart, id_user] , (err, result) => {
+        connection.query(query, [id_parent_publication,heart, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }
     else if ( reaction === 'smile'){
         const query = "INSERT INTO reactions (id_parent_publication, smile, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication, smile, id_user] , (err, result) => {
+        connection.query(query, [id_parent_publication, smile, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }
     else if ( reaction === 'laugh'){
         const query = "INSERT INTO reactions (id_parent_publication,laugh, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication,laugh, id_user] , (err, result) => {
+        connection.query(query, [id_parent_publication,laugh, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }

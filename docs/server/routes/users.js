@@ -12,10 +12,10 @@ const auth = require("../middleware/auth");
 //on verifie la validité de l'email et mdp à l'inscription avec deux middlewaere
 router.post('/signup', verifyPassword, verifyEmail, userCtrl.signup);
 router.post('/login' , verifyPassword, verifyEmail, userCtrl.login);
-router.put('/profil_photo', auth, multer, userCtrl.postProfilePhoto);
+router.put('/profil_photo', multer, auth, userCtrl.postProfilePhoto);
 
 router.get('/oneUser/:id',auth,  userCtrl.getOneUser);
-router.get('/allUsers' ,auth,  userCtrl.getAllUsers);
+router.get('/allUsers/:id' ,auth,  userCtrl.getAllUsers);
 
 router.delete('/deleteAccount',auth, userCtrl.deleteAccount);
 

@@ -111,7 +111,7 @@ export default {
 
     async fetchGetComments() {
 
-        let response = await fetch('http://localhost:3000/publish/find_comments',
+        let response = await fetch('http://localhost:3000/publish/find_comments/'+ this.user.id_user,
         {method: 'GET',
         headers: {
           Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},

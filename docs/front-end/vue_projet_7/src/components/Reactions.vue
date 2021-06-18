@@ -179,7 +179,7 @@ isKeyExists(obj,key){
             heart : this.heart,
             smile : this.smile,
             laugh : this.laugh,
-            id_user : this.id_user
+            user_id : this.id_user
           })};
 
         let response = await fetch('http://localhost:3000/publish/postReaction', requestOptions);
@@ -196,7 +196,7 @@ isKeyExists(obj,key){
     publishReaction(number){
       this.fetchPostReaction(number).then((data) => {
         console.log('pub'+ data);
-      this.$store.dispatch("findAllReactions");
+      this.$store.dispatch("findAllReactions",  this.user.id_user);
         //this.findAllReactions()
       }).catch(e => console.log(e));},
 
@@ -218,7 +218,7 @@ isKeyExists(obj,key){
             heart : this.heart,
             smile : this.smile,
             laugh : this.laugh,
-            id_user : this.id_user
+            user_id : this.id_user
           })};
 
         let response = await fetch('http://localhost:3000/publish/deleteReaction', requestOptions);
@@ -235,7 +235,7 @@ isKeyExists(obj,key){
     cancelReaction(number){
       this.fetchDeleteReaction(number).then((data) => {
         console.log('del' + data);
-        this.$store.dispatch("findAllReactions");
+        this.$store.dispatch("findAllReactions", this.user.id_user);
 
         //this.findAllReactions()
       }).catch(e => console.log(e));},
@@ -249,7 +249,8 @@ isKeyExists(obj,key){
         headers : { "Content-Type": "application/json",
           Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
-            id : number
+            id : number,
+            user_id : this.user.id_user
           })};
 
         let response = await fetch('http://localhost:3000/publish/deletePublication', requestOptions);

@@ -7,3 +7,9 @@ Le token de l'utilisateur se crée à partir d'une random secret key,
 comment ça se passe au niveau de l'env pour la production ? 
 dois je générer moi même cette clef pour chaque utilisateur ou 
 j'utilise un package qui s'en occupe ?
+
+jwt : 
+lorsque je controle le token je controle si il y a une requete body
+
+Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
+ meme si la requete fonctionne

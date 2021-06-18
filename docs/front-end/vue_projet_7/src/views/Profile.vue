@@ -59,9 +59,11 @@ export default {
       console.log('données :', this.image, this.user.id_user);
          const formData = new FormData();
          formData.append("image", this.image);
-         formData.append("id",this.user.id_user);
+         formData.append("user_id",this.user.id_user);
          const requestOptions = {
          method: 'PUT',
+          headers : {
+        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
          body: formData
              };
 
@@ -87,9 +89,11 @@ export default {
 
         const requestOptions = {
         method : 'DELETE',
-        headers : { "Content-Type": "application/json"},
+        headers : { "Content-Type": "application/json",
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
         body: JSON.stringify({ 
-            id : number
+            id : number,
+            user_id : number,
           })};
 
         let response = await fetch('http://localhost:3000/auth/deleteAccount', requestOptions);

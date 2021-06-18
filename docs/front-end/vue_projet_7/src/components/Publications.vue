@@ -68,7 +68,7 @@
               
               
               <div class="reactions_container">
-                <Reactions @deletedPost="findAllPublications"
+                <Reactions @deletedPost="findAllPublications(this.user.id_user)"
                 :id_db="findPublication.id" :adminConnected="adminConnected" 
                 :user="user" :index="index" class="reactions"> </Reactions>
               
@@ -147,8 +147,8 @@ export default {
   },
   mounted() {
     this.isMounted = true;
-      this.findAllPublications();
-      this.$store.dispatch('getAllUsers');
+      this.findAllPublications(this.user.id_user);
+      this.$store.dispatch('getAllUsers', this.user.id_user);
   },
   computed:  {
     ...mapState({
@@ -283,14 +283,14 @@ export default {
         this.newPostInProgress = false;
         this.loading = true;
         // rafraichir les données
-        this.findAllPublications()
+        this.findAllPublications(this.user.id_user)
       }).catch(e => console.log(e));},
 
     // GET PUBLICATIONS ----------------------------------------------
 
-    async fetchGetPublications() {
+    async fetchGetPublications(id) {
 
-        let response = await fetch('http://localhost:3000/publish/find_publications',
+        let response = await fetch('http://localhost:3000/publish/find_publications/' +id,
         {method: 'GET',
         headers: {
           Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
@@ -305,8 +305,8 @@ export default {
             return await response.json();},
     
     // display publications
-    findAllPublications(){
-      this.fetchGetPublications().then((data) => {
+    findAllPublications(id){
+      this.fetchGetPublications(id).then((data) => {
         this.publicationsData = [];
         var size = this.objectSize(data['data']);
         size = size.reverse();
@@ -373,7 +373,8 @@ export default {
       getOneUser(type,id){
         //console.log(findUser.id);
         console.log(id);
-        this.$store.dispatch('getOneUser', id);
+        const ids = id + '_' + this.user.id_user;
+        this.$store.dispatch('getOneUser', ids);
         if (type === 'bySearch'){
         this.findingUser = true;}
       },

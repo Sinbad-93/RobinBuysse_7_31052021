@@ -1,8 +1,12 @@
 travail restant :
 (-replacer numberOfReactions à l'exterieur de user)
+
 pourquoi search user me renvoi 5* les memes
-Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
- meme si la requete fonctionne
+
+pblm route post answer
+
+besoin d'actualisation après delete une publication
+
 
 obligatoire : 
 

@@ -52,10 +52,10 @@ export default {
     mounted() {
     console.log('MOUNTED');
     console.log(localStorage);
-    this.$store.dispatch("findAllReactions");
     if (this.checkConnexion() === true){
         console.log(this.userConnectedInfos['name']);
         this.userName = this.userConnectedInfos['name'];
+        this.$store.dispatch("findAllReactions", this.userConnectedInfos.id_user);
     }
 },
 

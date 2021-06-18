@@ -67,7 +67,8 @@ exports.login = (request, response, next) => {
                                   
 // GET One User ----------------------
 exports.getOneUser = (request, response, next) => {
-  const {id} = request.params;
+  //console.log(request.params.id);
+  const id = request.params.id.split("_")[0];
   //console.log(id);
   const db = dbService.getDbServiceInstance();
   const result = db.getOneUser(id);
@@ -86,10 +87,12 @@ exports.getAllUsers = (request, response, next) => {
 // UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/
 exports.postProfilePhoto = (request, response, next) => {
+  console.log('porte 1 '+request.body.user_id);
   const post = {
-    id: request.body.id,
+    id: request.body.user_id,
     imageUrl: request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
 };
+console.log('porte 2 '+post.id);
 const db = dbService.getDbServiceInstance();
       const result1 = db.getProfilePhoto(post);
       result1
@@ -112,7 +115,7 @@ result2
       response.json({ data: data}))
     .catch(err => console.log(err))};
     
-// GET One User ----------------------
+//  ----------------------
 exports.cleanFolder = (request, response, next) => {
   const {url} = request.params;
   console.log(url);

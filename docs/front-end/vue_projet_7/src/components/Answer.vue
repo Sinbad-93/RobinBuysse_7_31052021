@@ -122,7 +122,7 @@ export default {
 
     async fetchGetAnswers() {
 
-        let response = await fetch('http://localhost:3000/publish/find_answers',
+        let response = await fetch('http://localhost:3000/publish/find_answers/'+ this.user.id_user,
         {method: 'GET',
         headers: {
           Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},

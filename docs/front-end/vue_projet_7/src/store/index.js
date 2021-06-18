@@ -243,8 +243,9 @@ export default createStore({
       },
     
       // GET REACTIONS ----------------------------------------------
-    fetchGetReactions:async() =>{
-      let response = await fetch('http://localhost:3000/publish/find_reactions',
+    async fetchGetReactions({ commit, dispatch }, id){
+      let response = await fetch('http://localhost:3000/publish/find_reactions/'+
+      id,
       {
         method: 'GET',
         headers: {
@@ -261,17 +262,17 @@ export default createStore({
           return await response.json();},
   
   // display REACTIONS ------------------
-  findAllReactions:({ commit, dispatch })=>{
-     dispatch('fetchGetReactions').then((data) => {
+  findAllReactions:({ commit, dispatch }, id)=>{
+     dispatch('fetchGetReactions',id).then((data) => {
       //console.log(data);
       commit('sortReactions', data);
       
 }).catch(e => console.log(e));},
   
 // FETCH TO USER ----------------------------------------------
-  async fetchGetOneUser({ commit, dispatch }, id) {
+  async fetchGetOneUser({ commit, dispatch }, ids) {
     //console.log(id);
-    let response = await fetch('http://localhost:3000/auth/oneUser/' + id,
+    let response = await fetch('http://localhost:3000/auth/oneUser/' + ids,
     {
       method: 'GET',
       headers: {
@@ -287,16 +288,16 @@ export default createStore({
         return await response.json();},
 
 // GET ONE USER ------------------
-getOneUser:({ commit, dispatch }, id)=>{
-  dispatch('fetchGetOneUser', id).then((data) => {
+getOneUser:({ commit, dispatch }, ids)=>{
+  dispatch('fetchGetOneUser', ids).then((data) => {
     console.log(data);
     commit('oneUser', data['data']);
     
 }).catch(e => console.log(e));},
 
 // FETCH ALL USERS ----------------------------------------------
-async fetchGetAllUsers({ commit, dispatch }) {
-  let response = await fetch('http://localhost:3000/auth/allUsers',
+async fetchGetAllUsers({ commit, dispatch }, id) {
+  let response = await fetch('http://localhost:3000/auth/allUsers/'+ id,
   {
     method: 'GET',
     headers: {
@@ -312,8 +313,8 @@ async fetchGetAllUsers({ commit, dispatch }) {
       return await response.json();},
 
 // GET ALL USERS ------------------
-getAllUsers:({ commit, dispatch })=>{
-dispatch('fetchGetAllUsers').then((data) => {
+getAllUsers:({ commit, dispatch }, id)=>{
+dispatch('fetchGetAllUsers',id).then((data) => {
   //console.log(data);
   commit('allUsers', data['data']);
   

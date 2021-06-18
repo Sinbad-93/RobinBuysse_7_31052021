@@ -10,12 +10,12 @@ const multer = require("../middleware/multer-config");
 
 /* Toutes les routes produits de notre API, relié aux différentes parties du code, 
 notament l'authentification*/
-router.get("/find_publications", auth, publicationCtrl.getAllPublications);
-router.get("/find_comments", auth, publicationCtrl.getAllComments);
-router.get("/find_answers", auth, publicationCtrl.getAllAnswers);
-router.get("/find_reactions", auth, publicationCtrl.getAllReactions);
+router.get("/find_publications/:id", auth, publicationCtrl.getAllPublications);
+router.get("/find_comments/:id", auth, publicationCtrl.getAllComments);
+router.get("/find_answers/:id", auth, publicationCtrl.getAllAnswers);
+router.get("/find_reactions/:id", auth, publicationCtrl.getAllReactions);
 
-router.post("/publication",auth, multer, publicationCtrl.publication);
+router.post("/publication", multer, auth,  publicationCtrl.publication);
 router.post("/commentAndAnswer",auth, publicationCtrl.commentAndAnswer);
 router.post("/postReaction",auth, publicationCtrl.postReaction);
 
