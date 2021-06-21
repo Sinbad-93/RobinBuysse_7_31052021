@@ -243,7 +243,7 @@ isKeyExists(obj,key){
     // FETCH DELETE PUBLICATION ----------------------------------------------
         
     async fetchDeletePublication(number) {
-
+        
         const requestOptions = {
         method : 'DELETE',
         headers : { "Content-Type": "application/json",

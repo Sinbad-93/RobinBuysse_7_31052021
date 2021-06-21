@@ -36,6 +36,8 @@ let falseuser = new FakeUser();
 export default createStore({
   //state
   state: {
+    stringAccess: null,
+    adminAccess : null,
     data : null,
     status : '',
     user : fakeUser21,
@@ -98,6 +100,12 @@ export default createStore({
     },
     setStatus: function (state, status) {
       state.status = status;
+    },
+    uniqueAccess : function(state, string){
+      state.stringAccess = string
+    },
+    adminAccess : function(state, string){
+      state.adminAccess = string
     },
     connectUser: function(state, userInfos){
       state.userConnectedInfos.name =  userInfos.name;
@@ -232,6 +240,21 @@ export default createStore({
       //falseuser = falseuser._addNewUser(userInfos);
       console.log('l\'utilisateur est connecté')
       commit('setStatus', 'loadingConnect');
+      var lockString = Math.random().toString(36).substring(2, 15) + 
+      Math.random().toString(36).substring(2, 15);
+      if (userInfos.admin === 1 ){
+      var lockString2 = Math.random().toString(36).substring(2, 15) + 
+      Math.random().toString(36).substring(2, 15);
+      lockString += lockString2;
+      sessionStorage.setItem("lockAccess", JSON.stringify(lockString));
+      commit('uniqueAccess', lockString);
+      commit('adminAccess', lockString2);
+      }
+      else {
+      sessionStorage.setItem("lockAccess", JSON.stringify(lockString));
+      commit('uniqueAccess', lockString);
+      }
+      sessionStorage.setItem("currentUser", JSON.stringify(userInfos.name));
       localStorage.setItem("connectedUser", JSON.stringify(userInfos));
       localStorage.setItem("token", JSON.stringify(userInfos.token));
       commit('connectUser',userInfos);

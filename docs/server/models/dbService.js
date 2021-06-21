@@ -278,7 +278,7 @@ async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_use
         return false;}}
 
 // DELETE PUBLICATION WHERE id = ? 
-async deletePublicationData(id) {
+async deletePublicationData(id, user_id) {
     try {
         const response = await new Promise((resolve, reject) => {
         const query = "DELETE FROM publications where id_publication=? ";

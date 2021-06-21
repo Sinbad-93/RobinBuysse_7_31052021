@@ -12,7 +12,7 @@
 
 <script>
 import Publications from "@/components/Publications.vue";
-
+import { mapState } from 'vuex'
 
 export default {
   name: "Home",
@@ -22,7 +22,7 @@ export default {
   },
   data() {
       return {
-          adminConnected : true,
+          adminConnected : false,
           userConnectedInfos : false,
           userName: 'example',
       }
@@ -36,6 +36,12 @@ export default {
     checkConnexion() {
   if (this.isKeyExist(localStorage, "connectedUser")){
       this.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
+      let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
+      if ((this.userConnectedInfos.admin === 1)
+        && (lockAccess) && (lockAccess === this.$store.state.stringAccess) 
+        && lockAccess.includes(this.$store.state.adminAccess) ){
+        this.adminConnected = true ;
+      }
       return true
   }
 }

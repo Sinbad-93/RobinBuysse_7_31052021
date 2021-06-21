@@ -253,7 +253,9 @@ export default {
               data["data"][1].familly_name,
               data["data"][1].id,
               data["data"][1].photo,
+              data["data"][1].admin,
               data["token"]
+              
             );
           }
         })
@@ -262,14 +264,15 @@ export default {
 
     // SPEAK WITH STORE ------------------------------------
 
-    storeSendLogin(email, name, familly_name, id, photo, token) {
+    storeSendLogin(email, name, familly_name, id, photo, admin, token) {
       this.$store.dispatch("login", {
         email: email,
         name: name,
         familly_name: familly_name,
         id_user: id,
         photo : photo,
-        token: token,
+        admin : admin,
+        token: token
         
       });
       this.$emit("connect");

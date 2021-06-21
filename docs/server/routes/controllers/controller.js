@@ -115,12 +115,12 @@ result
 
 // DELETE PUBLICATIONS
 exports.deletePublication = (request, response, next) => {
-  const { id } = request.body;
+  const { id, user_id } = request.body;
   console.log(id);
   /*creer la demande */
   const db = dbService.getDbServiceInstance();
   /*configure la demande*/
-  const result = db.deletePublicationData(id);
+  const result = db.deletePublicationData(id, user_id);
 result
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));

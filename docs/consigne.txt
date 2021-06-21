@@ -1,11 +1,21 @@
+Proteger les routes avec le localStorage ou sessionStorage guards (vue router) ne suffit pas !
+Nimporte qui pourrait modifier le session storage par exemple, 
+c'est pourquoi il faut ajouter la vérification du token
+
 travail restant :
 (-replacer numberOfReactions à l'exterieur de user)
 
 pourquoi search user me renvoi 5* les memes
 
-pblm route post answer ✓ 
-
 pblm avec l'actualisation sur la page profile, au niveau du nom ? Rapport localStorage ?
+
+actualisation sur page home passe en unauthorized, ne récupére pas le token avant de fetch ?
+idem sur profil,
+mais si on passe de l'un à l'autre ça refonctionne
+
+si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
+que de me ramener automatiquement au login, pourquoi ?
+
 
 besoin d'actualisation après delete une publication ✓ 
 (ne pas oublier $emit et ecouteur tj en minuscule)

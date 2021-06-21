@@ -133,7 +133,9 @@ export default {
       
         },
         logout(){
-          this.$router.push('/') 
+          localStorage.clear();
+          sessionStorage.clear();
+          this.$router.push('/'); 
         }
   }
 }
