@@ -39,6 +39,7 @@ export default {
       let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
       if ((this.userConnectedInfos.admin === 1)
         && (lockAccess) && (lockAccess === this.$store.state.stringAccess) 
+        // commenter ici pour tester la sécurité
         && lockAccess.includes(this.$store.state.adminAccess) ){
         this.adminConnected = true ;
       }

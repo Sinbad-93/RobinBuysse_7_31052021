@@ -36,6 +36,7 @@ let falseuser = new FakeUser();
 export default createStore({
   //state
   state: {
+    refresh : 0,
     stringAccess: null,
     adminAccess : null,
     data : null,
@@ -66,6 +67,9 @@ export default createStore({
     allUsers : [],
   },
   getters:{
+    refresh(state){
+      return state.refresh;
+    },
   
     getUser(state) {
       return state.userConnectedInfos;
@@ -79,6 +83,9 @@ export default createStore({
   },
   // mutations
   mutations: {
+    refreshing(state){
+      state.refresh += 1;
+    },
     oneUser(state,data){
       
       state.userPickedInfos.name =  data[0].name;
@@ -240,6 +247,8 @@ export default createStore({
       //falseuser = falseuser._addNewUser(userInfos);
       console.log('l\'utilisateur est connecté')
       commit('setStatus', 'loadingConnect');
+      /*générer des chaines aléatoires de verification pour garantir le bon acces front end
+      même si un utilisateur trafic le local ou sessionStorage */
       var lockString = Math.random().toString(36).substring(2, 15) + 
       Math.random().toString(36).substring(2, 15);
       if (userInfos.admin === 1 ){
@@ -311,6 +320,7 @@ export default createStore({
         return await response.json();},
 
 // GET ONE USER ------------------
+// l'id utilisateur indispensable pour passer l'authentification
 getOneUser:({ commit, dispatch }, ids)=>{
   dispatch('fetchGetOneUser', ids).then((data) => {
     console.log(data);
@@ -343,14 +353,57 @@ dispatch('fetchGetAllUsers',id).then((data) => {
   
 }).catch(e => console.log(e));},
 
+    // FETCH DELETE PUBLICATION ----------------------------------------------
+        
+async fetchDeletePublication({ commit, dispatch }, ids) {
+  const id_user  = ids.split("_")[0];
+  const id_publication  = ids.split("_")[1]
+    const requestOptions = {
+    method : 'DELETE',
+    headers : { "Content-Type": "application/json",
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+    body: JSON.stringify({ 
+        id : id_publication,
+        user_id : id_user
+      })
+    }
 
-},
+    let response = await fetch('http://localhost:3000/publish/deletePublication', requestOptions);
+      if (!response.ok) {
+        // get error message from body or default to response status
+        const error = (data && data.message) || response.status;
+        //console.log('not response ok, error : ' + error);
+        alert('une erreur innattendue s\'est produite');
+        return Promise.reject(error); 
+        }
+        return await response.json();},
+
+// DELETE PUBLICATION ----------------------------------------------  
+// l'id utilisateur indispensable pour passer l'authentification
+deletePublication:({ commit, dispatch }, ids) =>{
+  const id_user  = ids.split("_")[0] + '_' + ids.split("_")[0];
+  dispatch('fetchGetOneUser', id_user).then((data) => {
+    console.log(data);
+    /* une fois qu'on a notre utilisateur on verifie si il est admin depuis la db
+ le front sait déjà si il est admin à la connexion MAIS refaire une verif back à chaque appel
+ garantie que même si quelqu'un trafic le localStorage ou une variable du store, 
+ il n'aura pas accès au fonction administrateur */
+    if (data['data'][0].admin === 1){
+      dispatch('fetchDeletePublication',ids).then((data) => {
+      console.log('publication deleted' + data);
+      //actualiser les posts
+      commit('refreshing');
+    }).catch(e => console.log(e));}
+    else {console.log('vous n\'êtes pas administateur')}
 
 
+  }).catch(e => console.log(e));
   
-    
-    
-  
+}
+  },
+
+ 
   modules: {},
+
 });
 

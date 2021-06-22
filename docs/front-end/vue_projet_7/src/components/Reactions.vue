@@ -240,34 +240,13 @@ isKeyExists(obj,key){
         //this.findAllReactions()
       }).catch(e => console.log(e));},
 
-    // FETCH DELETE PUBLICATION ----------------------------------------------
-        
-    async fetchDeletePublication(number) {
-        
-        const requestOptions = {
-        method : 'DELETE',
-        headers : { "Content-Type": "application/json",
-          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
-        body: JSON.stringify({ 
-            id : number,
-            user_id : this.user.id_user
-          })};
+      // DELETE PUBLICATION 
 
-        let response = await fetch('http://localhost:3000/publish/deletePublication', requestOptions);
-          if (!response.ok) {
-            // get error message from body or default to response status
-            const error = (data && data.message) || response.status;
-            //console.log('not response ok, error : ' + error);
-            alert('une erreur innattendue s\'est produite');
-            return Promise.reject(error); 
-            }
-            return await response.json();},
-    // DELETE PUBLICATION ----------------------------------------------  
-    deletePublication(number){
-    this.fetchDeletePublication(number).then((data) => {
-        console.log('publication deleted' + data);
-        this.$emit('deletedpost');
-      }).catch(e => console.log(e));},
+      deletePublication(id){
+        // id de l'utilisateur connecté & id de l'utilisateur que je cherche
+        const ids =  this.user.id_user + '_' + id;
+        this.$store.dispatch('deletePublication', ids);
+      },
 
 
     likeFunction(number){

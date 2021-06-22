@@ -2,7 +2,7 @@
 <div>
 <button  @click="testo()">testo</button>
       <h1 class="mainTitle">Fil d'actualité</h1> 
-      {{optionBinder}}
+     <!-- {{optionBinder}} {{refresh}}!-->
       <!--button @click="findAllPublications">FETCH</button!-->
       <div class="interactiveCont">
         
@@ -68,7 +68,7 @@
               
               
               <div class="reactions_container">
-                <Reactions @deletedpost="findAllPublications(user.id_user)"
+                <Reactions 
                 :id_db="findPublication.id" :adminConnected="adminConnected" 
                 :user="user" :index="index" class="reactions"> </Reactions>
               
@@ -156,10 +156,16 @@ export default {
     }),
     userState() {
 
-     console.log(this.$store.getters.getUser);
-
+    console.log(this.$store.getters.getUser);
+    
       // Getters
       return this.$store.getters.getUser;
+      
+    },
+    refresh(){
+      //console.log('rafraichir : ',this.$store.getters.refresh);
+      this.findAllPublications(this.$store.getters.getUser.id_user);
+      return this.$store.getters.refresh;
     },
 
     allUsersState() {
@@ -237,6 +243,13 @@ export default {
       }
     },
         },
+
+  watch: {
+    refresh (newCount, oldCount) {
+      // Our fancy notification (2).
+      console.log(`actualisation ${newCount} `)
+    }
+  },
   methods : {
     testo(){//this.$store.dispatch('getAllUsers');
     //console.log(this.user.numberOfReactions[28].reactions[1]);
@@ -373,6 +386,8 @@ export default {
       getOneUser(type,id){
         //console.log(findUser.id);
         console.log(id);
+        // id de l'utilisateur que je cherche et id de l'utilisateur connecté
+        // on utilise l'id utilisateur pour passer l'authentification
         const ids = id + '_' + this.user.id_user;
         this.$store.dispatch('getOneUser', ids);
         if (type === 'bySearch'){

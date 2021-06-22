@@ -53,7 +53,7 @@ async getUserLogin(email, pass) {
 async getOneUser(id) {
     //console.log(id);
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT name, familly_name, email, photo FROM user WHERE id=?; ";
+    const query = "SELECT name, familly_name, email, photo, admin FROM user WHERE id=?; ";
     connection.query(query, [id], (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -251,21 +251,21 @@ async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_use
         const response = await new Promise((resolve, reject) => {
     if (reaction === 'heart'){
         console.log('delete heart ?');
-        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND heart =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND heart =1;";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
     }
     else if ( reaction === 'smile'){
         console.log('delete smile ?');
-        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND smile =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND smile =1;";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
     }
     else if ( reaction === 'laugh'){
         console.log('delete laugh ?');
-        const query = "DELETE FROM reactions where id_parent_publication=? AND id_user=? AND laugh =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND laugh =1;";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
@@ -281,7 +281,7 @@ async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_use
 async deletePublicationData(id, user_id) {
     try {
         const response = await new Promise((resolve, reject) => {
-        const query = "DELETE FROM publications where id_publication=? ";
+        const query = "DELETE FROM publications WHERE id_publication =? ";
         connection.query(query, [id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
