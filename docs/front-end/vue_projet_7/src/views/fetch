@@ -51,3 +51,73 @@ postUserInfos(identifiant, password, email) {
 <button :id_db="id_db" @click="testo(id_db)">testo</button>
     <button @click="findAllReactions">test</button>
         <button @click="testo">test</button>
+
+        <script>
+// vuejs with crypto-js - AES256 encrypt | decrypt api login
+
+import CryptoJS from 'crypto-js'
+import axios from 'axios'
+import format from 'date-fns/format'
+const key = '82f2ceed4c503896c8a291e560bd4325' // change to your key
+const iv = 'sinasinasisinaaa' // change to your iv
+const apiKey = '123xxxyyyzzz' // change to your api key
+const username = 'chhumsina'
+const password = 'chhumsina@123'
+const reqTime = format(new Date(), 'yyyyMMddHHmmss')
+
+export default {
+  data() {
+    return {
+      token: null
+    }
+  },
+  created() {
+    this.login()
+  },
+
+  methods: {
+    aesEncrypt(txt) {
+      const cipher = CryptoJS.AES.encrypt(txt, CryptoJS.enc.Utf8.parse(key), {
+        iv: CryptoJS.enc.Utf8.parse(iv),
+        mode: CryptoJS.mode.CBC
+      })
+
+      return cipher.toString()
+    },
+    aesDencrypt(txt) {
+      const cipher = CryptoJS.AES.decrypt(txt, CryptoJS.enc.Utf8.parse(key), {
+        iv: CryptoJS.enc.Utf8.parse(iv),
+        mode: CryptoJS.mode.CBC
+      })
+
+      return CryptoJS.enc.Utf8.stringify(cipher).toString()
+    },
+    async login() {
+      const encPassword = this.aesEncrypt(password)
+      const hash = apiKey + reqTime + username + encPassword
+      const encHash = this.aesEncrypt(hash)
+
+      const data = {
+        req_time: reqTime,
+        username,
+        password: encPassword,
+        hash: encHash
+      }
+
+      const headers = {
+        'api-key': apiKey
+      }
+      await axios
+        .post('https://your-api-url.com/login', data, {
+          headers
+        })
+        .then((res) => {
+          this.token = res.data.token
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+  }
+}
+</script>

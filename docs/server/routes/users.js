@@ -16,6 +16,7 @@ router.put('/profil_photo', multer, auth, userCtrl.postProfilePhoto);
 
 router.get('/oneUser/:id',auth,  userCtrl.getOneUser);
 router.get('/allUsers/:id' ,auth,  userCtrl.getAllUsers);
+router.get('/verifyToken/:id',auth,  userCtrl.verifyToken);
 
 router.delete('/deleteAccount',auth, userCtrl.deleteAccount);
 

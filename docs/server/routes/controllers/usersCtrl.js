@@ -83,6 +83,15 @@ exports.getAllUsers = (request, response, next) => {
  .catch((err) => console.log(err) )
                                     };
 
+// verify TOKEN ----------------------
+exports.verifyToken = (request, response, next) => {
+  //console.log(request.params.id);
+  const id = request.params;
+  const result = true;
+  response.status(200).json({data :result})
+ 
+                                    }
+
 // UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/
 exports.postProfilePhoto = (request, response, next) => {

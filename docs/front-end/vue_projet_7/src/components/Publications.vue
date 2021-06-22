@@ -324,6 +324,7 @@ export default {
         var size = this.objectSize(data['data']);
         size = size.reverse();
         //console.log(size);
+        //console.log('FETCH PUBLICATION');
         size.forEach(size => {
             this.publicationsData.push(data['data'][size])
         });

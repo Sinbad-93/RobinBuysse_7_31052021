@@ -29,9 +29,11 @@ obligatoire :
 
 -pouvoir supprimer un post avec admin ✓
 
--rester connecté 
+- sécurité ✓ (token ok , tester potentielles failles)
 
-- sécurité ✓ (token ok , tester potentielles failles + config vue router)
+-navigation conditionnelle ✓  +sécurité ✓
+
+-rester connecté 
 
 - accessibilité
 

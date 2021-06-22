@@ -1,5 +1,29 @@
 import { createStore } from "vuex";
 
+import CryptoJS from 'crypto-js'
+
+const key = '82f2ceed4c503896c8a291e560bd4325' // change to your key
+const iv = 'sinasinasisinaaa' // change to your iv
+
+function aesEncrypt(txt) {
+  const cipher = CryptoJS.AES.encrypt(txt, CryptoJS.enc.Utf8.parse(key), {
+    iv: CryptoJS.enc.Utf8.parse(iv),
+    mode: CryptoJS.mode.CBC
+  })
+
+  return cipher.toString()
+};
+function aesDencrypt(txt) {
+  const cipher = CryptoJS.AES.decrypt(txt, CryptoJS.enc.Utf8.parse(key), {
+    iv: CryptoJS.enc.Utf8.parse(iv),
+    mode: CryptoJS.mode.CBC
+  })
+
+  return CryptoJS.enc.Utf8.stringify(cipher).toString()
+};
+var tester = aesEncrypt('blabla');
+console.log('encrypt :', tester );
+console.log('decrypt :', aesDencrypt(tester) )
 
 class User{
   constructor(id, mail, name, famillyName) {
@@ -37,8 +61,6 @@ export default createStore({
   //state
   state: {
     refresh : 0,
-    stringAccess: null,
-    adminAccess : null,
     data : null,
     status : '',
     user : fakeUser21,
@@ -107,12 +129,6 @@ export default createStore({
     },
     setStatus: function (state, status) {
       state.status = status;
-    },
-    uniqueAccess : function(state, string){
-      state.stringAccess = string
-    },
-    adminAccess : function(state, string){
-      state.adminAccess = string
     },
     connectUser: function(state, userInfos){
       state.userConnectedInfos.name =  userInfos.name;
@@ -245,7 +261,8 @@ export default createStore({
   actions: {
     login: ({commit}, userInfos) => {
       //falseuser = falseuser._addNewUser(userInfos);
-      console.log('l\'utilisateur est connecté')
+      console.log('l\'utilisateur est connecté');
+      console.log(userInfos);
       commit('setStatus', 'loadingConnect');
       /*générer des chaines aléatoires de verification pour garantir le bon acces front end
       même si un utilisateur trafic le local ou sessionStorage */
@@ -255,14 +272,19 @@ export default createStore({
       var lockString2 = Math.random().toString(36).substring(2, 15) + 
       Math.random().toString(36).substring(2, 15);
       lockString += lockString2;
+      const lockStringCrypted = aesEncrypt(lockString);
       sessionStorage.setItem("lockAccess", JSON.stringify(lockString));
-      commit('uniqueAccess', lockString);
-      commit('adminAccess', lockString2);
+      localStorage.setItem("lockAccessCrypted", JSON.stringify(lockStringCrypted));
+      localStorage.setItem("adminAccess", JSON.stringify(lockString2));
       }
       else {
+      const lockStringCrypted = aesEncrypt(lockString);
+      console.log('basic :', lockString);
+      console.log('encrypted :', lockStringCrypted);
       sessionStorage.setItem("lockAccess", JSON.stringify(lockString));
-      commit('uniqueAccess', lockString);
+      localStorage.setItem("lockAccessCrypted", JSON.stringify(lockStringCrypted));
       }
+
       sessionStorage.setItem("currentUser", JSON.stringify(userInfos.name));
       localStorage.setItem("connectedUser", JSON.stringify(userInfos));
       localStorage.setItem("token", JSON.stringify(userInfos.token));
