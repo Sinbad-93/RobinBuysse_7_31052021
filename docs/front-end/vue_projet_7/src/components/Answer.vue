@@ -165,7 +165,69 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width : 1024px) {
+.answers{
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
+    overflow-x: visible;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    /*border: 1px black solid;*/
+    height: auto;
+    margin-bottom : 20px;
+    background-color: transparent;
+}
+.answer{
+    background-color: rgb(252, 252, 252);
+    display: grid;
+    position: relative;
+    width: 100%;
+    margin-bottom : 10px;
+
+}
+.answerCont{
+display: grid;
+min-height: 120px;
+grid-template-rows: 20% auto ;
+justify-items: center;
+align-items: center;
+
+}
+span{
+    max-width: 260px;
+    margin-bottom: 10px;
+    margin: auto;
+    text-align:left;
+}
+button{
+    margin-bottom: 30px; 
+    font-size: 22px;  
+    padding: 7px; 
+}
+.userAnswer{
+    grid-row-start: 1;
+    max-height: 25px;
+    background-color: yellow;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.answerMessage {
+    grid-row-start: 2;
+    margin-top: 10px;
+
+}
+.icons{
+    grid-row-start: 3;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width : 1366px) {
 .answers{
     display: flex;
     flex-direction: column;
@@ -230,67 +292,11 @@ button{
 }
 
 @media screen and (max-width : 767px) {
-.answers{
-    display: flex;
-    flex-direction: column;
-    overflow-wrap: break-word;
-    overflow-x: visible;
-    width: 100%;
-    justify-items: center;
-    align-items: center;
-    /*border: 1px black solid;*/
-    height: auto;
-    margin-bottom : 20px;
-    background-color: transparent;
-}
-.answer{
-    background-color: rgb(252, 252, 252);
-    display: grid;
-    position: relative;
-    width: 100%;
-    margin-bottom : 10px;
-
-}
-.answerCont{
-display: grid;
-min-height: 120px;
-grid-template-rows: 20% auto ;
-justify-items: center;
-align-items: center;
-
-}
-span{
-    max-width: 260px;
-    margin-bottom: 10px;
-    margin: auto;
-    text-align:left;
-}
-.userAnswer{
-    grid-row-start: 1;
-    max-height: 25px;
-    background-color: yellow;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.answerMessage {
-    grid-row-start: 2;
-    margin-top: 10px;
-
-}
 button{
     margin-bottom: 30px;
     font-size: 17px; /**/ 
     padding: 7px;/**/ 
 }
-.icons{
-    grid-row-start: 3;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-around;
-}
-.loading{
-    background-color: rgb(255, 255, 255);
-}
+
 }
 </style>

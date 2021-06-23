@@ -188,7 +188,6 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width : 1024px) {
 .comments{
     display: flex;
     flex-direction: column;
@@ -236,7 +235,91 @@ span{
     font-size: 20px;
     max-height: 25px;
     overflow :scroll;
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.commentMessage {
+    grid-row-start: 2;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.commentHour {
+    font-size: 14px;
+}
+.answerButton{
+  font-size: 16px;
+  margin: 0;
+    border: none;
+    color: white;
+    background-color: transparent;
+}
+.icons{
+    grid-row-start: 3;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+button{
+    margin-bottom: 30px;
+    font-size: 22px;  
+    padding: 7px; 
+}
+.notVisible{
+    display: none;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width : 1366px) {
+.comments{
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+   /* border: 1px black solid;*/
+    height: auto;
+    /*height: 420px;*/
+    margin-bottom : 20px;
     
+}
+.comment{
+    display: grid;
+    background-color: transparent;
+    position: relative;
+    width: 100%;
+    border: 1px black solid;
+    margin-bottom : 10px;
+
+}
+
+.commentCont{
+display: grid;
+min-height: 200px;
+grid-template-rows: 1fr auto 1fr 1fr ;
+justify-items: center;
+align-items: center;
+
+}
+span{
+    max-width: 260px;
+    margin-bottom: 10px;
+    margin: auto;
+    text-align:left;
+}
+::-webkit-scrollbar { 
+    display: none; 
+}
+.userComment{
+    grid-row-start: 1;
+    font-size: 20px;
+    max-height: 25px;
+    overflow :scroll;
     margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
@@ -276,88 +359,11 @@ button{
 }
 
 @media screen and (max-width : 767px) {
-.comments{
-    display: flex;
-    flex-direction: column;
-    overflow-wrap: break-word;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 100%;
-    justify-items: center;
-    align-items: center;
-   /* border: 1px black solid;*/
-    height: auto;
-    /*height: 420px;*/
-    margin-bottom : 20px;
-    
-}
-.comment{
-    display: grid;
-    background-color: transparent;
-    position: relative;
-    width: 100%;
-    border: 1px black solid;
-    margin-bottom : 10px;
-
-}
-.commentCont{
-display: grid;
-min-height: 200px;
-grid-template-rows: 1fr auto 1fr 1fr ;
-justify-items: center;
-align-items: center;
-
-}
-span{
-    max-width: 260px;
-    margin-bottom: 10px;
-    margin: auto;
-    text-align:left;
-}
-::-webkit-scrollbar { 
-    display: none; 
-}
-.userComment{
-    grid-row-start: 1;
-    font-size: 20px;
-    max-height: 25px;
-    overflow :scroll;
-    
-    margin-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.commentMessage {
-    grid-row-start: 2;
-    font-size: 20px;
-    margin-top: 10px;
-}
-.commentHour {
-    font-size: 14px;
-}
-.answerButton{
-  font-size: 16px;
-  margin: 0;
-    border: none;
-    color: white;
-    background-color: transparent;
-}
-.icons{
-    grid-row-start: 3;
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-around;
-}
 button{
     /*margin-bottom: 30px;*/
     font-size: 17px; /**/ 
     padding: 5px;/**/ 
 }
-.notVisible{
-    display: none;
-}
-.loading{
-    background-color: rgb(255, 255, 255);
-}
+
 }
 </style>

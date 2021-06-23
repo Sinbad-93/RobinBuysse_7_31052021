@@ -131,7 +131,30 @@ async fetchVerifyToken() {
 }
 </script>
 <style>
-@media screen and (max-width : 1024px) {
+.home{
+  width: 720px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+span{
+  font-size: 20px; 
+}
+ul{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+li{
+    list-style: none;
+    font-size: 22px; 
+}
+a {
+    text-decoration: none;
+}
+
+@media screen and (max-width : 1366px) {
 .home{
   width: 720px;/**/ 
   display: flex;
@@ -157,22 +180,13 @@ a {
 @media screen and (max-width : 767px) {
 .home{
   width: initial;/**/ 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
-ul{
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
+span{
+  font-size: 18px; /**/
 }
 li{
-    list-style: none;
     font-size: 15px;
 }
-a {
-    text-decoration: none;
-}
+
 }
 </style>

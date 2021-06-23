@@ -46,7 +46,39 @@ computed: {
 </script>
 
 <style scoped>
-@media screen and (max-width : 1024px) {
+.userWindowInfos{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding-left: 5px;
+  position: absolute;
+  top: 0;
+  width: 620px; 
+  height: 420px;
+  z-index: 5;
+  background-color: white;
+}
+.centered{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+
+}
+.fa-times-circle{
+   /*margin-left: auto;*/
+   align-self: flex-end;
+   margin-right: 5px;
+   font-size: 25px;
+}
+img {
+  width: 120px; 
+  height: 120px; 
+}
+
+@media screen and (max-width : 1366px) {
 .userWindowInfos{
   display: flex;
   flex-direction: column;
@@ -81,31 +113,9 @@ img {
 }
 @media screen and (max-width : 767px) {
 .userWindowInfos{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-around;
-  padding-left: 5px;
-  position: absolute;
-  top: 0;
   width: 320px;
   height: 280px;
-  z-index: 5;
-  background-color: white;
-}
-.centered{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
 
-}
-.fa-times-circle{
-   /*margin-left: auto;*/
-   align-self: flex-end;
-   margin-right: 5px;
-   font-size: 25px;
 }
 img {
   width: 50px;

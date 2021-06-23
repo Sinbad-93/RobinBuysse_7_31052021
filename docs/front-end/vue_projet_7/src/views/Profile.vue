@@ -178,7 +178,49 @@ async fetchVerifyToken() {
 </script>
 
 <style scoped>
-@media screen and (max-width : 1024px) {
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 600px;
+}
+img {
+    margin: 20px;
+  max-width: 80%;
+  max-height: 50%;
+  border-radius: 8px;
+}
+ul, li {
+  font-size: 25px; 
+}
+button{
+  margin-top: 10px;
+  font-size: 22px;  
+    background-color: white;
+    width: 200px;  
+    height: 50px;
+}
+span {
+  margin: 10px auto;
+  border: black 1px solid;
+  background-color: white;
+  font-size: 25px; 
+  padding: 8px;
+  font-weight: bolder;
+}
+.text {
+  margin: 0px auto;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-weight: initial;
+}
+a{
+  font-size: 30px;
+}
+
+@media screen and (max-width : 1366px) {
 .profile {
   display: flex;
   flex-direction: column;
@@ -222,21 +264,7 @@ a{
 }
 }
 @media screen and (max-width : 767px) {
-.profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  height: 600px;
-}
-img {
-    margin: 20px;
-  max-width: 80%;
-  border-radius: 8px;
-}
 button{
-  margin-top: 10px;
-    background-color: white;
     font-size: 18px; /**/
     width: 150px;
     height: 30px;
@@ -245,18 +273,11 @@ ul, li {
   font-size: 18px; /**/
 }
 span {
-  margin: 10px auto;
-  border: black 1px solid;
-  background-color: white;
   font-size: 15px;
-  font-weight: bolder;
+
 }
-.text {
-  margin: 0px auto;
-  border: none;
-  background-color: transparent;
-  font-size: 14px;
-  font-weight: initial;
+a{
+  font-size: 22px;
 }
 }
 </style>
