@@ -4,7 +4,7 @@
           <li> <router-link to="Profile">Mon profil</router-link> </li>
           <li> <router-link to="/" >Deconnexion</router-link></li>
       </ul>
-      bienvenue {{userName}}
+     <span>bienvenue {{userName}}</span> 
       <Publications :adminConnected="adminConnected" :userName="userName">
       </Publications>
       </div>
@@ -131,8 +131,32 @@ async fetchVerifyToken() {
 }
 </script>
 <style>
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 .home{
+  width: 720px;/**/ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+span{
+  font-size: 20px; /**/
+}
+ul{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+li{
+    list-style: none;
+    font-size: 22px;/**/ 
+}
+a {
+    text-decoration: none;
+}}
+@media screen and (max-width : 767px) {
+.home{
+  width: initial;/**/ 
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -2,10 +2,10 @@
 <div>
       
       <div ref="comments" class="comments" >
-          <button class="littleHeight btn-grad" :disabled="postComment" 
+          <button  :disabled="postComment" 
           @click="postComment = !postComment">poster un commentaire</button>
         <div v-if="postComment" class="comment" ref="newPublication">
-          <span>Utilisateur name :</span>
+          <span>exprimez vous !</span>
           <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
           <div>
             <button :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
@@ -21,19 +21,14 @@
           v-for="(data,index) in commentsData"
           :key="data"
           :index="index" >
-          <div :index="index" v-if="checkParentId(data.parent_id)">
+          <div class="commentCont" :index="index" v-if="checkParentId(data.parent_id)">
               <span ref="userComment" 
               class="userComment metal radial">{{data.name}} {{data.familly_name}} 
               </span>
               <span class="commentMessage" >{{data.comment}}</span>
               <span class="commentHour">{{data.date_posted}}</span>
-              <div class="icons">
-              <i @click="arrowFunction" ref="topArrow" class="fas fa-arrow-alt-circle-up"></i>8
-              <i @click="arrowFunction" class="fas fa-arrow-alt-circle-down"></i>1
-              <i class="fas fa-exclamation-triangle"></i>
-              <i v-if="adminConnected" class="fas fa-trash-alt"></i></div>
                             
-              <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses 7</button>
+              <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses </button>
                </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
           </div>
         </div>
@@ -193,7 +188,7 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 .comments{
     display: flex;
     flex-direction: column;
@@ -218,29 +213,45 @@ export default {
     margin-bottom : 10px;
 
 }
+
+.commentCont{
+display: grid;
+min-height: 200px;
+grid-template-rows: 1fr auto 1fr 1fr ;
+justify-items: center;
+align-items: center;
+
+}
 span{
     max-width: 260px;
     margin-bottom: 10px;
     margin: auto;
     text-align:left;
 }
+::-webkit-scrollbar { 
+    display: none; 
+}
 .userComment{
     grid-row-start: 1;
-    font-size: 14px;
+    font-size: 20px;
     max-height: 25px;
     overflow :scroll;
+    
     margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
 }
 .commentMessage {
     grid-row-start: 2;
+    font-size: 20px;
     margin-top: 10px;
 }
 .commentHour {
-    font-size: 12px;
+    font-size: 14px;
 }
 .answerButton{
+  font-size: 16px;
+  margin: 0;
     border: none;
     color: white;
     background-color: transparent;
@@ -253,6 +264,94 @@ span{
 }
 button{
     margin-bottom: 30px;
+    font-size: 22px; /**/ 
+    padding: 7px;/**/ 
+}
+.notVisible{
+    display: none;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
+}
+}
+
+@media screen and (max-width : 767px) {
+.comments{
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+   /* border: 1px black solid;*/
+    height: auto;
+    /*height: 420px;*/
+    margin-bottom : 20px;
+    
+}
+.comment{
+    display: grid;
+    background-color: transparent;
+    position: relative;
+    width: 100%;
+    border: 1px black solid;
+    margin-bottom : 10px;
+
+}
+.commentCont{
+display: grid;
+min-height: 200px;
+grid-template-rows: 1fr auto 1fr 1fr ;
+justify-items: center;
+align-items: center;
+
+}
+span{
+    max-width: 260px;
+    margin-bottom: 10px;
+    margin: auto;
+    text-align:left;
+}
+::-webkit-scrollbar { 
+    display: none; 
+}
+.userComment{
+    grid-row-start: 1;
+    font-size: 20px;
+    max-height: 25px;
+    overflow :scroll;
+    
+    margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.commentMessage {
+    grid-row-start: 2;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.commentHour {
+    font-size: 14px;
+}
+.answerButton{
+  font-size: 16px;
+  margin: 0;
+    border: none;
+    color: white;
+    background-color: transparent;
+}
+.icons{
+    grid-row-start: 3;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+button{
+    /*margin-bottom: 30px;*/
+    font-size: 17px; /**/ 
+    padding: 5px;/**/ 
 }
 .notVisible{
     display: none;

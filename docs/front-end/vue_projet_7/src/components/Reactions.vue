@@ -2,7 +2,7 @@
 
 <template>
 <div class="reactions" ref="reactions" :id_db="id_db" > 
-<button :id_db="id_db"  @click="testo(id_db)">testo</button>
+<!--button :id_db="id_db"  @click="testo(id_db)">testo</button!-->
     <i v-if="fnTest(0)" :id_db="id_db"  @click="likeFunction(id_db)" 
     class='fas fa-heart interactiveIcons full-heart'>
         </i>
@@ -302,7 +302,7 @@ isKeyExists(obj,key){
 </script>
 
 <style scoped>
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 
 .fa-heart {
   position: relative;
@@ -321,6 +321,47 @@ color: rgba(0, 0, 0,0.6);
 }
 .interactiveIcons{
 margin: 5px 0 5px 10px;
+font-size: 25px;/**/ 
+}
+span{
+  font-size: 25px;/**/ 
+}
+.no_display {
+    display : none;
+}
+@keyframes fill_heart {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+}
+@media screen and (max-width : 767px) {
+
+.fa-heart {
+  position: relative;
+  cursor: pointer;
+  font-size: 15px;
+  color: red;
+}
+.full-heart {
+    color: red;
+}
+.orange{
+  color:orange
+}
+.black{
+color: rgba(0, 0, 0,0.6);
+}
+.interactiveIcons{
+margin: 5px 0 5px 10px;
+font-size: initial; /**/ 
+}
+span{
+  font-size: initial;
 }
 .no_display {
     display : none;

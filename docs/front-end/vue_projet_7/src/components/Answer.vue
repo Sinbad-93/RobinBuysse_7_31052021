@@ -2,11 +2,11 @@
 <div class="container" >
       
       <div class="answers" ref="answers">
-          <button class="littleHeight btn-grad "
+          <button
               @click="postAnswer = !postAnswer">répondre</button>
-<button @click="findAllAnswers">FETCH</button>
+<!--button @click="findAllAnswers">FETCH</button!-->
               <div v-if="postAnswer" class="answer" ref="newPublication">
-          <span>Utilisateur name :</span>
+          <span>exprimez vous !</span>
           <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
             <button :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
@@ -18,17 +18,12 @@
           <div class="answer" v-for="(data,index) in answersData"
           :key="data"
           :index="index" >
-          <div :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id_answer)">
+          <div class="answerCont" :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id_answer)">
               <span ref="userAnswer " 
               class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
               <span class="answerMessage" >{{data.answer}}</span>
-              <div class="icons">
-              <i @click="arrowFunction" ref="topArrow" class="fas fa-arrow-alt-circle-up"></i> 8
-              <i @click="arrowFunction" class="fas fa-arrow-alt-circle-down"></i> 1
-              <i class="fas fa-exclamation-triangle"></i>
-              <i v-if="adminConnected" class="fas fa-trash-alt"></i>
-              </div> 
+              
               </div>              
           </div>
         </div>
@@ -170,7 +165,7 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width : 768px) {
+@media screen and (max-width : 1024px) {
 .answers{
     display: flex;
     flex-direction: column;
@@ -192,6 +187,78 @@ export default {
     margin-bottom : 10px;
 
 }
+.answerCont{
+display: grid;
+min-height: 120px;
+grid-template-rows: 20% auto ;
+justify-items: center;
+align-items: center;
+
+}
+span{
+    max-width: 260px;
+    margin-bottom: 10px;
+    margin: auto;
+    text-align:left;
+}
+button{
+    margin-bottom: 30px;/**/ 
+    font-size: 22px; /**/ 
+    padding: 7px;/**/ 
+}
+.userAnswer{
+    grid-row-start: 1;
+    max-height: 25px;
+    background-color: yellow;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.answerMessage {
+    grid-row-start: 2;
+    margin-top: 10px;
+
+}
+.icons{
+    grid-row-start: 3;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+.loading{
+    background-color: rgb(255, 255, 255);
+}
+}
+
+@media screen and (max-width : 767px) {
+.answers{
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word;
+    overflow-x: visible;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    /*border: 1px black solid;*/
+    height: auto;
+    margin-bottom : 20px;
+    background-color: transparent;
+}
+.answer{
+    background-color: rgb(252, 252, 252);
+    display: grid;
+    position: relative;
+    width: 100%;
+    margin-bottom : 10px;
+
+}
+.answerCont{
+display: grid;
+min-height: 120px;
+grid-template-rows: 20% auto ;
+justify-items: center;
+align-items: center;
+
+}
 span{
     max-width: 260px;
     margin-bottom: 10px;
@@ -202,14 +269,19 @@ span{
     grid-row-start: 1;
     max-height: 25px;
     background-color: yellow;
-    overflow :scroll;
     padding-left: 10px;
     padding-right: 10px;
 }
+
 .answerMessage {
     grid-row-start: 2;
     margin-top: 10px;
 
+}
+button{
+    margin-bottom: 30px;
+    font-size: 17px; /**/ 
+    padding: 7px;/**/ 
 }
 .icons{
     grid-row-start: 3;

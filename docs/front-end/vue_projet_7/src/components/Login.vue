@@ -296,7 +296,114 @@ export default {
 </script>
 
 <style scoped>
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
+  .login__container {
+    max-width: 100%;
+    width: 540px;
+    height: 460px; /**/ 
+    font-size: 20px; /**/
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+  }
+
+  .auth_title {
+    text-align: center;
+    font-weight: 800;
+  }
+
+  .auth__subtitle {
+    text-align: center;
+    color: #666;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .button {
+    background: #2196f3;
+    color: white;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 20px;/**/
+    border: none;
+    width: 100%;
+    padding: 16px;
+    transition: 0.4s background-color;
+  }
+
+  .switch__action {
+    color: #2196f3;
+    text-decoration: underline;
+    overflow-wrap: normal;
+  }
+
+  .switch__action:hover {
+    cursor: pointer;
+  }
+
+  .button:hover {
+    cursor: pointer;
+    background: #1976d2;
+  }
+
+  .button--disabled {
+    background: #cecece;
+    color: #ececec;
+  }
+  .button--disabled:hover {
+    cursor: not-allowed;
+    background: #cecece;
+  }
+  .form-row {
+    display: flex;
+    margin: 16px 0px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .form-row__input {
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background: #f2f2f2;
+    font-weight: 500;
+    font-size: 25px; /**/ 
+    flex: 1;
+    min-width: 100px;
+    color: black;
+  }
+
+  .form-row__input::placeholder {
+    color: #aaaaaa;
+  }
+  .relative {
+    position: relative;
+  }
+  .show__hide__password__container {
+    position: absolute;
+    pointer-events: none;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .show__hide__password {
+    pointer-events: visible;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+  }
+  .show__hide__logo {
+    position: absolute;
+    height: 55%;
+  }
+}
+
+@media screen and (max-width: 767px) {
   .login__container {
     max-width: 100%;
     width: 540px;
@@ -401,4 +508,3 @@ export default {
   }
 }
 </style>
->

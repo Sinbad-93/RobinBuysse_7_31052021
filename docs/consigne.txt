@@ -10,6 +10,10 @@ que de me ramener automatiquement au login, pourquoi ?
 besoin d'actualisation après delete une publication ✓ 
 (ne pas oublier $emit et ecouteur tj en minuscule)
 
+gerer en front texte trop long ? post commentaires ect
+gerer en front mot de passe format incorrect ?
+
+empecher la double publication ? DOUBLE CLICK RAPIDE
 
 obligatoire : 
 
