@@ -67,11 +67,12 @@ export default createStore({
     falseuser : falseuser._returnLastUser(),
     newuser :'New',
     userConnectedInfos :{
-      id_user : '1',
+      id_user : '0',
       name : '',
       famillyName : '',
       email : '',
       password: '',
+      admin: 0,
       token : null,
       photo : null,
       userReactions : {},
@@ -135,6 +136,7 @@ export default createStore({
       state.userConnectedInfos.famillyName =  userInfos.familly_name;
       state.userConnectedInfos.email =  userInfos.email;
       state.userConnectedInfos.id_user =  userInfos.id_user;
+      state.userConnectedInfos.admin =  userInfos.admin;
       state.userConnectedInfos.photo =  userInfos.photo;
       state.userConnectedInfos.token =  userInfos.token;
     },
@@ -143,7 +145,7 @@ export default createStore({
       dans parentReactions pour qu'elles soient regroupés par publications */
 
       //A RETIRER LORSQUE LA CONNEXION SERA OBLIGATOIRE
-      state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
+      //state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
 
       //console.log(data);
       var reactionsObject = data['data'];

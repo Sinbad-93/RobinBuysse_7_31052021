@@ -147,8 +147,10 @@ export default {
   },
   mounted() {
     this.isMounted = true;
-      this.findAllPublications(this.user.id_user);
-      this.$store.dispatch('getAllUsers', this.user.id_user);
+      //this.findAllPublications(this.user.id_user);
+      let connectedUser = JSON.parse(window.localStorage.connectedUser);
+      this.findAllPublications(connectedUser.id_user);
+      this.$store.dispatch('getAllUsers', connectedUser.id_user);
   },
   computed:  {
     ...mapState({
@@ -164,7 +166,8 @@ export default {
     },
     refresh(){
       //console.log('rafraichir : ',this.$store.getters.refresh);
-      this.findAllPublications(this.$store.getters.getUser.id_user);
+      let connectedUser = JSON.parse(window.localStorage.connectedUser);
+      this.findAllPublications(connectedUser.id_user);
       return this.$store.getters.refresh;
     },
 

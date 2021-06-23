@@ -83,14 +83,15 @@ exports.getAllUsers = (request, response, next) => {
  .catch((err) => console.log(err) )
                                     };
 
-// verify TOKEN ----------------------
+// verify TOKEN (et renvoyer l'utilisateur complet)----------------------
 exports.verifyToken = (request, response, next) => {
   //console.log(request.params.id);
-  const id = request.params;
-  const result = true;
-  response.status(200).json({data :result})
- 
-                                    }
+  const id = request.params.id;
+  console.log(id);
+  const db = dbService.getDbServiceInstance();
+  const result = db.getOneUser(id);
+  result.then(data => response.status(200).json({data :data}))
+  .catch((err) => console.log(err))};                                
 
 // UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/

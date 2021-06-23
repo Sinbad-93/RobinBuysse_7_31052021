@@ -2,7 +2,7 @@
   <div class="home">
       <ul>
           <li> <router-link to="Profile">Mon profil</router-link> </li>
-          <li> <router-link to="/">Deconnexion</router-link></li>
+          <li> <router-link to="/" >Deconnexion</router-link></li>
       </ul>
       bienvenue {{userName}}
       <Publications :adminConnected="adminConnected" :userName="userName">
@@ -54,19 +54,20 @@ export default {
       let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
       let lockAccessCrypted = JSON.parse(window.localStorage.lockAccessCrypted);
       const lockAccessDecrypted = this.aesDencrypt(lockAccessCrypted);
-      let adminAccess = JSON.parse(window.localStorage.adminAccess);
-      
-      if ((this.userConnectedInfos.admin === 1)
-        && (lockAccess) && (lockAccess === lockAccessDecrypted) 
+      if (this.userConnectedInfos.admin === 1){
+        let adminAccess = JSON.parse(window.localStorage.adminAccess);
+      if ( (lockAccess) && (lockAccess === lockAccessDecrypted) 
         // commenter ici pour tester la sécurité
         && lockAccess.includes(adminAccess) ){
         this.adminConnected = true ;
       }
+      }
+       
       return true
   }
 },
 
-// FETCH ALL USERS ----------------------------------------------
+// FETCH USER ON REFRESHING PAGE ----------------------------------------------
 async fetchVerifyToken() {
   const connectedUser = JSON.parse(window.localStorage.connectedUser);
   let response = await fetch('http://localhost:3000/auth/verifyToken/'+ connectedUser.id_user,
@@ -84,34 +85,33 @@ async fetchVerifyToken() {
       }
       return await response.json();},
 
-// GET ALL USERS ------------------
-verifyToken(){
-this.fetchVerifyToken().then((data) => {
-  console.log(data['data']);
-  return data['data'];
-}).catch(e => console.log(e));},
   },
+
     beforeCreate(){
     console.log('BEFORE CREATED');
     },
+
+  //FETCH USER ON REFRESHING PAGE
     created(){
     console.log('CREATED');
     // refresh page, vide le store, on utilise le local storage
     if ((this.$store.state.userConnectedInfos.token === null) && (JSON.parse(window.localStorage.connectedUser))){
-      const connectedUser = JSON.parse(window.localStorage.connectedUser);
-      if(this.verifyToken() == true) {
-      
+        this.fetchVerifyToken().then((data) => {
+        console.log(data);
+        const verifiedUser = data['data'][0];
+        const connectedUser = JSON.parse(window.localStorage.connectedUser);
+        
       console.log('VERIFY TOKEN');
       this.$store.dispatch("login", {
-        email: connectedUser.email,
-        name: connectedUser.name,
-        familly_name: connectedUser.familly_name,
+        email: verifiedUser.email,
+        name: verifiedUser.name,
+        familly_name: verifiedUser.familly_name,
         id_user: connectedUser.id_user,
-        photo : connectedUser.photo,
-        admin : connectedUser.admin,
+        photo : verifiedUser.photo,
+        admin : verifiedUser.admin,
         token: connectedUser.token
       
-      });}
+      });}).catch(e => console.log(e));
 
     }
     },

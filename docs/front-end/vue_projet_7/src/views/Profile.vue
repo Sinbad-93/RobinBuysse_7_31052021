@@ -4,7 +4,7 @@
    </div>
     <h1 class="card__title">Mon profil</h1>
     <ul class="card__subtitle">Mes informations :</ul>
-    <li>Prénom: {{user.name}}</li> <li>Nom : {{user.familly_name}} </li><li>E-mail : {{user.email}}</li>
+    <li>Prénom: {{user.name}}</li> <li>Nom : {{user.famillyName}} </li><li>E-mail : {{user.email}}</li>
     <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
     <div class="form-row">
       
@@ -40,14 +40,8 @@ export default {
           image : null,
       }
   },
-  /*mounted: function () {
-    console.log(this.$store.state.user);
-    if (this.$store.state.user.userId == -1) {
-      this.$router.push('/');
-      return ;
-    }
-    this.$store.dispatch('getUserInfos');
-  },*/
+  mounted: function () {
+  },
   computed: {
     ...mapState({
       user: 'userConnectedInfos',
@@ -136,8 +130,50 @@ export default {
           localStorage.clear();
           sessionStorage.clear();
           this.$router.push('/'); 
-        }
-  }
+        },
+        // FETCH USER ON REFRESHING PAGE----------------------------------------------
+async fetchVerifyToken() {
+  const connectedUser = JSON.parse(window.localStorage.connectedUser);
+  let response = await fetch('http://localhost:3000/auth/verifyToken/'+ connectedUser.id_user,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+  });
+    if (!response.ok) {
+      // get error message from body or default to response status
+      const error = (data && data.message) || response.status;
+      //console.log('not response ok, error : ' + error);
+      alert('une erreur innattendue s\'est produite');
+      return Promise.reject(error); 
+      }
+      return await response.json();},
+
+  },
+  //FETCH USER ON REFRESHING PAGE
+    created(){
+    console.log('CREATED');
+    // refresh page, vide le store, on utilise le local storage
+    if ((this.$store.state.userConnectedInfos.token === null) && (JSON.parse(window.localStorage.connectedUser))){
+        this.fetchVerifyToken().then((data) => {
+        console.log(data);
+        const verifiedUser = data['data'][0];
+        const connectedUser = JSON.parse(window.localStorage.connectedUser);
+        
+      console.log('VERIFY TOKEN');
+      this.$store.dispatch("login", {
+        email: verifiedUser.email,
+        name: verifiedUser.name,
+        familly_name: verifiedUser.familly_name,
+        id_user: connectedUser.id_user,
+        photo : verifiedUser.photo,
+        admin : verifiedUser.admin,
+        token: connectedUser.token
+      
+      });}).catch(e => console.log(e));
+
+    }
+    },
 }
 </script>
 

@@ -2,14 +2,9 @@ Quand le format du mot de passe n'est pas valide au niveau du back
 il m'envoi une bad request,
 comment faire pour avertir en front l'utilisateur 
 de la nature du problème ?
-
-Le token de l'utilisateur se crée à partir d'une random secret key,
-comment ça se passe au niveau de l'env pour la production ? 
-dois je générer moi même cette clef pour chaque utilisateur ou 
-j'utilise un package qui s'en occupe ?
-
-jwt : 
-lorsque je controle le token je controle si il y a une requete body
+(si le back contient un message d'erreur l'intercepter et l'afficher avec le front )
+à faire
 
 Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
- meme si la requete fonctionne
+meme si la requete fonctionne
+( à voir la prochaine fois)

@@ -30,6 +30,9 @@ export default {
   },
   mounted () {
     console.log(this.$store.state.user);
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log('STORAGE CLEARED');
     },
   computed: {
     ...mapState({
