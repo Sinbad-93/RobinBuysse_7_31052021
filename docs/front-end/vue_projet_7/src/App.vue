@@ -32,11 +32,12 @@ background: linear-gradient(90deg, rgba(233,44,19,0.9752275910364145) 2%, rgba(2
   padding-top: 30px;
 
 }
-button {
+.grey_btn {
   cursor: pointer;
   background: rgb(175,165,165);
 background: linear-gradient(90deg, rgba(175,165,165,1) 23%, rgba(215,209,209,1) 57%);
 }
+
 
 * {
   font-family: 'Poppins', sans-serif;

@@ -1,34 +1,41 @@
 <template>
   <div class="profile">
-    <div><router-link to="Home">Home</router-link> <br>
-   </div>
-    <h1 class="card__title">Mon profil</h1>
-    <ul class="card__subtitle">Mes informations :</ul>
-    <li>Prénom: {{user.name}}</li> <li>Nom : {{user.famillyName}} </li><li>E-mail : {{user.email}}</li>
-    <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
+<router-link to="Home">Home</router-link>
+    <div class="infoCont">
+    <ul class="card__subtitle"><i class="pi pi-user"></i> Mon profil </ul>
+    <li>Prénom : {{user.name}}</li> <li>Nom : {{user.famillyName}} </li><li>E-mail : {{user.email}}</li>
+    <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!--></div>
     <div class="form-row">
       
-      <router-link to="/"><button @click="logout()" class="button">
-        Déconnexion  
+      <router-link to="/"><button @click="logout()" class="btn grey_btn">
+        Déconnexion <i class="pi pi-sign-out" ></i>
       </button></router-link>
     </div>
-    <img v-if="!user.photo" :src="basicUrl" />
-    <img v-else ref="img" :src="user.photo" alt="">
-    <span @click="changePhoto = !changePhoto">changer ma photo de profil</span>
+    <div v-if="!user.photo" class="photoCont">
+    <img  :src="basicUrl" /></div>
+    <div v-else class="photoCont">
+    <img  ref="img" :src="user.photo" alt=""></div>
+    
+    <span class="grey_btn" @click="changePhoto = !changePhoto">photo de profil <i class="pi pi-image"></i></span>
     <div v-if="changePhoto">
-    <input v-if="!user.photo" type="file" accept="image/*" @change="addImg" />
-    <input v-else type="button" value="retirer" @click="removeImg" />
+     <Button v-if="!user.photo" > <label for="file-upload" class="custom-file-upload">
+     <i class="fa fa-cloud-upload" style="margin-right : 8px"></i> Choisir une image 
+</label></Button>
+    <input  id="file-upload" type="file" accept="image/*" @change="addImg" />
+    <Button v-if="user.photo" type="button" class="p-button-success" label="retirer" @click="removeImg" />
     </div>
-    
-    
-    <span @click="suppression=true">supprimer mon compte</span>
-    <div v-if="suppression"><span class="text">êtes vous sur ? cette action est défnitive</span>
-    <button @click='deleteAccount(user.id_user)'>confirmer</button> <button  @click="suppression=false">retour</button></div>
+    <span @click="suppression=true"  class="grey_btn">supprimer mon compte <i class="pi pi-trash"></i></span>
+    <div v-if="suppression">
+    <Message severity="warn" :closable="false">êtes vous sur ? cette action est défnitive</Message>
+    <div class="suppressCont">
+    <Button class="p-button-danger" @click='deleteAccount(user.id_user)'>confirmer</Button> 
+    <Button class="p-button-info"  @click="suppression=false">retour</Button></div></div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
 export default {
   name: 'Profile',
   data(){
@@ -186,29 +193,79 @@ async fetchVerifyToken() {
   height: 600px;
 }
 img {
-    margin: 20px;
+  margin: 20px;
+  border: white 2px solid;
   max-width: 80%;
-  max-height: 50%;
+  max-height: 100%;
   border-radius: 8px;
 }
+.nav {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.infoCont {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+    width: auto;
+    color: white;
+    padding: 15px;
+    background: #185a9d ;
+    background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
+    border: 1px black solid;
+    border-radius: 5px;
+    margin-top : 10px;
+    margin-bottom : 10px;
+}
+.card__subtitle {
+  align-self: center;
+}
+.photoCont {
+  
+  margin-top: 10px;
+  width: 400px;
+
+  background: #185a9d ;
+  background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
+  border: 1px black solid;
+  border-radius: 5px;
+
+}
+
 ul, li {
   font-size: 25px; 
+  list-style: none;
 }
-button{
+.primeBtn{
+  margin-bottom: 10px;
+  padding: 25px;
+    
+}
+.btn{
   margin-top: 10px;
-  font-size: 22px;  
+  font-size: 22px; /**/ 
     background-color: white;
-    width: 200px;  
-    height: 50px;
+    width: 200px; /**/ 
+    height: 50px;/**/
 }
+.suppressCont {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 span {
   margin: 10px auto;
   border: black 1px solid;
   background-color: white;
   font-size: 25px; 
   padding: 8px;
-  font-weight: bolder;
+  /*font-weight: bolder;*/
 }
+span:active {
+ transform: scale(0.9);
+}
+/* ancien span text supprimer */
 .text {
   margin: 0px auto;
   border: none;
@@ -218,6 +275,21 @@ span {
 }
 a{
   font-size: 30px;
+}
+.pi {
+
+  font-size : 20px;
+  padding : 5px;
+  margin-left: 2px;
+}
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
 }
 
 @media screen and (max-width : 1366px) {
@@ -237,7 +309,7 @@ img {
 ul, li {
   font-size: 25px; /**/
 }
-button{
+.btn{
   margin-top: 10px;
   font-size: 22px; /**/ 
     background-color: white;
@@ -252,19 +324,12 @@ span {
   padding: 8px;/**/
   font-weight: bolder;
 }
-.text {
-  margin: 0px auto;
-  border: none;
-  background-color: transparent;
-  font-size: 14px;
-  font-weight: initial;
-}
 a{
   font-size: 30px;
 }
 }
 @media screen and (max-width : 767px) {
-button{
+.btn{
     font-size: 18px; /**/
     width: 150px;
     height: 30px;

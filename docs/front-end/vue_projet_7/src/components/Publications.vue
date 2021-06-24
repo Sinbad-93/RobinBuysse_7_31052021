@@ -667,6 +667,20 @@ button {
    color: #fff;
    text-decoration: none;
  }  
+/* -----ANIMER LES IMAGES ----*/ 
+img {
+	-webkit-transform: scale(1);
+	transform: scale(1);
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+}
+img:hover {
+	-webkit-transform: scale(1.3);
+	transform: scale(1.2);
+} 
+
+
+
 
 @media screen and (max-width : 1366px) {
 .mainTitle{

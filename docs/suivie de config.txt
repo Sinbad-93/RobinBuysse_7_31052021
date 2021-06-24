@@ -9,3 +9,8 @@ mettre a jour la version globale :
 npm install -g @vue/cli
 creer le projet : 
 winpty vue.cmd create projet7
+
+npm install primevue@^3.5.1 --save?
+npm install primeicons --save?
+ moyen de le faire automatiquement avec le package JSON ? npm init ?
+
