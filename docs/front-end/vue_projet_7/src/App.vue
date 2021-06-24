@@ -22,7 +22,8 @@ export default {
   color: #2c3e50;
 }
 body {
-  background-image: linear-gradient(62deg, #7efbc1 0%, #c0f768 100%);
+background: rgb(233,44,19);
+background: linear-gradient(90deg, rgba(233,44,19,0.9752275910364145) 2%, rgba(254,163,2,1) 52%, rgba(255,239,0,1) 93%);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -30,6 +31,11 @@ body {
   padding:0 16px;
   padding-top: 30px;
 
+}
+button {
+  cursor: pointer;
+  background: rgb(175,165,165);
+background: linear-gradient(90deg, rgba(175,165,165,1) 23%, rgba(215,209,209,1) 57%);
 }
 
 * {
@@ -64,7 +70,7 @@ body {
   color: #2c3e50;
 }
 body {
-  background-image: linear-gradient(62deg, #7efbc1 0%, #c0f768 100%);
+
   display: flex;
   align-items: flex-start;
   justify-content: center;

@@ -27,7 +27,7 @@
        <transition name='opacity'> <UsersCardInfos @close="findingUser = false" 
               v-if="findingUser" class="userWindowInfos"></UsersCardInfos></transition>
       </div>
-      <button @click="typeOfSearch" > {{searchingSwitch}}</button>
+      <button @click="typeOfSearch" > {{searchingSwitch}} <i class="fas fa-exchange-alt"></i></button>
      </div>
      <button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
@@ -72,7 +72,7 @@
                 :id_db="findPublication.id" :adminConnected="adminConnected" 
                 :user="user" :index="index" class="reactions"> </Reactions>
               
-              <button :index="index" @click="openCommentsFunction(index)" class="commentButton">Commentaires</button>
+              <button :index="index" @click="openCommentsFunction(index)" id="commentButton">Commentaires</button>
               </div>
           </div>
                
@@ -460,22 +460,25 @@ export default {
     font-size: 25px;
     margin: 10px 0;
     border-radius: 5px;
-    background-color: rgb(212, 253, 253);
+    background: #185a9d ;
+background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
 }
 .discussion {
     height: auto;/*hyper important*/ 
     border-radius: 5px;
     width: 900px; /**/ 
-    overflow: scroll;
+    overflow:initial; /**/ 
     display: flex;
     flex-direction: column;
     max-width: 120%;
-    background-image: linear-gradient(62deg, #7efbc1 0%, #c0f768 100%);
+    background-color: transparent;
 }
 .message{
     display: grid;
     width: 100%;
-    background-color: rgb(212, 253, 253);
+    background: #185a9d ;
+background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
+
     grid-template-rows: 1fr 1fr 1fr 8fr 1fr ;
     justify-items: center;
     align-items: center;
@@ -519,11 +522,14 @@ img {
     display: flex;
     width: 100%;
     height: 100%;
+    align-self: flex-end;
 }
 .reactions_container {
     display: flex;
     width : 100%;
+    margin-bottom: 10px;
     justify-content: space-between;
+    
 }
 .interactiveCont {
   display: flex;/**/
@@ -574,13 +580,15 @@ button {
 }
     
 
-.commentButton {
+#commentButton {
     margin-left: auto;
-    margin-right: 5px;
-    max-height: 20px;
-    border: none;
+    margin-right: 30px;/**/
+    max-height: 50px;
+    margin-bottom: 5px; /* a moduler version */
+    height: 100%;
+    padding: 5px;
+    width: auto;
     font-size: 22px;
-    background-color: rgb(212, 253, 253);
 }
 @keyframes fill_heart {
   0% {
@@ -609,6 +617,7 @@ button {
 
 /* style metal and blue link utilisateur */
 .metal {
+  cursor: pointer;
   position: relative;
   outline: none;
   font: bold "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
@@ -674,7 +683,7 @@ button {
     display: flex;
     flex-direction: column;
     max-width: 120%;
-    background-image: linear-gradient(62deg, #7efbc1 0%, #c0f768 100%);
+ 
 }
 .message{
     display: grid;
@@ -776,11 +785,10 @@ button {
 }
     
 
-.commentButton {
+#commentButton {
     margin-left: auto;
     margin-right: 5px;
     max-height: 20px;
-    border: none;
     font-size: 22px;/**/
     background-color: rgb(212, 253, 253);
 }
@@ -902,7 +910,7 @@ button {
   width: 120px;
     font-size: 13px;/**/
 }
-.commentButton {
+#commentButton {
   font-size: initial;
 }
 

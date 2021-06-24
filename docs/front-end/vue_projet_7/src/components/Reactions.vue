@@ -306,23 +306,30 @@ isKeyExists(obj,key){
   position: relative;
   cursor: pointer;
   font-size: 15px;
-  color: red;
+  color: #43cea2;
 }
 .full-heart {
     color: red;
 }
 .orange{
-  color:orange
+  /*color:orange;*/
+  color :rgba(255,239,0,1);
 }
 .black{
-color: rgba(0, 0, 0,0.6);
+/*color: rgba(0, 0, 0,0.6);*/
+color: #43cea2;
+}
+.fa-trash-alt {
+  color: white;
 }
 .interactiveIcons{
 margin: 5px 0 5px 10px;
+cursor:pointer;
 font-size: 25px; 
 }
 span{
   font-size: 25px; 
+  color: #43cea2;
 }
 .no_display {
     display : none;
@@ -355,6 +362,7 @@ color: rgba(0, 0, 0,0.6);
 }
 .interactiveIcons{
 margin: 5px 0 5px 10px;
+cursor:pointer;
 font-size: 25px;/**/ 
 }
 span{
@@ -377,6 +385,7 @@ span{
 
 .interactiveIcons{
 margin: 5px 0 5px 10px;
+cursor:pointer;
 font-size: initial; /**/ 
 }
 span{
