@@ -3,13 +3,13 @@
       
       <div ref="comments" class="comments" >
           <button  :disabled="postComment" 
-          @click="postComment = !postComment">poster un commentaire</button>
+          @click="postComment = !postComment" class="grey_btn">poster un commentaire</button>
         <div v-if="postComment" class="comment" ref="newPublication">
           <span>exprimez vous !</span>
           <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
-            <button @click="postComment = !postComment"> annuler </button>
+            <button class="grey_btn" :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
+            <button class="grey_btn" @click="postComment = !postComment"> annuler </button>
             </div>
             </div>
             <div v-else-if="(loading) && !(postComment)" class="comment loading" 
@@ -28,7 +28,8 @@
               <span class="commentMessage" >{{data.comment}}</span>
               <span class="commentHour">{{data.date_posted}}</span>
                             
-              <button :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses </button>
+              <button v-if="!indexCheck(index)" :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses </button>
+              <button v-else :index="index" class="answerButton" @click="openAnswersFunction(index)" >Masquer </button>
                </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
           </div>
         </div>
@@ -53,6 +54,7 @@ export default {
           comment : '',
           answer : 'none',
           parent_id : null,
+          viewAnswer : false,
           focusIndex : [],
          commentsData : [
           {utilisateur : 'Charoux',comment : 'génial ta publication'},]
@@ -165,6 +167,7 @@ export default {
               event.target.style.color = 'black'
           }
       },
+
       openAnswersFunction(index){
           //si les answers sont déjà visibles et qu'on clique
           if (this.focusIndex.includes(index)){
@@ -205,7 +208,9 @@ export default {
 }
 .comment{
     display: grid;
-    background-color: transparent;
+    color: white;/**/ 
+    background: #185a9d ;/**/ 
+    background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);/**/ 
     position: relative;
     width: 100%;
     border: 1px black solid;
@@ -221,8 +226,9 @@ justify-items: center;
 align-items: center;
 
 }
+
 span{
-    max-width: 260px;
+    
     margin-bottom: 10px;
     margin: auto;
     text-align:left;
@@ -233,22 +239,24 @@ span{
 .userComment{
     grid-row-start: 1;
     font-size: 20px;
-    max-height: 25px;
+    /*max-height: 25px;*/
     overflow :scroll;
     margin-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding : 5px 10px;
 }
 .commentMessage {
     grid-row-start: 2;
-    font-size: 20px;
+    width: 700px;/**/ 
+    justify-self: center;
+    font-size: 23px;
     margin-top: 10px;
 }
 .commentHour {
-    font-size: 14px;
-}
+    font-size: 18px;/**/ 
+    color: black;/**/ 
+    }
 .answerButton{
-  font-size: 16px;
+  font-size: 21px;
   margin: 0;
     border: none;
     color: white;
@@ -271,7 +279,11 @@ button{
 .loading{
     background-color: rgb(255, 255, 255);
 }
-
+textarea {
+    width: 700px;/**/ 
+    justify-self: center;
+    font-size: 23px;
+}
 @media screen and (max-width : 1366px) {
 .comments{
     display: flex;

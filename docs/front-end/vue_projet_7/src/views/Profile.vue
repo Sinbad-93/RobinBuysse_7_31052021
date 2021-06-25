@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-<router-link to="Home">Home</router-link>
+<router-link to="Home" class="nav"> <i class="pi pi-arrow-right"></i> Résau Social Groupomania </router-link>
     <div class="infoCont">
     <ul class="card__subtitle"><i class="pi pi-user"></i> Mon profil </ul>
     <li>Prénom : {{user.name}}</li> <li>Nom : {{user.famillyName}} </li><li>E-mail : {{user.email}}</li>
@@ -199,11 +199,7 @@ img {
   max-height: 100%;
   border-radius: 8px;
 }
-.nav {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
+
 .infoCont {
   display: flex;
   flex-direction: column;
@@ -252,6 +248,7 @@ ul, li {
 .suppressCont {
   display: flex;
   justify-content: space-evenly;
+  margin-bottom : 20px;
 }
 
 span {

@@ -6,8 +6,8 @@
       <!--button @click="findAllPublications">FETCH</button!-->
       <div class="interactiveCont">
         
-        <select ref="select" v-model="selected" name="sort" id="sort-select">
-    <option value="default">Date : récente</option>
+        <select class="grey_btn" ref="select" v-model="selected" name="sort" id="sort-select">
+    <option  value="default">Date : récente</option>
     <option value="old">Date : ancienne</option>
     <option value="heart">le plus de coeur</option>
     <option value="smile">le plus de sourire</option>
@@ -27,7 +27,7 @@
        <transition name='opacity'> <UsersCardInfos @close="findingUser = false" 
               v-if="findingUser" class="userWindowInfos"></UsersCardInfos></transition>
       </div>
-      <button @click="typeOfSearch" > {{searchingSwitch}} <i class="fas fa-exchange-alt"></i></button>
+      <button class="grey_btn" @click="typeOfSearch" > {{searchingSwitch}} <i class="fas fa-exchange-alt"></i></button>
      </div>
      <button :disabled="newPostInProgress" class="btn-grad"
        @click="newPostInProgress = !newPostInProgress">Publication</button>
@@ -72,7 +72,8 @@
                 :id_db="findPublication.id" :adminConnected="adminConnected" 
                 :user="user" :index="index" class="reactions"> </Reactions>
               
-              <button :index="index" @click="openCommentsFunction(index)" id="commentButton">Commentaires</button>
+              <button v-if="!indexCheck(index)" :index="index" @click="openCommentsFunction(index)" class="grey_btn" id="commentButton">Commentaires</button>
+              <button v-else :index="index" @click="openCommentsFunction(index)" class="grey_btn" id="commentButton">Masquer</button>
               </div>
           </div>
                
@@ -458,7 +459,8 @@ export default {
 <style scoped>
 .mainTitle{
     font-size: 25px;
-    margin: 10px 0;
+    color: white;
+    margin: 50px 0;
     border-radius: 5px;
     background: #185a9d ;
 background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
@@ -484,7 +486,7 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
     align-items: center;
     border: 1px black solid;
     border-radius: 5px;
-    height: 630px; /**/ 
+    height: 680px; /**/ 
     margin-top : 70px;
     margin-bottom : 60px;
 }
@@ -498,25 +500,20 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
 .user {
 justify-self: flex-start;
 margin-left: 5px;
-font-size: 18px;
+margin-top: 10px;/**/ 
+font-size: 22px;/**/ 
 background-color: rgb(238, 228, 228);
-border-radius: 10px;
-padding-left: 10px;
-padding-right: 10px;
+padding : 10px 10px;
 }
 
 .messageTitle {
-  font-size: 25px;
+  font-size: 30px;/**/ 
  color: #FFFFFF;
 text-shadow: 2px 2px 0 #4074b5, 2px -2px 0 
 #4074b5, -2px 2px 0 #4074b5, -2px -2px 0 #4074b5, 2px 0px 0 
 #4074b5, 0px 2px 0 #4074b5, -2px 0px 0 #4074b5, 0px -2px 0 #4074b5;
 }
-img {
-    max-width: 80%;
-    max-height: 80%; 
-    border-radius: 5px;
-}
+
 .reactions{
     /*border: 1px solid black;*/
     display: flex;
@@ -540,6 +537,12 @@ select{
   font-size: 22px; 
   margin-right: auto;/**/
 }
+
+option{
+background: rgb(175,165,165);
+color: white;
+}
+
 .searchCont {
   position: relative;
   height: 25px;
@@ -550,6 +553,8 @@ button {
 }
 .search {
     font-size: 22px; 
+    padding-left: 3px;
+    background-color: rgb(214, 206, 206);
 }
 .searchWindowCont{
   position: absolute;
@@ -615,40 +620,12 @@ button {
     to {opacity: 0;}
 }
 
-/* style metal and blue link utilisateur */
-.metal {
-  cursor: pointer;
-  position: relative;
-  outline: none;
-  font: bold "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-  text-align: center;
-  color: hsla(0,0%,20%,1);
-  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
-  background-color: hsl(0,0%,90%);
-  transition: color .2s;}
-.radial.metal {
-  border-radius: 80px;
-  background-image:
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
-    -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
-}
 
-.metal:active {
-  color: hsl(210, 100%, 40%);
-  background-color: white;
-  text-shadow: hsla(210,100%,20%,.3) 0 -1px 0, hsl(210,100%,85%) 0 2px 20px, hsla(200,100%,80%,1) 0 0 15px, hsla(210,100%,50%,.6) 0 0 20px;
-  box-shadow: inset hsl(210, 100%, 40%) 0  0px 0px 3px, /* border */
-                    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL */;
-}
-.radial:active  {
-    background-image: none;
-}
 /*bouton de publication */
 
 .btn-grad {background-image: linear-gradient(to right, #43cea2 0%, #185a9d  51%, #43cea2  100%)}
 .btn-grad {
+  cursor: pointer;
   margin-top: 30px;/* */
   font-size: 25px;/**/
   width: 200px;/**/
@@ -669,6 +646,10 @@ button {
  }  
 /* -----ANIMER LES IMAGES ----*/ 
 img {
+  border: 2px white solid;
+  max-width: 80%;
+  max-height: 80%; 
+  border-radius: 5px;
 	-webkit-transform: scale(1);
 	transform: scale(1);
 	-webkit-transition: .3s ease-in-out;

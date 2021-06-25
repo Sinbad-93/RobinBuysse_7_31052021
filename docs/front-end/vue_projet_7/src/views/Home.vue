@@ -1,10 +1,16 @@
 <template>
   <div class="home">
       <ul>
-          <li> <router-link to="Profile">Mon profil</router-link> </li>
-          <li> <router-link to="/" >Deconnexion</router-link></li>
+        <li>
+          <span> {{userName}} {{userFamillyName}}</span> 
+        </li>
+          <li> <router-link to="Profile" class="nav"> 
+            <i class="pi pi-user"></i> Mon profil </router-link>
+              </li>
+          <li> <router-link to="/"><button @click="logout()" class="btn grey_btn">
+        Déconnexion <i class="pi pi-sign-out" ></i>
+      </button></router-link></li>
       </ul>
-     <span>bienvenue {{userName}}</span> 
       <Publications :adminConnected="adminConnected" :userName="userName">
       </Publications>
       </div>
@@ -29,7 +35,8 @@ export default {
       return {
           adminConnected : false,
           userConnectedInfos : false,
-          userName: 'example',
+          userName: 'Mister',
+          userFamillyName: 'Example',
       }
   },
   methods :{
@@ -86,6 +93,11 @@ async fetchVerifyToken() {
       return await response.json();},
 
   },
+  logout(){
+          localStorage.clear();
+          sessionStorage.clear();
+          this.$router.push('/'); 
+        },
 
     beforeCreate(){
     console.log('BEFORE CREATED');
@@ -122,15 +134,16 @@ async fetchVerifyToken() {
     console.log('MOUNTED');
     console.log(localStorage);
     if (this.checkConnexion() === true){
-        console.log(this.userConnectedInfos['name']);
+        //console.log(this.userConnectedInfos);
         this.userName = this.userConnectedInfos['name'];
+        this.userFamillyName = this.userConnectedInfos['familly_name'];
         this.$store.dispatch("findAllReactions", this.userConnectedInfos.id_user);
     }
 },
 
 }
 </script>
-<style>
+<style scoped>
 .home{
   width: 720px; 
   display: flex;
@@ -138,16 +151,31 @@ async fetchVerifyToken() {
   align-items: center;
 }
 span{
-  font-size: 20px; 
+  font-size: 22px; 
+  font-style: italic;
+  border: black 2px dashed;
+  border-radius: 15px 0 15px 0;
+  padding: 0 7px;
+  line-height: 42px;
+}
+.btn{
+  font-size: 20px; /**/ 
+  width: 200px; /**/ 
+  height: 40px;/**/
+}
+.nav {
+padding: 4px 10px;
 }
 ul{
     display: flex;
     width: 100%;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 li{
     list-style: none;
+    display: grid;
+    align-items: flex-end;
     font-size: 22px; 
 }
 a {

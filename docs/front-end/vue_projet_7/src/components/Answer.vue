@@ -3,14 +3,14 @@
       
       <div class="answers" ref="answers">
           <button
-              @click="postAnswer = !postAnswer">répondre</button>
+              @click="postAnswer = !postAnswer" class="grey_btn" >répondre</button>
 <!--button @click="findAllAnswers">FETCH</button!-->
               <div v-if="postAnswer" class="answer" ref="newPublication">
           <span>exprimez vous !</span>
           <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
-            <button @click="postAnswer = !postAnswer"> annuler </button>
+            <button class="grey_btn" :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
+            <button class="grey_btn" @click="postAnswer = !postAnswer"> annuler </button>
             </div>
             </div>
             <div v-else-if="(loading) && !(postComment)" class="answer loading" 
@@ -179,15 +179,20 @@ export default {
     background-color: transparent;
 }
 .answer{
-    background-color: rgb(252, 252, 252);
+    background-color: transparent;
+    
     display: grid;
     position: relative;
-    width: 100%;
+    width: 70%;/**/ 
+    
     margin-bottom : 10px;
 
 }
 .answerCont{
 display: grid;
+opacity: 0.9;/**/ 
+border-radius: 20px;
+background-color: white;
 min-height: 120px;
 grid-template-rows: 20% auto ;
 justify-items: center;
@@ -197,7 +202,8 @@ align-items: center;
 span{
     max-width: 260px;
     margin-bottom: 10px;
-    margin: auto;
+    /*margin: auto;*/ /**/ 
+    
     text-align:left;
 }
 button{
@@ -208,12 +214,13 @@ button{
 .userAnswer{
     grid-row-start: 1;
     max-height: 25px;
-    background-color: yellow;
     padding-left: 10px;
     padding-right: 10px;
 }
 .answerMessage {
     grid-row-start: 2;
+    color: black;
+    font-size: 22px;
     margin-top: 10px;
 
 }
@@ -225,6 +232,9 @@ button{
 }
 .loading{
     background-color: rgb(255, 255, 255);
+}
+textarea{
+    font-size: 22px;
 }
 
 @media screen and (max-width : 1366px) {

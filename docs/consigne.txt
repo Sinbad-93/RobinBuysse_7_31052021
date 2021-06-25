@@ -15,6 +15,10 @@ gerer en front mot de passe format incorrect ?
 
 empecher la double publication ? DOUBLE CLICK RAPIDE
 
+fermer les textaera apres publi, vu sur réponse
+
+appeler la carte de profil également depuis commentaire et answer ou désactivé le active and hover
+
 obligatoire : 
 
 -changer sa photo de profil (requete put avec photo par defaut)  ✓

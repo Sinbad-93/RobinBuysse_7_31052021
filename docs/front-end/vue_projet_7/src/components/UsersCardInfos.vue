@@ -3,13 +3,14 @@
     
               <div class="userWindowInfos " >
                <i @click="$emit('close')" class="far fa-times-circle"></i>
-                <span v-if='!userState.photo'> photo : <img :src="basicUrl" alt=""></span>
-                <span v-else> photo : <img :src="userState.photo" alt=""></span>
-                <span> prenom : {{userState.name}}</span>
-                <span> nom : {{userState.famillyName}}</span>
-                <span> mail : {{userState.email}}</span>
+               <h3>Carte du profil</h3>
+                 <img v-if='!userState.photo' :src="basicUrl" alt="">
+                 <img v-else :src="userState.photo" alt="">
+                <span> Prenom : {{userState.name}}</span>
+                <span> Nom : {{userState.famillyName}}</span>
+                <span> Email : {{userState.email}}</span>
                 
-                <span> citation : "Un grand pouvoir implique de grandes responsabilités"</span>
+                <span> Citation : "Un grand pouvoir implique de grandes responsabilités"</span>
               </div>
 </div>
 </template>
@@ -54,10 +55,16 @@ computed: {
   padding-left: 5px;
   position: absolute;
   top: 0;
+  border: 5px solid grey;/**/ 
+  background: rgb(233,44,19);/**/ 
+  background: linear-gradient(90deg, rgba(233,44,19,0.9752275910364145) 2%, rgba(254,163,2,1) 52%, rgba(255,239,0,1) 93%);/**/ 
   width: 620px; 
   height: 420px;
   z-index: 5;
-  background-color: white;
+
+}
+span{
+  font-size : 20px;/**/ 
 }
 .centered{
   position: fixed;
@@ -71,11 +78,21 @@ computed: {
    /*margin-left: auto;*/
    align-self: flex-end;
    margin-right: 5px;
+   margin-top: -15px;/**/ 
    font-size: 25px;
 }
+h3 {
+  position: absolute;/**/ 
+  left: 10px;/**/ 
+  top: 20px; /**/
+}
 img {
-  width: 120px; 
-  height: 120px; 
+  position: absolute;/**/
+  border-radius: 20px; 
+  right: 80px;/**/
+  top: 40px;/**/ 
+  width: 220px; /**/ 
+  height: 220px; /**/ 
 }
 
 @media screen and (max-width : 1366px) {
