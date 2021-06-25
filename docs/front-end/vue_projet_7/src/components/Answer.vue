@@ -184,9 +184,7 @@ export default {
     display: grid;
     position: relative;
     width: 70%;/**/ 
-    
     margin-bottom : 10px;
-
 }
 .answerCont{
 display: grid;
@@ -238,74 +236,42 @@ textarea{
 }
 
 @media screen and (max-width : 1366px) {
-.answers{
-    display: flex;
-    flex-direction: column;
-    overflow-wrap: break-word;
-    overflow-x: visible;
-    width: 100%;
-    justify-items: center;
-    align-items: center;
-    /*border: 1px black solid;*/
-    height: auto;
-    margin-bottom : 20px;
-    background-color: transparent;
-}
+
 .answer{
-    background-color: rgb(252, 252, 252);
-    display: grid;
-    position: relative;
-    width: 100%;
-    margin-bottom : 10px;
-
+    width: 80%;
 }
-.answerCont{
-display: grid;
-min-height: 120px;
-grid-template-rows: 20% auto ;
-justify-items: center;
-align-items: center;
 
-}
 span{
-    max-width: 260px;
-    margin-bottom: 10px;
     margin: auto;
-    text-align:left;
 }
-button{
-    margin-bottom: 30px;/**/ 
-    font-size: 22px; /**/ 
-    padding: 7px;/**/ 
-}
-.userAnswer{
-    grid-row-start: 1;
-    max-height: 25px;
-    background-color: yellow;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.answerMessage {
-    grid-row-start: 2;
-    margin-top: 10px;
 
-}
-.icons{
-    grid-row-start: 3;
+.answerMessage {
+    /*font-size: 22px;*/
     margin-top: 10px;
-    display: flex;
-    justify-content: space-around;
+    font-size: 20px;
 }
-.loading{
-    background-color: rgb(255, 255, 255);
+textarea{
+    font-size: 18px;
+    max-height: 180px;
 }
+
 }
 
 @media screen and (max-width : 767px) {
 button{
     margin-bottom: 30px;
-    font-size: 17px; /**/ 
+    font-size: 14px; /**/ 
     padding: 7px;/**/ 
+}
+.answer{
+    width: 80%;
+  
+}
+.answerMessage {
+      font-size: 17px;
+}
+textarea{
+    font-size: 16px;
 }
 
 }

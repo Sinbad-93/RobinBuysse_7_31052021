@@ -479,8 +479,7 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
     display: grid;
     width: 100%;
     background: #185a9d ;
-background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
-
+    background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
     grid-template-rows: 1fr 1fr 1fr 8fr 1fr ;
     justify-items: center;
     align-items: center;
@@ -589,7 +588,7 @@ button {
     margin-left: auto;
     margin-right: 30px;/**/
     max-height: 50px;
-    margin-bottom: 5px; /* a moduler version */
+    margin-bottom: 5px; 
     height: 100%;
     padding: 5px;
     width: auto;
@@ -665,46 +664,21 @@ img:hover {
 
 @media screen and (max-width : 1366px) {
 .mainTitle{
-    font-size: 25px;/**/
-    margin: 10px 0;
-    border-radius: 5px;
-    background-color: rgb(212, 253, 253);
+ margin: 30px 0;
 }
 .discussion {
     height: auto;/*hyper important*/ 
-    border-radius: 5px;
     width: 600px;/**/ 
+    margin: auto;
     overflow: scroll;
-    display: flex;
-    flex-direction: column;
-    max-width: 120%;
- 
+    justify-content: center;
 }
 .message{
-    display: grid;
-    width: 100%;
-    background-color: rgb(212, 253, 253);
-    grid-template-rows: 1fr 1fr 1fr 8fr 1fr ;/**/
-    justify-items: center;
-    align-items: center;
-    border: 1px black solid;
-    border-radius: 5px;
-    height: 450px;/**/ 
-    margin-top : 70px;
-    margin-bottom : 60px;
-}
-.messageHour{
-    font-size: 16px;/**/ 
+    height: 550px;/**/ 
 }
 
-.loading{
-    background-color: rgb(255, 255, 255);
-}
 .user {
-justify-self: flex-start;
-margin-left: 5px;
 font-size: 18px;/**/
-background-color: rgb(238, 228, 228);
 border-radius: 10px;
 padding-left: 10px;
 padding-right: 10px;
@@ -712,155 +686,36 @@ padding-right: 10px;
 
 .messageTitle {
   font-size: 25px;/**/
- color: #FFFFFF;
-text-shadow: 2px 2px 0 #4074b5, 2px -2px 0 
-#4074b5, -2px 2px 0 #4074b5, -2px -2px 0 #4074b5, 2px 0px 0 
-#4074b5, 0px 2px 0 #4074b5, -2px 0px 0 #4074b5, 0px -2px 0 #4074b5;
 }
-img {
-    max-width: 80%;
-    max-height: 80%;/**/ 
-    border-radius: 5px;
-}
-.reactions{
-    /*border: 1px solid black;*/
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
+
 .reactions_container {
-    display: flex;
-    width : 100%;
-    justify-content: space-between;
+    margin-bottom: 10px;
 }
 .interactiveCont {
-  display: flex;
   justify-content: space-around;/**/ 
-  margin-bottom: 8px;
 }
-select{
-  font-size: 22px;/**/ 
-}
-.searchCont {
-  position: relative;
-  height: 25px;
-}
+
 button {
   font-size: 22px;/**/ 
+  /*width : 150px;*/
 }
-.search {
-    font-size: 22px;/**/ 
-}
-.searchWindowCont{
-  position: absolute;
-  z-index: 5;
-  right: 0;
-  height: 200px;
-  width: 95%;
-}
-.searchWindow {
-  
-  padding-left: 8px;
-  overflow: scroll;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: white;
-  border: 1px black solid;
-  height: 200px;
-  width: 100%;
-  
-  
-}
-.searchQuit {
-  position: absolute;
-  left: 0;
-  bottom: -20px;
-  width: 100%;
-
-}
-    
 
 #commentButton {
-    margin-left: auto;
-    margin-right: 5px;
-    max-height: 20px;
-    font-size: 22px;/**/
-    background-color: rgb(212, 253, 253);
-}
-@keyframes fill_heart {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.opacity-enter-active {
-    animation : enterAnimation 1.5s ease-in;
-}
-.opacity-leave-active {
-    animation : outAnimation 0.4s ease-in-out;
-}
-
-@keyframes enterAnimation {
-    from { opacity : 0;}
-    to { opacity : 1;}
-}
-@keyframes outAnimation {
-    from { opacity : 1;}
-    to {opacity: 0;}
-}
-
-/* style metal and blue link utilisateur */
-.metal {
-  position: relative;
-  outline: none;
-  font: bold "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
-  text-align: center;
-  color: hsla(0,0%,20%,1);
-  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
-  background-color: hsl(0,0%,90%);
-  transition: color .2s;}
-.radial.metal {
-  border-radius: 80px;
-  background-image:
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   3%, hsla(0,0%,  0%,.1) 3.5%),
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%,.1) 7.5%),
-    -webkit-repeating-radial-gradient( 50% 50%, 100% 100%, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.2) 2.2%),
-    -webkit-radial-gradient( 50% 50%, 200% 50%, hsla(0,0%,90%,1) 5%, hsla(0,0%,85%,1) 30%, hsla(0,0%,60%,1) 100%);
-}
-
-.metal:active {
-  color: hsl(210, 100%, 40%);
-  background-color: white;
-  text-shadow: hsla(210,100%,20%,.3) 0 -1px 0, hsl(210,100%,85%) 0 2px 20px, hsla(200,100%,80%,1) 0 0 15px, hsla(210,100%,50%,.6) 0 0 20px;
-  box-shadow: inset hsl(210, 100%, 40%) 0  0px 0px 3px, /* border */
-                    hsla(0,0%,100%,.5) 0  5px 6px 4px; /* outer HL */;
-}
-.radial:active  {
-    background-image: none;
+    margin-right: 8px;
+    font-size: 18px;
+    max-height: 55px;
+    padding: 0 5px;
+    margin-bottom: 2px; 
+    /*padding: 5px;*/
 }
 /*bouton de publication */
 
-.btn-grad {background-image: linear-gradient(to right, #43cea2 0%, #185a9d  51%, #43cea2  100%)}
-.btn-grad {
-  font-size: 18px;
-   padding: 5px 5px;
-   text-align: center;
-   text-transform: uppercase;
-   transition: 0.5s;
-   background-size: 200% auto;
-   color: white;            
-   box-shadow: 0 0 20px #eee;
-   border-radius: 10px;
-   }
 
- .btn-grad:hover {
-   background-position: right center; /* change the direction of the change here */
-   color: #fff;
-   text-decoration: none;
- }       
+.btn-grad {
+  font-size: 22px;
+  /*margin-top: 30px; */
+  /* width: 200px;*/
+   }
 
 }
 
@@ -873,6 +728,7 @@ button {
     height: auto; /* important */
     width: 300px;/**/ 
 }
+
 .message{
     grid-template-rows: 1fr 1fr 1fr 8fr 1fr ; 
     height: 280px;
@@ -880,19 +736,24 @@ button {
 .messageHour{
     font-size: 12px;
 }
-
+button {
+  font-size: 14px;/**/ 
+  width : 60px;
+  border-radius: 0;
+}
 .loading{
     background-color: rgb(255, 255, 255);
 }
 .user {
 font-size: 14px;
+padding: 0 7px ;
 }
 
 .messageTitle {
-  font-size: initial;/**/
+  font-size: 23px;/**/
 }
 img {
-    max-height: 85%;
+    max-height: 90%;
 }
 select{
   width: 100px;
@@ -902,11 +763,16 @@ button {
   font-size: 12px;/**/
 }
 .search {
-  width: 120px;
-    font-size: 13px;/**/
+  width: 140px;
+    font-size: 11px;/**/
+    height: 28px;
+}
+.searchCont{
+  margin-bottom: 4px;
 }
 #commentButton {
-  font-size: initial;
+  font-size: 12px;
+  max-height: 25px;
 }
 
 }

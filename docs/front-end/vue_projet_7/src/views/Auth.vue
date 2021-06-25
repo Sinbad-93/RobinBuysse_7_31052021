@@ -65,26 +65,8 @@ img {
 }
 
 @media screen and (max-width : 1366px) {
-.auth_page{
-  display: flex;
-  margin-top: 0px;/**/ 
-  flex-direction: column;
-  align-items: center;
+
 }
-.presentation{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin:0 0 20px 0;
-  font-weight: 600;
-}
-img {
-  max-width: 20%;
-  border-radius: 8px;
-}
-#logo__title {
-  font-size: 27px;/**/ 
-}}
 @media screen and (max-width : 767px) {
 .auth_page{
   margin-top: 70px;

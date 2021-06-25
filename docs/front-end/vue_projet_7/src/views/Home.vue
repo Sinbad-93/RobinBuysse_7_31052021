@@ -2,7 +2,7 @@
   <div class="home">
       <ul>
         <li>
-          <span> {{userName}} {{userFamillyName}}</span> 
+          <span class="name"> {{userName}} {{userFamillyName}}</span> 
         </li>
           <li> <router-link to="Profile" class="nav"> 
             <i class="pi pi-user"></i> Mon profil </router-link>
@@ -183,37 +183,43 @@ a {
 }
 
 @media screen and (max-width : 1366px) {
-.home{
-  width: 720px;/**/ 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 span{
-  font-size: 20px; /**/
+  font-size: 20px; 
 }
 ul{
-    display: flex;
-    width: 100%;
-    flex-direction: row;
     justify-content: space-around;
 }
 li{
     list-style: none;
     font-size: 22px;/**/ 
 }
-a {
-    text-decoration: none;
-}}
+.nav{
+  opacity : 0.8;
+}
+}
 @media screen and (max-width : 767px) {
 .home{
   width: initial;/**/ 
 }
 span{
-  font-size: 18px; /**/
+  font-size: 15px; /**/
+  line-height: initial;
+}
+ul{
+    flex-wrap: wrap;
 }
 li{
     font-size: 15px;
+}
+.name {
+  width: 300px;
+  margin-bottom: 20px;
+}
+.btn{
+    font-size: 15px;
+    width: 140px;
+    height: 33px;
 }
 
 }

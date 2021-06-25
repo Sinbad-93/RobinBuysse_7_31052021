@@ -97,31 +97,7 @@ img {
 
 @media screen and (max-width : 1366px) {
 .userWindowInfos{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-around;
-  padding-left: 5px;
-  position: absolute;
-  top: 0;
-  width: 620px;/**/ 
-  height: 420px;/**/
-  z-index: 5;
-  background-color: white;
-}
-.centered{
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-
-}
-.fa-times-circle{
-   /*margin-left: auto;*/
-   align-self: flex-end;
-   margin-right: 5px;
-   font-size: 25px;
+  border: 3px solid grey;/**/ 
 }
 img {
   width: 120px;/**/ 
@@ -134,9 +110,21 @@ img {
   height: 280px;
 
 }
-img {
-  width: 50px;
-  height: 50px;
+.fa-times-circle{
+   margin-right: 1px;
+   margin-top: -8px;/**/ 
+}
+h3 { 
+  left: 5px;/**/ 
+  top: 2px; /**/
+}
+img { 
+  border-radius: 20px; 
+  right: 20px;/**/
+  top: 20px;/**/ 
+  width: 100px; /**/ 
+  height: 100px; /**/ 
+  
 }
 
 

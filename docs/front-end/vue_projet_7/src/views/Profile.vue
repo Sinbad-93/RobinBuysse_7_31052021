@@ -199,7 +199,6 @@ img {
   max-height: 100%;
   border-radius: 8px;
 }
-
 .infoCont {
   display: flex;
   flex-direction: column;
@@ -218,10 +217,8 @@ img {
   align-self: center;
 }
 .photoCont {
-  
   margin-top: 10px;
   width: 400px;
-
   background: #185a9d ;
   background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
   border: 1px black solid;
@@ -290,46 +287,20 @@ input[type="file"] {
 }
 
 @media screen and (max-width : 1366px) {
-.profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  height: 600px;
-}
-img {
-    margin: 20px;
-  max-width: 80%;
-  max-height: 50%;/**/
-  border-radius: 8px;
+
+.photoCont{
+  width: auto;
 }
 ul, li {
-  font-size: 25px; /**/
+  font-size: 25px; 
 }
-.btn{
-  margin-top: 10px;
-  font-size: 22px; /**/ 
-    background-color: white;
-    width: 200px; /**/ 
-    height: 50px;/**/
-}
-span {
-  margin: 10px auto;
-  border: black 1px solid;
-  background-color: white;
-  font-size: 25px;/**/ 
-  padding: 8px;/**/
-  font-weight: bolder;
-}
-a{
-  font-size: 30px;
-}
+
 }
 @media screen and (max-width : 767px) {
 .btn{
     font-size: 18px; /**/
-    width: 150px;
-    height: 30px;
+    width: 180px;
+    height:40px;
 }
 ul, li {
   font-size: 18px; /**/
@@ -338,8 +309,10 @@ span {
   font-size: 15px;
 
 }
+
 a{
-  font-size: 22px;
+  font-size: 18px;
+  opacity: 0.8;
 }
 }
 </style>
