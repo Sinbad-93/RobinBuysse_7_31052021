@@ -79,6 +79,7 @@ mounted(){
   computed:  {
     ...mapState({
       user: 'userConnectedInfos',
+      numberOfReactions : 'numberOfReactions'
     }),
     userState() {
 
@@ -151,10 +152,10 @@ isKeyExists(obj,key){
       fnTest_2(number){
         //console.table(this.user);
         //console.log(this.isObjEmpty(this.user.userReactions));
-        if (this.isObjEmpty(this.user.numberOfReactions) === true){
+        if (this.isObjEmpty(this.numberOfReactions) === true){
         return false}
-        else if(this.isKeyExists(this.user.numberOfReactions, this.id_db)){
-         this.parentReactions[number] =  this.user.numberOfReactions[this.id_db].reactions[number]; 
+        else if(this.isKeyExists(this.numberOfReactions, this.id_db)){
+         this.parentReactions[number] =  this.numberOfReactions[this.id_db].reactions[number]; 
         return true
           }
         else {

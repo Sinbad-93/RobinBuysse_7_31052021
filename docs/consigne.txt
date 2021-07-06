@@ -1,5 +1,4 @@
 travail restant :
-(-replacer numberOfReactions à l'exterieur de user)
 
 si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
 que de me ramener automatiquement au login, pourquoi ?

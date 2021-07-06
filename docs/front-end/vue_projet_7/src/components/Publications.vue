@@ -160,6 +160,7 @@ export default {
   computed:  {
     ...mapState({
       user: 'userConnectedInfos',
+      numberOfReactions : 'numberOfReactions'
     }),
     userState() {
 
@@ -225,25 +226,25 @@ export default {
         }
       else if( this.selected === 'heart'){
           var allIdMap = new Map();
-          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,0);
+          allIdMap = this.sortWithMap(loopsBox,this.numberOfReactions,allIdMap,0);
            let publicationsHeart = [];
            return this.sortByreactions(publicationsObject,publicationsHeart,allIdMap,loopsBox);
       }
       else if( this.selected === 'smile'){
           var allIdMap = new Map();
-          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,1);
+          allIdMap = this.sortWithMap(loopsBox,this.numberOfReactions,allIdMap,1);
            let publicationsSmile = [];
            return this.sortByreactions(publicationsObject,publicationsSmile,allIdMap,loopsBox);
         }
       else if( this.selected === 'laugh'){
           var allIdMap = new Map();
-          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,2);
+          allIdMap = this.sortWithMap(loopsBox,this.numberOfReactions,allIdMap,2);
            let publicationsLaugh = [];
            return this.sortByreactions(publicationsObject,publicationsLaugh,allIdMap,loopsBox);
         }
       else if( this.selected === 'reactions'){
           var allIdMap = new Map();
-          allIdMap = this.sortWithMap(loopsBox,this.user.numberOfReactions,allIdMap,3);
+          allIdMap = this.sortWithMap(loopsBox,this.numberOfReactions,allIdMap,3);
            let publicationsTotalReactions = [];
           return this.sortByreactions(publicationsObject,publicationsTotalReactions,allIdMap,loopsBox);
         }
@@ -441,7 +442,7 @@ export default {
               allIdMap.set(loopsBox[i].id_publication , 0);
             }
            else if (numberOfReactions[loopsBox[i].id_publication]){
-             allIdMap.set(loopsBox[i].id_publication , (this.user.numberOfReactions[loopsBox[i].id_publication].reactions[numb]));
+             allIdMap.set(loopsBox[i].id_publication , (this.numberOfReactions[loopsBox[i].id_publication].reactions[numb]));
            };}}
            return allIdMap;
       },

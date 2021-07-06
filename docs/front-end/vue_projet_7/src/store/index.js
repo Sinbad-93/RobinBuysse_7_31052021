@@ -76,8 +76,8 @@ export default createStore({
       token : null,
       photo : null,
       userReactions : {},
-      numberOfReactions : {},
     },
+    numberOfReactions : {},
     userPickedInfos :{
       id_user : '0',
       name : '0',
@@ -85,7 +85,6 @@ export default createStore({
       email : '0',
       password: '0',
       userReactions : {},
-      numberOfReactions : {},
     },
     allUsers : [],
   },
@@ -253,7 +252,7 @@ export default createStore({
     }
     
     state.userConnectedInfos.userReactions= packets;
-    state.userConnectedInfos.numberOfReactions= packets_2;
+    state.numberOfReactions= packets_2;
     console.log(state.user);
     },
     
