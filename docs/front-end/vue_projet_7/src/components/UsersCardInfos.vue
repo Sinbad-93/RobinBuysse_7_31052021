@@ -1,7 +1,7 @@
 <template>
 <div class="centered" >
     
-              <div class="userWindowInfos " >
+      
                <i @click="$emit('close')" class="far fa-times-circle"></i>
                <h3>Carte du profil</h3>
                  <img v-if='!userState.photo' :src="basicUrl" alt="">
@@ -11,7 +11,7 @@
                 <span> Email : {{userState.email}}</span>
                 
                 <span> Citation : "Un grand pouvoir implique de grandes responsabilités"</span>
-              </div>
+              
 </div>
 </template>
 

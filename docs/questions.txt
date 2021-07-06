@@ -9,4 +9,3 @@ Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant v
 meme si la requete fonctionne
 ( à voir la prochaine fois)
 
-voir CSS body / app / home enlver doublde scroll

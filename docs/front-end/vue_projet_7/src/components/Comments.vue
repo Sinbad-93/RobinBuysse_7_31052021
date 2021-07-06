@@ -13,7 +13,7 @@
             </div>
             </div>
             <div v-else-if="(loading) && !(postComment)" class="comment loading" 
-            >LOADING</div>
+            >LOADING ...</div>
 
           <div  :id_comment_db="data.id_comment_and_answer" 
           v-bind:class="checkParentId(data.parent_id) ? 'comment ' : 'notVisible'" 
@@ -22,7 +22,7 @@
           :key="data"
           :index="index" >
           <div class="commentCont" :index="index" v-if="checkParentId(data.parent_id)">
-              <span ref="userComment" @click="$emit('find_user',index,data.user_id)"
+              <span ref="userComment" @click="$emit('find_user',index_parent,data.user_id)"
               class="userComment metal radial">{{data.name}} {{data.familly_name}} 
               </span>
               <span class="commentMessage" >{{data.comment}}</span>
@@ -31,7 +31,7 @@
               <button v-if="!indexCheck(index)" :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses </button>
               <button v-else :index="index" class="answerButton" @click="openAnswersFunction(index)" >Masquer </button>
                </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" 
-               :objectSize="objectSize" :user="user" :adminConnected="adminConnected" @find_user="emitToPublication"
+               :objectSize="objectSize" :user="user" :adminConnected="adminConnected" @find_user="emitToPublication" :index_parent="index_parent"
                v-if="indexCheck(index)"></Answer>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default {
   components: {
       Answer
   },
-  props: ['viewComment','adminConnected','user', 'objectSize','id_db'],
+  props: ['viewComment','adminConnected','user', 'objectSize','id_db', 'index_parent'],
   data() {
       return {
           isSpread : false,
@@ -163,6 +163,9 @@ export default {
           if(this.comment.length < 5){
               return true
           }
+          else if(this.comment.length > 1000){
+              return true
+          }
           else {
               return false
           }
@@ -246,7 +249,7 @@ align-items: center;
 }
 
 span{
-    
+    max-width: 700px;
     margin-bottom: 10px;
     margin: auto;
     text-align:left;
@@ -258,7 +261,7 @@ span{
     grid-row-start: 1;
     font-size: 20px;
     /*max-height: 25px;*/
-    overflow :scroll;
+    overflow :hidden;
     margin-top: 5px;
     padding : 5px 10px;
 }
@@ -308,7 +311,7 @@ textarea {
 @media screen and (max-width : 1366px) {
 
 span{
-    max-width: 260px;
+    max-width: 450px;
 }
 
 .userComment{
@@ -353,6 +356,9 @@ button{
 textarea {
     width:260px;/**/ 
     font-size: 14px;
+}
+span{
+    max-width: 260px;
 }
 
 }

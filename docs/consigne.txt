@@ -1,24 +1,24 @@
 travail restant :
 (-replacer numberOfReactions à l'exterieur de user)
 
-pourquoi search user me renvoi 5* les memes
-
 si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
 que de me ramener automatiquement au login, pourquoi ?
+creer un 404 not found ?
 
-scroll automatique bas de page btn supprimer mon compte ?
+gerer en front mot de passe format incorrect ? ( à la fin car test renvoi d'erreur ?)
+
+pblm avec bouton switch user post ✓
 
 empecher publication, commentaire ou reponse vide ✓
 
-barre de loading answer (color white pas bon)
+barre de loading answer (color white pas bon) ✓
 
 besoin d'actualisation après delete une publication ✓ 
 (ne pas oublier $emit et ecouteur tj en minuscule)
 
-gerer en front texte trop long ? post commentaires ect
-gerer en front mot de passe format incorrect ?
+gerer en front texte trop long ? post commentaires ect ✓ 
 
-empecher la double publication ? DOUBLE CLICK RAPIDE
+empecher la double publication ? DOUBLE CLICK RAPIDE ✓ 
 
 fermer les textaera apres publi, vu sur réponse ✓
 
@@ -51,11 +51,11 @@ obligatoire :
 optionnel :
 - trier par popularité ✓
 
--stocker le token en crypté
+-essayer d'intercepter les erreurs du back et les afficher (2h max)
 
-- filtrer par utilisateur
+- mieux gerer la taille des photos
 
-- signaler un contenu 
+-scroll automatique bas de page btn supprimer mon compte ?
 
 - blogging news ---------- site perso (x)
 

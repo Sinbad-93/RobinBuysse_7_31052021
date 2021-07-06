@@ -20,8 +20,8 @@
       @focus="checkSearchMode()" v-model="search">
        <div class="searchWindowCont" v-if="searchWindow&&(searchingSwitch==='user')">
        <div class="searchWindow">
-       <span @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
-       :key="findUser" >{{findUser.id}} {{findUser.name}} {{findUser.famillyName}}</span></div>
+       <span class="searchSpan" @click="getOneUser('bySearch',findUser.id)" v-for="findUser in allUsersState" 
+       :key="findUser" > {{findUser.name}} {{findUser.famillyName}}</span></div>
        <button @click="searchWindow = false" class="searchQuit">quit</button>
        </div>
        <transition name='opacity'> <UsersCardInfos @close="findingUser = false" 
@@ -40,7 +40,7 @@
           <input v-else type="button" value="retirer" @click="removeImg" />
             <img v-if="newUrl" :src="newUrl" />
           <div>
-            <button class="grey_btn" :disabled="!newUrl || alreadyClicked" @click="publishPublication"> publier </button>
+            <button class="grey_btn" :disabled="checkPostValidity()" @click="publishPublication"> publier </button>
             <button class="grey_btn" @click="newPostInProgress = !newPostInProgress"> annuler </button>
             </div>
             </div>
@@ -78,7 +78,7 @@
           </div>
                
                   <Comments :id_db="findPublication.id" :objectSize="objectSize" :user="user" 
-                  :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+                  :index_parent="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
                   @find_user="focusIndexFn"
                   :ref="'comment'+index"
                    ></Comments>
@@ -130,6 +130,7 @@ export default {
           searchingSwitch : 'post',
           alreadyClicked : false,
           newTitle : '',
+          titleSize : false,
           searchWindow : false,
           image : null,
           newUrl: null,
@@ -199,6 +200,7 @@ export default {
       return this.option;*/
       return this.selected
     },
+    
     filterPublications() {
       //selecteur de tri
       let loopsBox;
@@ -361,6 +363,18 @@ export default {
       this.newUrl = null;
       this.image = null;
         },
+        checkPostValidity(){
+      if (this.newTitle.length < 3 || this.newTitle.length > 44){
+          this.titleSize = true;
+      }
+      else {
+        this.titleSize = false;
+      }      
+      if( !this.newUrl){ return true}
+      else if (this.alreadyClicked){ return true}
+      else if (this.titleSize){ return true}
+      else { return false}
+    },
     
     objectSize (obj) {
         var size = [];
@@ -451,13 +465,14 @@ export default {
           if (this.focusIndex.includes(index)){ return true}
       },
     typeOfSearch(){
+      this.searchingUser = !this.searchingUser;
           if (this.searchingUser === true){
               this.searching ="Chercher un utilisateur"
               this.searchingSwitch ="user"}
           else{
              this.searching ="Chercher un post"
              this.searchingSwitch ="post"}
-                    this.searchingUser = !this.searchingUser;
+                    
                     }
   }
     }
@@ -475,7 +490,7 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
     height: auto;/*hyper important*/ 
     border-radius: 5px;
     width: 900px; /**/ 
-    overflow:initial; /**/ 
+    overflow:visible; /**/ 
     display: flex;
     flex-direction: column;
     max-width: 120%;
@@ -498,7 +513,16 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
 .messageHour{
     font-size: 16px; 
 }
-
+.searchSpan {
+  margin: auto;
+  border: 1px solid green;
+  background-color: rgb(196, 230, 231);
+  cursor: pointer;
+  width: 90%;
+}
+.searchSpan:hover{
+  background-color: white;
+}
 .loading{
     background-color: rgb(255, 255, 255);
     font-size: 50px;
@@ -678,7 +702,7 @@ img:hover {
     height: auto;/*hyper important*/ 
     width: 600px;/**/ 
     margin: auto;
-    overflow: scroll;
+    overflow: visible;
     justify-content: center;
 }
 .message{

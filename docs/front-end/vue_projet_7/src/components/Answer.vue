@@ -14,12 +14,12 @@
             </div>
             </div>
             <div v-else-if="(loading) && !(postComment)" class="answer loading" 
-            >LOADING</div>
+            >LOADING ...</div>
           <div class="answer" v-for="(data,index) in answersData"
           :key="data"
           :index="index" >
           <div class="answerCont" :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id_answer)">
-              <span ref="userAnswer " @click="$emit('find_user',index,data.user_id)"
+              <span ref="userAnswer " @click="$emit('find_user',index_parent,data.user_id)"
               class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
               <span class="answerMessage" >{{data.answer}}</span>
@@ -37,7 +37,7 @@ export default {
   name: "Answer",
   components: {
   },
-  props: ['viewComment','adminConnected','user','objectSize','id_comment_db', 'id_db'],
+  props: ['viewComment','adminConnected','user','objectSize','id_comment_db', 'id_db','index_parent'],
   data() {
       return {
           isSpread : false,
@@ -171,6 +171,9 @@ export default {
           if(this.answer.length < 5){
               return true
           }
+          else if(this.answer.length > 255){
+              return true
+          }
           else {
               return false
           }
@@ -205,13 +208,13 @@ opacity: 0.9;/**/
 border-radius: 20px;
 background-color: white;
 min-height: 120px;
-grid-template-rows: 20% auto ;
+/*grid-template-rows: 20% auto ;*/
 justify-items: center;
 align-items: center;
 
 }
 span{
-    max-width: 260px;
+    max-width: 500px;
     margin-bottom: 10px;
     /*margin: auto;*/ /**/ 
     
@@ -227,9 +230,12 @@ button{
     max-height: 25px;
     padding-left: 10px;
     padding-right: 10px;
+    overflow :hidden;
 }
 .answerMessage {
     grid-row-start: 2;
+    justify-self: center;
+    padding-left: 5px ;
     color: black;
     font-size: 22px;
     margin-top: 10px;
@@ -257,6 +263,7 @@ textarea{
 }
 
 span{
+    max-width: 380px;
     margin: auto;
 }
 
@@ -288,6 +295,8 @@ button{
 textarea{
     font-size: 16px;
 }
-
+span{
+    max-width: 230px;
+}
 }
 </style>
