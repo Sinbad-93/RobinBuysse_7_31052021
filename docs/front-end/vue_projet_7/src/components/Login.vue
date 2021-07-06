@@ -111,8 +111,8 @@
         type="submit"
         value="Inscription"
       />
-      <span v-if="status == 'loadingCreate'">Création en cours...</span>
-      <span v-else-if="status == 'loadingConnect'">Connexion en cours...</span>
+      <span class="loading" v-if="status == 'loadingCreate'">Création en cours...</span>
+      <span class="loading" v-else-if="status == 'loadingConnect'">Connexion en cours...</span>
     </div>
   </form>
 </template>
@@ -133,12 +133,9 @@ export default {
       validatedFields: 1,
     };
   },
-  /*mounted: function () {
-    if (this.$store.state.user.userId != -1) {
-      this.$router.push('/profile');
-      return ;
-    }
-  },*/
+  mounted: function () {
+  this.$store.state.status = ''
+  },
   computed: {
     /*validatedFields: function () {
       if (this.mode == 'create') {
@@ -204,9 +201,9 @@ export default {
     },
 
     createAccount() {
+      this.$store.dispatch("createAccount");
       this.fetchPostUser()
         .then((data) => {
-          this.$store.dispatch("createAccount");
           if (data) {
             this.loginUser();
           }
@@ -241,6 +238,7 @@ export default {
     },
 
     loginUser() {
+      this.$store.dispatch("loginAccount");
       this.fetchLogin()
         .then((data) => {
           console.log(data);
@@ -393,6 +391,9 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
   .show__hide__logo {
     position: absolute;
     height: 55%;
+  }
+  .loading{
+    color: white;
   }
 
 @media screen and (max-width: 1366px) {

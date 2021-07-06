@@ -6,6 +6,8 @@ creer un 404 not found ?
 
 gerer en front mot de passe format incorrect ? ( à la fin car test renvoi d'erreur ?)
 
+gerer connexion en cours, inscription en cours ✓
+
 pblm avec bouton switch user post ✓
 
 empecher publication, commentaire ou reponse vide ✓

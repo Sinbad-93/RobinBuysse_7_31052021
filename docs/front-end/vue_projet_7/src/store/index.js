@@ -264,7 +264,7 @@ export default createStore({
       //falseuser = falseuser._addNewUser(userInfos);
       console.log('l\'utilisateur est connecté');
       console.log(userInfos);
-      commit('setStatus', 'loadingConnect');
+      
       /*générer des chaines aléatoires de verification pour garantir le bon acces front end
       même si un utilisateur trafic le local ou sessionStorage */
       var lockString = Math.random().toString(36).substring(2, 15) + 
@@ -292,7 +292,11 @@ export default createStore({
       commit('connectUser',userInfos);
       },
 
-    createAccount: ({commit}) => {
+      loginAccount: ({commit}) => {
+        commit('setStatus', 'loadingConnect');
+        //commit('saveUser');
+        },
+      createAccount: ({commit}) => {
       commit('setStatus', 'loadingCreate');
       //commit('saveUser');
       },
