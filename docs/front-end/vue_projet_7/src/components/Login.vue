@@ -321,7 +321,7 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
   }
 
   .button {
-    color: black;
+    /*color: black; */
     border: 1px black solid;
     border-radius: 8px;
     font-weight: 500;

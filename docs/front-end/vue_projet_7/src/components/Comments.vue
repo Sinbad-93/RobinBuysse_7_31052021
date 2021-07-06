@@ -5,10 +5,10 @@
           <button  :disabled="postComment" 
           @click="postComment = !postComment" class="grey_btn">poster un commentaire</button>
         <div v-if="postComment" class="comment" ref="newPublication">
-          <span>exprimez vous !</span>
-          <textarea v-model="comment" name="" id="" cols="30" rows="10"></textarea>
+          <span>Exprimez vous !</span>
+          <textarea ref="textarea" v-model="comment" name="" id="" minlength="5" cols="30" rows="10"></textarea>
           <div>
-            <button class="grey_btn" :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
+            <button class="grey_btn" :disabled="checkTextarea()" :id_db="id_db"  @click="publishComment(id_db)"> publier </button>
             <button class="grey_btn" @click="postComment = !postComment"> annuler </button>
             </div>
             </div>
@@ -22,7 +22,7 @@
           :key="data"
           :index="index" >
           <div class="commentCont" :index="index" v-if="checkParentId(data.parent_id)">
-              <span ref="userComment" 
+              <span ref="userComment" @click="$emit('find_user',index,data.user_id)"
               class="userComment metal radial">{{data.name}} {{data.familly_name}} 
               </span>
               <span class="commentMessage" >{{data.comment}}</span>
@@ -30,7 +30,9 @@
                             
               <button v-if="!indexCheck(index)" :index="index" class="answerButton" @click="openAnswersFunction(index)" >Réponses </button>
               <button v-else :index="index" class="answerButton" @click="openAnswersFunction(index)" >Masquer </button>
-               </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" :objectSize="objectSize" :user="user" :adminConnected="adminConnected" v-if="indexCheck(index)"></Answer>
+               </div>   <Answer :id_db="data.parent_id" :id_comment_db="data.id_comment_and_answer" 
+               :objectSize="objectSize" :user="user" :adminConnected="adminConnected" @find_user="emitToPublication"
+               v-if="indexCheck(index)"></Answer>
           </div>
         </div>
 </div>
@@ -49,6 +51,7 @@ export default {
       return {
           isSpread : false,
           postComment : false,
+          alreadyClicked : false,
           newTitle : 'new',
           loading : false,
           comment : '',
@@ -95,14 +98,17 @@ export default {
               }},
     // publish comments----------------
     publishComment(number){
+        if (this.alreadyClicked === false){
+        this.alreadyClicked = true;
       this.fetchPostComment(number).then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;
         this.loading = true;
         // rafraichir les données
-        this.findAllComments()
-      }).catch(e => console.log(e));},
+        this.findAllComments();
+        this.alreadyClicked = false;
+      }).catch(e => console.log(e));}},
 
     // GET COMMENTS ----------------------------------------------
 
@@ -152,6 +158,15 @@ export default {
             return false
           }
       },
+      checkTextarea(){
+          if (this.alreadyClicked === true){ return true };
+          if(this.comment.length < 5){
+              return true
+          }
+          else {
+              return false
+          }
+      },
       
       arrowFunction(){
            if((event.target.style.color === 'black') && 
@@ -185,6 +200,9 @@ export default {
       indexCheck(index){
           if (this.focusIndex.includes(index)){ return true}
       },
+      emitToPublication(index, number){
+          this.$emit('find_user',index,number);
+      }
     
 
 }}
@@ -278,12 +296,15 @@ button{
 }
 .loading{
     background-color: rgb(255, 255, 255);
+    font-size: 25px;
 }
 textarea {
     width: 700px;/**/ 
     justify-self: center;
     font-size: 23px;
+
 }
+
 @media screen and (max-width : 1366px) {
 
 span{
@@ -333,5 +354,6 @@ textarea {
     width:260px;/**/ 
     font-size: 14px;
 }
+
 }
 </style>

@@ -34,18 +34,18 @@
       <div class="discussion" ref="discussion">
           
           <div v-if="newPostInProgress" class="message" ref="newPublication">
-          <span>Utilisateur name :</span>
+          <span>Votre titre :</span>
           <input v-model="newTitle" placeholder='votre titre'/>
           <input v-if="!newUrl" type="file" accept="image/*" @change="addImg" />
           <input v-else type="button" value="retirer" @click="removeImg" />
             <img v-if="newUrl" :src="newUrl" />
           <div>
-            <button @click="publishPublication"> publier </button>
-            <button @click="newPostInProgress = !newPostInProgress"> annuler </button>
+            <button class="grey_btn" :disabled="!newUrl || alreadyClicked" @click="publishPublication"> publier </button>
+            <button class="grey_btn" @click="newPostInProgress = !newPostInProgress"> annuler </button>
             </div>
             </div>
             <div v-else-if="(loading) && !(newPostInProgress)" class="message loading" 
-                >LOADING</div>
+                >LOADING ...</div>
 
 <!---------------------AFFICHAGE TOTAL DE TOUTES LES PUBLICATIONS----------!-->
 
@@ -77,7 +77,9 @@
               </div>
           </div>
                
-                  <Comments :id_db="findPublication.id" :objectSize="objectSize" :user="user" :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+                  <Comments :id_db="findPublication.id" :objectSize="objectSize" :user="user" 
+                  :index="index" :adminConnected="adminConnected" v-if="indexCheck(index)" 
+                  @find_user="focusIndexFn"
                   :ref="'comment'+index"
                    ></Comments>
           
@@ -126,6 +128,7 @@ export default {
           searching :'Chercher un post',
           newPostInProgress : false, 
           searchingSwitch : 'post',
+          alreadyClicked : false,
           newTitle : '',
           searchWindow : false,
           image : null,
@@ -255,11 +258,11 @@ export default {
     }
   },
   methods : {
-    testo(){//this.$store.dispatch('getAllUsers');
+    testo(value){//this.$store.dispatch('getAllUsers');
     //console.log(this.user.numberOfReactions[28].reactions[1]);
     //console.log(JSON.parse(localStorage.getItem('token')));
     //console.log(this.user.token);
-      
+      console.log(value);
     },
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
@@ -294,14 +297,17 @@ export default {
               }},
 
     publishPublication(){
+      if (this.alreadyClicked === false){
+      this.alreadyClicked = true;
+      //fermer la fenetre de publication
+      this.newPostInProgress = false;
+      this.loading = true;
       this.fetchPostPublication().then((data) => {
         console.log(data);
-        //fermer la fenetre de publication
-        this.newPostInProgress = false;
-        this.loading = true;
         // rafraichir les données
-        this.findAllPublications(this.user.id_user)
-      }).catch(e => console.log(e));},
+        this.findAllPublications(this.user.id_user);
+        this.alreadyClicked = false;
+      }).catch(e => console.log(e));}},
 
     // GET PUBLICATIONS ----------------------------------------------
 
@@ -495,6 +501,8 @@ background: linear-gradient(90deg, #185a9d  26%, #43cea2 99%);
 
 .loading{
     background-color: rgb(255, 255, 255);
+    font-size: 50px;
+    padding-top: 250px;
 }
 .user {
 justify-self: flex-start;
@@ -741,9 +749,7 @@ button {
   width : 60px;
   border-radius: 0;
 }
-.loading{
-    background-color: rgb(255, 255, 255);
-}
+
 .user {
 font-size: 14px;
 padding: 0 7px ;

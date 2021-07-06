@@ -6,10 +6,10 @@
               @click="postAnswer = !postAnswer" class="grey_btn" >répondre</button>
 <!--button @click="findAllAnswers">FETCH</button!-->
               <div v-if="postAnswer" class="answer" ref="newPublication">
-          <span>exprimez vous !</span>
+          <span>Exprimez vous !</span>
           <textarea v-model="answer" name="" id="" cols="30" rows="10"></textarea>
           <div>
-            <button class="grey_btn" :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
+            <button class="grey_btn" :disabled="checkTextarea()" :id_db="id_db" :id_comment_db="id_comment_db" @click="publishAnswer(id_db,id_comment_db)"> publier </button>
             <button class="grey_btn" @click="postAnswer = !postAnswer"> annuler </button>
             </div>
             </div>
@@ -19,7 +19,7 @@
           :key="data"
           :index="index" >
           <div class="answerCont" :index="index" :id_comment_db="id_comment_db" v-if="checkParentId(id_comment_db, data.parent_id_answer)">
-              <span ref="userAnswer " 
+              <span ref="userAnswer " @click="$emit('find_user',index,data.user_id)"
               class="userAnswer metal radial">{{data.name}} {{data.familly_name}}
               </span>
               <span class="answerMessage" >{{data.answer}}</span>
@@ -43,6 +43,7 @@ export default {
           isSpread : false,
           seeAnswer : false,
           postAnswer : false,
+          alreadyClicked : false,
           loading : false,
           newTitle : 'new',
           newAnswer : '',
@@ -105,14 +106,18 @@ export default {
 
         // publish answers ----------------
     publishAnswer(number,comment_id){
-      this.fetchPostAnswer(number,comment_id).then((data) => {
+        if (this.alreadyClicked === false){
+        this.alreadyClicked = true;
+        this.fetchPostAnswer(number,comment_id).then((data) => {
         console.log(data);
         //fermer la fenetre de publication
         this.postComment = false;
         this.loading = true;
         // rafraichir les données
-        this.findAllAnswers()
-      }).catch(e => console.log(e));},
+        this.findAllAnswers();
+        this.postAnswer = !this.postAnswer;
+        this.alreadyClicked = false;
+      }).catch(e => console.log(e));}},
 
     // GET ANSWERS ----------------------------------------------
 
@@ -160,7 +165,16 @@ export default {
           else{
               event.target.style.color = 'black'
           }
-      }
+      },
+      checkTextarea(){
+          if (this.alreadyClicked === true){ return true};
+          if(this.answer.length < 5){
+              return true
+          }
+          else {
+              return false
+          }
+      },
 }}
 </script>
 
@@ -180,7 +194,6 @@ export default {
 }
 .answer{
     background-color: transparent;
-    
     display: grid;
     position: relative;
     width: 70%;/**/ 
@@ -230,6 +243,8 @@ button{
 }
 .loading{
     background-color: rgb(255, 255, 255);
+    color: black;
+    font-size: 25px;
 }
 textarea{
     font-size: 22px;

@@ -8,6 +8,10 @@ que de me ramener automatiquement au login, pourquoi ?
 
 scroll automatique bas de page btn supprimer mon compte ?
 
+empecher publication, commentaire ou reponse vide ✓
+
+barre de loading answer (color white pas bon)
+
 besoin d'actualisation après delete une publication ✓ 
 (ne pas oublier $emit et ecouteur tj en minuscule)
 
@@ -16,9 +20,10 @@ gerer en front mot de passe format incorrect ?
 
 empecher la double publication ? DOUBLE CLICK RAPIDE
 
-fermer les textaera apres publi, vu sur réponse
+fermer les textaera apres publi, vu sur réponse ✓
 
-appeler la carte de profil également depuis commentaire et answer ou désactivé le active and hover
+appeler la carte de profil également depuis commentaire et answer 
+ou désactiver le active and hover ✓
 
 obligatoire : 
 
