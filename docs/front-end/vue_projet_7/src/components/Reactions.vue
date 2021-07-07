@@ -151,7 +151,7 @@ export default {
       //console.log(this.isObjEmpty(this.user.userReactions));
 
       //Préciser l'etat de l'emot pour l'utilisateur connecté (coché ou non coché)
-      // on sait dans quel ordre sont placé les emots, toujours pareil (1 = heart, 2=smile, 3=laugh)
+      // on sait dans quel ordre sont placé les emots, toujours pareil (0 = heart, 1=smile, 2=laugh)
       if (this.isObjEmpty(this.user.userReactions) === true) {
         switch (number) {
           case 0:

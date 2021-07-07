@@ -334,10 +334,10 @@ export default {
           allIdMap,
           0
         );
-        let publicationsHeart = [];
+        let arrayOfAllpublicationsHeart = [];
         return this.sortByreactions(
           publicationsObject,
-          publicationsHeart,
+          arrayOfAllpublicationsHeart,
           allIdMap,
           loopsBox
         );
@@ -350,10 +350,10 @@ export default {
           allIdMap,
           1
         );
-        let publicationsSmile = [];
+        let arrayOfAllpublicationsSmile = [];
         return this.sortByreactions(
           publicationsObject,
-          publicationsSmile,
+          arrayOfAllpublicationsSmile,
           allIdMap,
           loopsBox
         );
@@ -366,10 +366,10 @@ export default {
           allIdMap,
           2
         );
-        let publicationsLaugh = [];
+        let arrayOfAllpublicationsLaugh = [];
         return this.sortByreactions(
           publicationsObject,
-          publicationsLaugh,
+          arrayOfAllpublicationsLaugh,
           allIdMap,
           loopsBox
         );
@@ -382,10 +382,10 @@ export default {
           allIdMap,
           3
         );
-        let publicationsTotalReactions = [];
+        let arrayOfAllObjectSorted = [];
         return this.sortByreactions(
           publicationsObject,
-          publicationsTotalReactions,
+          arrayOfAllObjectSorted,
           allIdMap,
           loopsBox
         );
@@ -569,25 +569,16 @@ export default {
         this.focusIndex.push(index);
       }
     },
+    // openInfos(index) et focusIndexFn(number, id) permette d'ouvrir le profil au click
     focusIndexFn(number, id) {
-      console.log(id);
+      //console.log(id);
       this.getOneUser("byClick", id);
       //this.$store.dispatch('getOneUser', id)
       this.findingUser = false;
       this.focusIndexUser = number;
       //console.log(this.focusIndexUser);
     },
-    getOneUser(type, id) {
-      //console.log(findUser.id);
-      console.log(id);
-      // id de l'utilisateur que je cherche et id de l'utilisateur connecté
-      // on utilise l'id utilisateur pour passer l'authentification
-      const ids = id + "_" + this.user.id_user;
-      this.$store.dispatch("getOneUser", ids);
-      if (type === "bySearch") {
-        this.findingUser = true;
-      }
-    },
+    // afficher la bonne carte en fonction de l'utilisateur
     openInfos(number) {
       if (this.focusIndexUser != null) {
         if (this.focusIndexUser === number) {
@@ -596,27 +587,54 @@ export default {
       }
       return false;
     },
+
+    getOneUser(type, id) {
+      //console.log(findUser.id);
+      //console.log(id);
+
+      // id de l'utilisateur que je cherche et id de l'utilisateur connecté
+      // on utilise l'id utilisateur pour passer l'authentification
+      const ids = id + "_" + this.user.id_user;
+      this.$store.dispatch("getOneUser", ids);
+      // ouvrir la carte si on a cliqué depuis la recherche
+      if (type === "bySearch") {
+        this.findingUser = true;
+      }
+    },
+    
+    // TRIER : Function pour formater nos données pour pouvoir ensuite les classer
+    // nous permet de recuperer un objet sous cette forme : {id publi, classement },{id publi, classement }
     sortWithMap(loopsBox, numberOfReactions, allIdMap, numb) {
+      // si >2 alors on a envoyé 3 exprès pour préciser qu'on parle du total
       if (numb > 2) {
+        // loopbox correspond a toute la data sur toute nos publications
         for (let i = 0; i < loopsBox.length; i++) {
+          // si nous n'avons pas de réactions du tout pour une publication
           if (!numberOfReactions[loopsBox[i].id_publication]) {
+            // on lui attribue 0
             allIdMap.set(loopsBox[i].id_publication, 0);
           } else if (numberOfReactions[loopsBox[i].id_publication]) {
             allIdMap.set(
               loopsBox[i].id_publication,
+              // sinon on lui atribue un chiffre qui est le total de ses reactions
               numberOfReactions[loopsBox[i].id_publication].reactions[0] +
                 numberOfReactions[loopsBox[i].id_publication].reactions[1] +
                 numberOfReactions[loopsBox[i].id_publication].reactions[2]
             );
           }
         }
+        // si <2 alors on va s'occuper de trier en fonction d'une emot en particulier
+        // rappel 0 = heart, 1 = smile, 2 = laugh
       } else {
         for (let i = 0; i < loopsBox.length; i++) {
+           // si nous n'avons pas de réactions du tout pour une publication
           if (!numberOfReactions[loopsBox[i].id_publication]) {
+            // on lui attribue 0
             allIdMap.set(loopsBox[i].id_publication, 0);
           } else if (numberOfReactions[loopsBox[i].id_publication]) {
             allIdMap.set(
               loopsBox[i].id_publication,
+              // sinon on lui atribue un chiffre qui le nombre d'emot verifée (graçe au code 0 1 2 )
               this.numberOfReactions[loopsBox[i].id_publication].reactions[numb]
             );
           }
@@ -624,15 +642,30 @@ export default {
       }
       return allIdMap;
     },
+    // function pour le selecteur de tri
     sortByreactions(object, array, mapObject, loopsBox) {
+      // RAPPELS : object est le total de la data sous forme d'objet
+      // array est une array vide on aurait pu aussi bien la déclarer ici
+      // mapObject est la map avec l'id et le total de reactions
+      // loopsbox est le total de la data sous forme brut
+
+      //console.log('mapObject');
+      //console.log(mapObject);
+      // creer une nouvelle map qui sera l'ancienne mais triée par ordre croissant
       const allIdMapSorted = new Map(
         [...mapObject.entries()].sort((a, b) => b[1] - a[1])
       );
+      //console.log('allIdMapSorted');
+      //console.log(allIdMapSorted);
+      // Maintenant associer les Ids avec l'objet total, push dans l'ordre dans une array
       allIdMapSorted.forEach((value, clé, map) => {
         //console.log(`map.get('${clé}') = ${value}`);
         for (let i = 0; i < object.length; i++) {
           if (object[i].id === clé) {
             array.push(
+              object[i]
+              /*
+              avant : (pas utile?)
               new PublicationsObject(
                 loopsBox[i].publication_title,
                 loopsBox[i].name,
@@ -641,11 +674,13 @@ export default {
                 loopsBox[i].date_added,
                 loopsBox[i].publication_media,
                 loopsBox[i].publication_user_id
-              )
+              )*/
             );
           }
         }
       });
+      //console.log('array');
+      //console.log(array);
       return array;
     },
 
