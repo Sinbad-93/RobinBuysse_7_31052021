@@ -101,6 +101,18 @@ result
   .catch(err => console.log(err));
 }
 
+// REQUETE GET REACTION
+exports.getUserReactions = (request, response, next) => {
+  /*creer la demande */
+  const id = request.params.id;
+  const db = dbService.getDbServiceInstance();
+  /*configure la demande*/
+  const result = db.getUserReactionsData(id);
+result
+  .then(data => response.json({data : data}))
+  .catch(err => console.log(err));
+}
+
 // DELETE REACTIONS
 exports.deleteReaction = (request, response, next) => {
   const { reaction, id_parent_publication,heart, smile, laugh, user_id } = request.body;

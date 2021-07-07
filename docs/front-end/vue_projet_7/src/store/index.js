@@ -139,121 +139,41 @@ export default createStore({
       state.userConnectedInfos.photo =  userInfos.photo;
       state.userConnectedInfos.token =  userInfos.token;
     },
-    sortReactions(state, data){
-      /* on va récuperer toutes les réactions et on va les trier 
-      dans parentReactions pour qu'elles soient regroupés par publications */
-
-      //A RETIRER LORSQUE LA CONNEXION SERA OBLIGATOIRE
-      //state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
-
-      //console.log(data);
-      var reactionsObject = data['data'];
-      var userReactionsMiror = [];
-      var numberOfReactionsMiror = [];
-      var countSameId = [];
-      var countSameId2 = [];
-      //console.log(reactionsObject);
-      //console.log(reactionsObject[0]['id_parent_publication']);
-      reactionsObject.forEach((key) => {
-          // 0 : {rdv_date : 'string'}
-          // 0 is key and rdv is i
-              //console.log(i);
-              //console.log(this.parentReactions);
-              //console.log(key['id_parent_publication']);
-  // rassembler les réactions de l'utilisateur connecté pour colorer à la connexion 
-          if(state.userConnectedInfos.id_user == key['id_user']){
-  
-              if (!countSameId2.includes(key['id_parent_publication'])){
-  
-              countSameId2.push(key['id_parent_publication']);
-              userReactionsMiror.push({
-              id : key['id_parent_publication'], 
-              reactions : [
-              key['heart'],
-              key['smile'],
-              key['laugh']
-              ], user : key['id_user']
-              });
-              }
-              else{
-  
-              userReactionsMiror.forEach((index) =>{
-              if( index.id === key['id_parent_publication']){
-                  if (key['heart'] === 1){
-                      index.reactions[0] = 1;
-                  }
-                  if (key['smile'] === 1){
-                      index.reactions[1] = 1;
-                  }
-                  if (key['laugh'] === 1){
-                      index.reactions[2] = 1;
-                  }
-              }
-              });}
-            //console.log(countSameId2);
-            }
-  
-  // rassembler toutes les reactions et trier en fonction de l'id de la publication 
-          if (!countSameId.includes(key['id_parent_publication'])){
-              countSameId.push(key['id_parent_publication']);
-              
-              numberOfReactionsMiror.push({
-              id :key['id_parent_publication'], 
-              reactions : [
-              key['heart'],
-              key['smile'],
-              key['laugh']
-              ], user : key['id_user']
-              })
-          }
-          else {
-              //console.log(this.parentReactions);
-              numberOfReactionsMiror.forEach((index) =>{
-              //console.log(index[i]);
-              //console.log(key['id_parent_publication']);
-  
-              if (index.id === 
-              key['id_parent_publication'])
-              { 
-                  if (key['heart'] === 1 ){
-                      index.reactions[0] += 1;
-                  }
-                  if (key['smile'] === 1 ){
-                      index.reactions[1] += 1;
-                  }
-                  if (key['laugh'] === 1 ){
-                      index.reactions[2] += 1;
-                  }
-              }
-          
-          
-          })
-              }
-      });
-      //this.userReactions = userReactionsMiror;
-      //this.parentReactions = parentReactionsMiror;
-      //console.log(this.parentReactions);
-      //console.log(userReactionsMiror);
+    formatUserReactions(state, data){
+      console.log('DATA SORT');
+      console.log(data['data']);
+      let userReactionsMiror = data['data'];
       var packets = {};
+      // reformater la data pour passer de 0:{ id : 21, heart : 2, smile :1} à
+      // 21:{ reactions :[2,1]} ce qui nous permet d'avoir l'id de la publication comme index
       for(let index = 0; index < userReactionsMiror.length; ++index){
-        //console.log(userReactionsMiror[index].id,userReactionsMiror[index].reactions);
-  packets[userReactionsMiror[index].id] = {
-  reactions: userReactionsMiror[index].reactions,
-  user: userReactionsMiror[index].user
-  };
-  }
-
-  var packets_2 = {};
-  for(let index = 0; index < numberOfReactionsMiror.length; ++index){
-    packets_2[numberOfReactionsMiror[index].id] = {
-    reactions: numberOfReactionsMiror[index].reactions,
-    user: numberOfReactionsMiror[index].user
-    };
-    }
-    
+      packets[userReactionsMiror[index].id_parent_publication] = {
+      reactions: [userReactionsMiror[index].hearts, userReactionsMiror[index].smiles, userReactionsMiror[index].laughs]
+      };
+      }
+    console.log('PACKETS');
+    console.log(packets);
     state.userConnectedInfos.userReactions= packets;
-    state.numberOfReactions= packets_2;
-    console.log(state.user);
+    //console.log(state.user);
+    },
+
+    formatNumberOfReactions(state, data){
+      //console.log('DATA SORT');
+      //console.log(data['data']);
+      let numberOfReactionsMiror = data['data'];
+      var packets = {};
+      // reformater la data pour passer de 0:{ id : 21, heart : 2, smile :1} à
+      // 21:{ reactions :[2,1]} ce qui nous permet d'avoir l'id de la publication comme index
+      for(let index = 0; index < numberOfReactionsMiror.length; ++index){
+      packets[numberOfReactionsMiror[index].id_parent_publication] = {
+      reactions: [numberOfReactionsMiror[index].hearts, numberOfReactionsMiror[index].smiles, numberOfReactionsMiror[index].laughs]
+      };
+      }
+    //console.log('PACKETS');
+    //console.log(packets);
+    //state.userConnectedInfos.userReactions= packets;
+    state.numberOfReactions= packets;
+    //console.log(state.user);
     },
     
     
@@ -301,9 +221,11 @@ export default createStore({
       //commit('saveUser');
       },
     
-      // GET REACTIONS ----------------------------------------------
-    async fetchGetReactions({ commit, dispatch }, id){
-      let response = await fetch('http://localhost:3000/publish/find_reactions/'+
+// GET REACTIONS ----------------------------------------------
+// reactions de l'utilisateur connecté
+
+    async fetchGetUserReactions({ commit, dispatch }, id){
+      let response = await fetch('http://localhost:3000/publish/find_user_reactions/'+
       id,
       {
         method: 'GET',
@@ -320,14 +242,45 @@ export default createStore({
           }
           return await response.json();},
   
-  // display REACTIONS ------------------
-  findAllReactions:({ commit, dispatch }, id)=>{
-     dispatch('fetchGetReactions',id).then((data) => {
-      //console.log(data);
-      commit('sortReactions', data);
+// display USER REACTIONS ------------------
+  findUserReactions:({ commit, dispatch }, id)=>{
+     dispatch('fetchGetUserReactions',id).then((data) => {
+      console.log('USER REACTIONS');
+      console.log(data);
+      commit('formatUserReactions', data);
       
 }).catch(e => console.log(e));},
-  
+
+// nombre total de reactions
+async fetchGetReactions({ commit, dispatch }, id){
+  let response = await fetch('http://localhost:3000/publish/find_reactions/'+
+  id,
+  {
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))},
+  }
+  );
+    if (!response.ok) {
+      // get error message from body or default to response status
+      const error = (data && data.message) || response.status;
+      //console.log('not response ok, error : ' + error);
+      alert('une erreur innattendue s\'est produite');
+      return Promise.reject(error); 
+      }
+      return await response.json();},
+
+// display REACTIONS ------------------
+findAllReactions:({ commit, dispatch }, id)=>{
+  dispatch('fetchGetReactions',id).then((data) => {
+   //console.log(data);
+   console.log('DATA');
+   console.log(data);
+   commit('formatNumberOfReactions', data);
+   
+}).catch(e => console.log(e));},
+
+
 // FETCH TO USER ----------------------------------------------
   async fetchGetOneUser({ commit, dispatch }, ids) {
     //console.log(id);

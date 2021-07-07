@@ -1,0 +1,7 @@
+SELECT id_parent_publication, 
+    sum(CASE WHEN reaction LIKE 'heart' THEN 1 ELSE 0 END) l_hearts, 
+    sum(CASE WHEN reaction LIKE 'smile' THEN 1 ELSE 0 END) smiles, 
+    sum(CASE WHEN reaction LIKE 'laugh' THEN 1 ELSE 0 END) laughs 
+    FROM reactions 
+    GROUP BY id_parent_publication 
+    ORDER BY id_parent_publication

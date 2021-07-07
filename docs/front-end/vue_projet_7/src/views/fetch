@@ -121,3 +121,126 @@ export default {
   }
 }
 </script>
+
+
+------------------------------------------------- TRIER
+/* on va récuperer toutes les réactions et on va les trier 
+      dans parentReactions pour qu'elles soient regroupés par publications */
+
+      //A RETIRER LORSQUE LA CONNEXION SERA OBLIGATOIRE
+      //state.userConnectedInfos = JSON.parse(localStorage.getItem("connectedUser"));
+
+      //console.log(data);
+      var reactionsObject = data['data'];
+      var userReactionsMiror = [];
+      var numberOfReactionsMiror = [];
+      var countSameId = [];
+      var countSameId2 = [];
+      //console.log(reactionsObject);
+      //console.log(reactionsObject[0]['id_parent_publication']);
+      reactionsObject.forEach((key) => {
+          // 0 : {rdv_date : 'string'}
+          // 0 is key and rdv is i
+              //console.log(i);
+              //console.log(this.parentReactions);
+              //console.log(key['id_parent_publication']);
+  // rassembler les réactions de l'utilisateur connecté pour colorer à la connexion 
+          if(state.userConnectedInfos.id_user == key['id_user']){
+  
+              if (!countSameId2.includes(key['id_parent_publication'])){
+  
+              countSameId2.push(key['id_parent_publication']);
+              userReactionsMiror.push({
+              id : key['id_parent_publication'], 
+              reactions : [
+              key['heart'],
+              key['smile'],
+              key['laugh']
+              ], user : key['id_user']
+              });
+              }
+              else{
+  
+              userReactionsMiror.forEach((index) =>{
+              if( index.id === key['id_parent_publication']){
+                  if (key['heart'] === 1){
+                      index.reactions[0] = 1;
+                  }
+                  if (key['smile'] === 1){
+                      index.reactions[1] = 1;
+                  }
+                  if (key['laugh'] === 1){
+                      index.reactions[2] = 1;
+                  }
+              }
+              });}
+            //console.log(countSameId2);
+            }
+  
+  // rassembler toutes les reactions et trier en fonction de l'id de la publication 
+          if (!countSameId.includes(key['id_parent_publication'])){
+              countSameId.push(key['id_parent_publication']);
+              
+              numberOfReactionsMiror.push({
+              id :key['id_parent_publication'], 
+              reactions : [
+              key['heart'],
+              key['smile'],
+              key['laugh']
+              ], user : key['id_user']
+              })
+          }
+          else {
+              //console.log(this.parentReactions);
+              numberOfReactionsMiror.forEach((index) =>{
+              //console.log(index[i]);
+              //console.log(key['id_parent_publication']);
+  
+              if (index.id === 
+              key['id_parent_publication'])
+              { 
+                  if (key['heart'] === 1 ){
+                      index.reactions[0] += 1;
+                  }
+                  if (key['smile'] === 1 ){
+                      index.reactions[1] += 1;
+                  }
+                  if (key['laugh'] === 1 ){
+                      index.reactions[2] += 1;
+                  }
+              }
+          
+          
+          })
+              }
+      });
+
+
+
+
+      ------------------------------------------------------format
+      //this.userReactions = userReactionsMiror;
+      //this.parentReactions = parentReactionsMiror;
+      //console.log(this.parentReactions);
+      //console.log(userReactionsMiror);
+      var packets = {};
+      for(let index = 0; index < userReactionsMiror.length; ++index){
+        //console.log(userReactionsMiror[index].id,userReactionsMiror[index].reactions);
+  packets[userReactionsMiror[index].id] = {
+  reactions: userReactionsMiror[index].reactions,
+  user: userReactionsMiror[index].user
+  };
+  }
+
+  var packets_2 = {};
+  for(let index = 0; index < numberOfReactionsMiror.length; ++index){
+    packets_2[numberOfReactionsMiror[index].id] = {
+    reactions: numberOfReactionsMiror[index].reactions,
+    /*user: numberOfReactionsMiror[index].user*/
+    };
+    }
+    console.log('DATA AFTER');
+    console.log('USER REACTIONS');
+    console.log(packets);
+    console.log('NUMBER OF REACTIONS');
+    console.log(packets_2);

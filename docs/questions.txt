@@ -9,3 +9,6 @@ Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant v
 meme si la requete fonctionne
 ( à voir la prochaine fois)
 
+- like dislike icones, comment empecher eventuellement de marteler le click, 
+decalage liké alors que non
+

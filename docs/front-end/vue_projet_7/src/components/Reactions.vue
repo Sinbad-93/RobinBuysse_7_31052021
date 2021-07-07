@@ -197,7 +197,8 @@ isKeyExists(obj,key){
     publishReaction(number){
       this.fetchPostReaction(number).then((data) => {
         console.log('pub'+ data);
-      this.$store.dispatch("findAllReactions",  this.user.id_user);
+      this.$store.dispatch("findUserReactions", this.user.id_user);
+        this.$store.dispatch("findAllReactions", this.user.id_user);
         //this.findAllReactions()
       }).catch(e => console.log(e));},
 
@@ -236,6 +237,7 @@ isKeyExists(obj,key){
     cancelReaction(number){
       this.fetchDeleteReaction(number).then((data) => {
         console.log('del' + data);
+        this.$store.dispatch("findUserReactions", this.user.id_user);
         this.$store.dispatch("findAllReactions", this.user.id_user);
 
         //this.findAllReactions()

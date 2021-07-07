@@ -205,20 +205,20 @@ async insertReaction(reaction, id_parent_publication,heart, smile, laugh, user_i
     try {
         const response = await new Promise((resolve, reject) => {
     if (reaction === 'heart'){
-        const query = "INSERT INTO reactions (id_parent_publication,heart, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication,heart, user_id] , (err, result) => {
+        const query = "INSERT INTO reactions (id_parent_publication,reaction, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication,reaction, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }
     else if ( reaction === 'smile'){
-        const query = "INSERT INTO reactions (id_parent_publication, smile, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication, smile, user_id] , (err, result) => {
+        const query = "INSERT INTO reactions (id_parent_publication, reaction, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication, reaction, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }
     else if ( reaction === 'laugh'){
-        const query = "INSERT INTO reactions (id_parent_publication,laugh, id_user) VALUES (?,?,?);";
-        connection.query(query, [id_parent_publication,laugh, user_id] , (err, result) => {
+        const query = "INSERT INTO reactions (id_parent_publication,reaction, id_user) VALUES (?,?,?);";
+        connection.query(query, [id_parent_publication,reaction, user_id] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result);})
     }
@@ -230,12 +230,20 @@ async insertReaction(reaction, id_parent_publication,heart, smile, laugh, user_i
     catch (error) {
     console.log('dbservice : ' + error);
     }}
-
-// GET ALL REACTIONS  ------------------        
+      
+        // GET ALL REACTIONS  ------------------        
 
 async getAllReactionsData() {
     try {const response = await new Promise((resolve, reject) => {
-    const query = "SELECT * FROM reactions";
+    const query = `
+    SELECT
+        id_parent_publication, 
+        sum(CASE WHEN reaction LIKE 'heart' THEN 1 ELSE 0 END) hearts, 
+        sum(CASE WHEN reaction LIKE 'smile' THEN 1 ELSE 0 END) smiles, 
+        sum(CASE WHEN reaction LIKE 'laugh' THEN 1 ELSE 0 END) laughs 
+        FROM reactions
+        GROUP BY id_parent_publication 
+        ORDER BY id_parent_publication `;
     connection.query(query, (err, results) => {
     if (err) reject(new Error(err.message));
     resolve(results);})});
@@ -243,29 +251,51 @@ async getAllReactionsData() {
     return response;} 
     catch (error) {
         console.log('dbservice : ' + error); 
-        }}   
-    
+        }} 
+
+async getUserReactionsData(id_user) {
+    try {const response = await new Promise((resolve, reject) => {
+    const query = `
+    SELECT
+    id_parent_publication, id_user, 
+    sum(CASE WHEN reaction LIKE 'heart' THEN 1 ELSE 0 END) hearts, 
+    sum(CASE WHEN reaction LIKE 'smile' THEN 1 ELSE 0 END) smiles, 
+    sum(CASE WHEN reaction LIKE 'laugh' THEN 1 ELSE 0 END) laughs 
+    FROM reactions
+    WHERE id_user=? 
+    GROUP BY id_parent_publication 
+    ORDER BY id_parent_publication
+    `;
+    connection.query(query, id_user, (err, results) => {
+    if (err) reject(new Error(err.message));
+    resolve(results);})});
+    // console.log(response); 
+    return response;} 
+    catch (error) {
+        console.log('dbservice : ' + error); 
+        }}         
+
 /*"DELETE FROM reactions WHERE id = ?"*/
 async deleteReaction(reaction, id_parent_publication,heart, smile, laugh, id_user) {
     try {
         const response = await new Promise((resolve, reject) => {
     if (reaction === 'heart'){
         console.log('delete heart ?');
-        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND heart =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND reaction = 'heart';";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
     }
     else if ( reaction === 'smile'){
         console.log('delete smile ?');
-        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND smile =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND reaction = 'smile';";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})
     }
     else if ( reaction === 'laugh'){
         console.log('delete laugh ?');
-        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND laugh =1;";
+        const query = "DELETE FROM reactions WHERE id_parent_publication=? AND id_user=? AND reaction = 'laugh';";
         connection.query(query, [id_parent_publication,id_user] , (err, result) => {
         if (err) reject(new Error(err.message));
         resolve(result.affectedRows);})

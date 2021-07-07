@@ -137,6 +137,7 @@ async fetchVerifyToken() {
         //console.log(this.userConnectedInfos);
         this.userName = this.userConnectedInfos['name'];
         this.userFamillyName = this.userConnectedInfos['familly_name'];
+        this.$store.dispatch("findUserReactions", this.userConnectedInfos.id_user);
         this.$store.dispatch("findAllReactions", this.userConnectedInfos.id_user);
     }
 },
