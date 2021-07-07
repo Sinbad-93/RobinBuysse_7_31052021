@@ -244,3 +244,22 @@ export default {
     console.log(packets);
     console.log('NUMBER OF REACTIONS');
     console.log(packets_2);
+
+colorier une emot fleche en noir ou blanc selon le click
+    arrowFunction() {
+      if (
+        event.target.style.color === "black" &&
+        event.target.classList.value == this.$refs.topArrow.classList.value
+      ) {
+        event.target.style.color = "white";
+        event.target.nextSibling.nextSibling.style.color = "black";
+      } else if (
+        event.target.style.color === "black" &&
+        event.target != this.$refs.topArrow
+      ) {
+        event.target.style.color = "white";
+        event.target.previousSibling.previousSibling.style.color = "black";
+      } else {
+        event.target.style.color = "black";
+      }
+    },

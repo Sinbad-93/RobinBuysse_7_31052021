@@ -12,3 +12,6 @@ meme si la requete fonctionne
 - like dislike icones, comment empecher eventuellement de marteler le click, 
 decalage liké alors que non
 
+Parler des tests unitaires avec Cyril
+
+Pourquoi mes icones sont automatiquement en aria-hidden="true" et comment enlver ça 

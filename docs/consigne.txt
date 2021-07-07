@@ -5,6 +5,65 @@ que de me ramener automatiquement au login, pourquoi ?
 creer un 404 not found ?
 
 gerer en front mot de passe format incorrect ? ( à la fin car test renvoi d'erreur ?)
+voir p5 pour aller plus vite -> pas besoin de faire des indications ? déjà maitrisé
+Une alert ?
+
+Mot de passe faux ne fait rien
+
+obligatoire : 
+
+- sécurité ✓ (token ok , tester potentielles failles)
+
+- accessibilité
+
+optionnel :
+
+-essayer d'intercepter les erreurs du back et les afficher (2h max)
+
+- mieux gerer la taille des photos
+
+-scroll automatique bas de page btn supprimer mon compte ?
+
+- blogging news ---------- site perso (x)
+
+- reactions sur commentaire et/ou réponses (x)
+
+
+
+BDD : 
+
+Axe d'amélioration : 
+reactions : une colonne type enum [];
+**Ne pas trier les données avec le front mais 
+les récupérer déja trier avec la puissance de MySQL
+
+utiliser une seul requete avec left join 
+
+pour publications et left join avec un COUNT
+posts
+
+
+site d'annonce : jobi joba
+
+
+terminé :
+
+- trier par popularité ✓
+
+-rester connecté ✓
+
+- modeler le desgin
+(améliorer le style sur mobile avant de diviser les logiques) ✓
+à faire entre autre : rendu de commentaire et de réponse, améliorer interface de publication
+-responsive tablette and desktop ✓
+
+-navigation conditionnelle ✓  +sécurité ✓
+
+-changer sa photo de profil (requete put avec photo par defaut)  ✓
+
+-pouvoir supprimer son compte ✓
+
+-pouvoir supprimer un post avec admin ✓
 
 gerer connexion en cours, inscription en cours ✓
 
@@ -25,54 +84,3 @@ fermer les textaera apres publi, vu sur réponse ✓
 
 appeler la carte de profil également depuis commentaire et answer 
 ou désactiver le active and hover ✓
-
-obligatoire : 
-
--changer sa photo de profil (requete put avec photo par defaut)  ✓
-
--pouvoir supprimer son compte ✓
-
--pouvoir supprimer un post avec admin ✓
-
-- sécurité ✓ (token ok , tester potentielles failles)
-
--navigation conditionnelle ✓  +sécurité ✓
-
--rester connecté 
-
-- accessibilité
-
-***
-- modeler le desgin
-(améliorer le style sur mobile avant de diviser les logiques)
-à faire entre autre : rendu de commentaire et de réponse, améliorer interface de publication
--responsive tablette and desktop
-**
-
-optionnel :
-- trier par popularité ✓
-
--essayer d'intercepter les erreurs du back et les afficher (2h max)
-
-- mieux gerer la taille des photos
-
--scroll automatique bas de page btn supprimer mon compte ?
-
-- blogging news ---------- site perso (x)
-
-- reactions sur commentaire et/ou réponses (x)
-
-BDD : 
-
-Axe d'amélioration : 
-reactions : une colonne type enum [];
-**Ne pas trier les données avec le front mais 
-les récupérer déja trier avec la puissance de MySQL
-
-utiliser une seul requete avec left join 
-
-pour publications et left join avec un COUNT
-posts
-
-
-site d'annonce : jobi joba
