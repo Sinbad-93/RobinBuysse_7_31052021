@@ -117,7 +117,7 @@ export default createStore({
       
     },
     allUsers(state,data){
-      
+      state.allUsers = [];
      //console.log(data);
      for (let i = 0; i < data.length; ++i) {
        //console.log(i);

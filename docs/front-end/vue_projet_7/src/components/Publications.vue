@@ -180,6 +180,7 @@ export default {
     allUsersState() {
       let loopsBox;
       var usersList = [];
+    console.log('ALL USERS');
      console.log(this.$store.getters.getAllUsers);
      loopsBox = this.$store.getters.getAllUsers;
      for ( let i =0; i < loopsBox.length; i++){
@@ -189,7 +190,7 @@ export default {
         usersList.push(new User(loopsBox[i].name, loopsBox[i].familly_name, loopsBox[i].id));
 
      }
-     //console.log(usersList);
+     console.log(usersList);
       // Getters
       return usersList.filter(user => {
         return user.name.toLowerCase().includes(this.search.toLowerCase())
