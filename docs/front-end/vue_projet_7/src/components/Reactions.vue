@@ -1,9 +1,13 @@
 <template>
   <div class="reactions" ref="reactions" :id_db="id_db">
+
+
+
     <!-- EMOT COEUR, COULEUR ET NOMBRES-->
+    <div v-if="spinner" class="loader">Loading...</div>
     <i
       aria-hidden="false"
-      v-if="connectedUserReactions(0)"
+      v-else-if="connectedUserReactions(0)"
       :id_db="id_db"
       @click="likeFunction(id_db)"
       class="fas fa-heart interactiveIcons full-heart"
@@ -28,8 +32,9 @@
     </span>
     <span v-else> 0 </span>
 <!-- EMOT SOURIRE, COULEUR ET NOMBRES-->
+<div v-if="spinner2" class="loader">Loading...</div>
     <i
-      v-if="connectedUserReactions(1)"
+      v-else-if="connectedUserReactions(1)"
       :id_db="id_db"
       :index="index"
       @click="smileFunction(id_db)"
@@ -54,8 +59,9 @@
     </span>
     <span v-else> 0 </span>
 <!-- EMOT RIRE, COULEUR ET NOMBRES-->
+<div v-if="spinner3" class="loader">Loading...</div>
     <i
-      v-if="connectedUserReactions(2)"
+      v-else-if="connectedUserReactions(2)"
       :id_db="id_db"
       :index="index"
       @click="laughFunction(id_db)"
@@ -101,6 +107,9 @@ export default {
       heart: false,
       smile: false,
       laugh: false,
+      spinner : false,
+      spinner2 : false,
+      spinner3 : false,
       id_user: null,
       id_parent_publication: null,
       reaction: "",
@@ -115,7 +124,7 @@ export default {
       numberOfReactions: "numberOfReactions",
     }),
     userState() {
-      console.log(this.$store.getters.getUser);
+      //console.log(this.$store.getters.getUser);
 
       // Getters
       return this.$store.getters.getUser;
@@ -241,7 +250,7 @@ export default {
     publishReaction(number) {
       this.fetchPostReaction(number)
         .then((data) => {
-          console.log("pub" + data);
+          //console.log("pub" + data);
           this.$store.dispatch("findUserReactions", this.user.id_user);
           this.$store.dispatch("findAllReactions", this.user.id_user);
           //this.findAllReactions()
@@ -289,7 +298,7 @@ export default {
     cancelReaction(number) {
       this.fetchDeleteReaction(number)
         .then((data) => {
-          console.log("del" + data);
+          //console.log("del" + data);
           this.$store.dispatch("findUserReactions", this.user.id_user);
           this.$store.dispatch("findAllReactions", this.user.id_user);
 
@@ -308,12 +317,16 @@ export default {
 
 // ------ GERER LE CLICK/DECLICK SUR UNE EMOT COTE FRONT ET ENVOYER AU BACK
     likeFunction(number) {
+      this.spinner = true;
+      setTimeout(() => {
+        this.spinner = false;
+      }, 750);
       //this.heart = !this.heart;
       event.target.classList.toggle("fas");
       event.target.classList.toggle("far");
       event.target.classList.toggle("full-heart");
       //var number = event.target.getAttribute('id_db');
-      console.log(this.heart);
+      //console.log(this.heart);
       this.reaction = "heart";
       if (this.heart === false) {
         this.heart = !this.heart;
@@ -324,6 +337,10 @@ export default {
       }
     },
     smileFunction(number) {
+      this.spinner2 = true;
+      setTimeout(() => {
+        this.spinner2 = false;
+      }, 750);
       event.target.classList.toggle("orange");
       event.target.classList.toggle("black");
       console.log(this.smile);
@@ -337,9 +354,13 @@ export default {
       }
     },
     laughFunction(number) {
+      this.spinner3 = true;
+      setTimeout(() => {
+        this.spinner3 = false;
+      }, 750);
       event.target.classList.toggle("orange");
       event.target.classList.toggle("black");
-      console.log(this.laugh);
+      //console.log(this.laugh);
       this.reaction = "laugh";
       if (this.laugh === false) {
         this.laugh = !this.laugh;
@@ -353,7 +374,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 .fa-heart {
   position: relative;
   cursor: pointer;
@@ -386,6 +408,50 @@ span {
 .no_display {
   display: none;
 }
+
+
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
+.loader {
+  margin: 5px 0;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 4px solid rgba(254, 163, 2, 1) ;
+  border-right: 4px solid rgba(254, 163, 2, 1) ;
+  border-bottom: 4px solid rgba(254, 163, 2, 1) ;
+  border-left: 4px solid #185a9d;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes fill_heart {
   0% {
     opacity: 0;

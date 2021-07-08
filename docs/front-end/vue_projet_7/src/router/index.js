@@ -24,8 +24,8 @@ function aesDencrypt(txt) {
   return CryptoJS.enc.Utf8.stringify(cipher).toString()
 };
 var tester = aesEncrypt('blabla');
-console.log('encrypt :', tester );
-console.log('decrypt :', aesDencrypt(tester) )
+//console.log('encrypt :', tester );
+//console.log('decrypt :', aesDencrypt(tester) )
 
 const routes = [
   {
@@ -44,16 +44,16 @@ const routes = [
         let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
         let lockAccessCrypted = JSON.parse(window.localStorage.lockAccessCrypted);
         const lockAccessDecrypted = aesDencrypt(lockAccessCrypted);
-        console.log(lockAccess);
-        console.log(lockAccessCrypted);
-        console.log(lockAccessDecrypted);
+        //console.log(lockAccess);
+        //console.log(lockAccessCrypted);
+        //console.log(lockAccessDecrypted);
         if(currentUser && lockAccess && 
           (lockAccess === lockAccessDecrypted) ){
-            console.log('true');
+            //console.log('true');
           next();
         }
         else {
-          console.log('false');
+          //console.log('false');
           next("/")
         }
       },
@@ -65,7 +65,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/Profile.vue"),
   
       beforeEnter(to, from, next){
-        console.log('from local : ',JSON.parse(window.localStorage.lockAccessCrypted));
+        //console.log('from local : ',JSON.parse(window.localStorage.lockAccessCrypted));
         let currentUser = JSON.parse(window.sessionStorage.currentUser);
         let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
         let lockAccessCrypted = JSON.parse(window.localStorage.lockAccessCrypted);

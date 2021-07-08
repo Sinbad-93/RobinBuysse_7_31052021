@@ -1,33 +1,40 @@
 travail restant :
 
-si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
+-si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
 que de me ramener automatiquement au login, pourquoi ?
 creer un 404 not found ?
 
+----MOT DE PASSE (inscription format, connexion faux)
 gerer en front mot de passe format incorrect ? ( à la fin car test renvoi d'erreur ?)
 voir p5 pour aller plus vite -> pas besoin de faire des indications ? déjà maitrisé
 Une alert ?
-
 Mot de passe faux ne fait rien
+Quand le format du mot de passe n'est pas valide au niveau du back 
+il m'envoi une bad request,
+comment faire pour avertir en front l'utilisateur 
+de la nature du problème ?
+(si le back contient un message d'erreur l'intercepter et l'afficher avec le front )
+à faire
 
-obligatoire : 
+Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
+meme si la requete fonctionne
+( à voir la prochaine fois)
 
-- sécurité ✓ (token ok , tester potentielles failles)
+tester inscription et suppression de compte
 
-- accessibilité
-
-optionnel :
+faut il decrire une icone ? accessibilité
+Pourquoi mes icones sont automatiquement en aria-hidden="true" et comment enlver ça
 
 -essayer d'intercepter les erreurs du back et les afficher (2h max)
 
 - mieux gerer la taille des photos
 
--scroll automatique bas de page btn supprimer mon compte ?
+FINALISER
+-mettre a jour read me
 
-- blogging news ---------- site perso (x)
+-modele BDD à importer
 
-- reactions sur commentaire et/ou réponses (x)
-
+-Faire un plan/résumé de l'appli, des fonctionnalités, notament savoir bien expliqué la sécurité front
 
 
 BDD : 
@@ -46,7 +53,21 @@ posts
 site d'annonce : jobi joba
 
 
-terminé :
+terminé : -------------------------------------
+
+obligatoire : 
+
+- sécurité ✓ (token ok , naviguation guard ok)
+
+- accessibilité ✓
+
+optionnel :
+
+
+
+- blogging news ---------- site perso (x)
+
+- reactions sur commentaire et/ou réponses (x)
 
 - trier par popularité ✓
 

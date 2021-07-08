@@ -46,7 +46,7 @@
       />
       <input
         aria-label="entrez votre nom de famille"
-        v-model="famillyName"
+        v-model="familly_name"
         class="form-row__input"
         type="text"
         placeholder="Nom"
@@ -103,22 +103,22 @@
       <!-- connexion button -->
       <input
         aria-label="cliquez pour vous connecter"
-        class="button grey_btn"
+        class="button grey_btn fa fa-input"
         :class="{ 'button--disabled': !validatedFields }"
         v-if="mode == 'login'"
         id="validation"
         type="submit"
-        value="Connexion"
+        value="&#xf2f6   Connexion"
       />
       <!-- inscription button -->
       <input
         aria-label="cliquez pour vous inscrire"
-        class="button grey_btn"
+        class="button grey_btn fa fa-input"
         :class="{ 'button--disabled': !validatedFields }"
         v-else
         id="validation"
         type="submit"
-        value="Inscription"
+        value="&#xf234  Inscription "
       />
       <span class="loading" v-if="status == 'loadingCreate'"
         >Création en cours...</span
@@ -141,7 +141,7 @@ export default {
       visibility: "password",
       email: "",
       name: "",
-      famillyName: "",
+      familly_name: "",
       password: "",
       validatedFields: 1,
     };
@@ -167,7 +167,7 @@ export default {
     async fetchPostUser() {
       if (
         !(this.name === "") &&
-        !(this.famillyName === "") &&
+        !(this.familly_name === "") &&
         !(this.password === "") &&
         !(this.email === "")
       ) {
@@ -176,7 +176,7 @@ export default {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: this.name,
-            familly_name: this.famillyName,
+            familly_name: this.familly_name,
             email: this.email,
             password: this.password,
           }),
@@ -196,7 +196,7 @@ export default {
         return await response.json();
       } //si un champ est resté vide on ne passe pas dans fetch
       else {
-        console.log("veuillez remplir tous les champs");
+        alert("veuillez remplir tous les champs");
       }
     },
 
@@ -235,7 +235,7 @@ export default {
         return await response.json();
       } //si un champ est resté vide on ne passe pas dans fetch
       else {
-        console.log("veuillez remplir tous les champs");
+        alert("veuillez remplir tous les champs");
       }
     },
 
@@ -245,8 +245,8 @@ export default {
       // FETCH
       this.fetchLogin()
         .then((data) => {
-          console.log(data);
-          console.log(data["token"]);
+          //console.log(data);
+          //console.log(data["token"]);
           //bcrypt compare va renvoyer true ou false.
           if (data["data"][0] === true) {
             this.storeSendLogin(
@@ -324,7 +324,7 @@ export default {
   /*color: black; */
   border: 1px black solid;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 22px;
   width: 100%;
   padding: 10px;

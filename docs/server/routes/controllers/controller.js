@@ -25,7 +25,7 @@ const maskEmailOptions = {
 // POST publications ------------------
 const fs = require("fs"); /*file system*/
 exports.publication = (request, response, next) => {
-console.log(request.body);
+//console.log(request.body);
   const post = {
     title: request.body.title,
     user_id: request.body.user_id,
@@ -50,7 +50,7 @@ result
 
 // requete POST comment or answer -----------------------------
 exports.commentAndAnswer = (request, response, next) => {
-  console.log(request.body);
+  //console.log(request.body);
   const { parent_id, parent_id_answer, user_id, comment, answer, date_posted } = request.body;
     const db = dbService.getDbServiceInstance();
      const result = db.insertCommentAndAnswer(parent_id, parent_id_answer, user_id, comment, answer);
@@ -128,12 +128,30 @@ result
 // DELETE PUBLICATIONS
 exports.deletePublication = (request, response, next) => {
   const { id, user_id } = request.body;
-  console.log(id);
+  //console.log(id);
   /*creer la demande */
   const db = dbService.getDbServiceInstance();
   /*configure la demande*/
-  const result = db.deletePublicationData(id, user_id);
-result
+  const result1 = db.getPublicationPhoto(id);
+  result1
+  .then(data => {
+    if (data[0].publication_media !== null) {
+        console.log('get photo : ',data[0].photo);
+        const filename = data[0].publication_media.split('/images/')[1];
+        fs.unlink(`images/${filename}`, function(err) { 
+          if(err) {
+            console.log("unlink failed", err);
+         } else {
+            console.log("file deleted");
+         }
+       }); 
+    }})
+    .catch(error => response.status(400).json({ error }));
+
+  const result2 = db.deletePublicationData(id, user_id);
+result2
   .then(data => response.json({data : data}))
   .catch(err => console.log(err));
 }
+
+

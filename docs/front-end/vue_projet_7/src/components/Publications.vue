@@ -41,7 +41,7 @@
               v-for="findUser in allUsersState"
               :key="findUser"
             >
-              {{ findUser.name }} {{ findUser.famillyName }}</span
+              {{ findUser.name }} {{ findUser.familly_name }}</span
             >
           </div>
           <button @click="searchWindow = false" class="searchQuit">quit</button>
@@ -181,9 +181,9 @@ import { mapState } from "vuex";
 
 // CREER DEUX OBJETS POUR FACILITER L'UTILISATION DES DONNEES
 class User {
-  constructor(name, famillyName, id) {
+  constructor(name, familly_name, id) {
     this.name = name;
-    this.famillyName = famillyName;
+    this.familly_name = familly_name;
     this.id = id;
   }
 }
@@ -316,7 +316,6 @@ export default {
       // Getters
       //RECHERHCE BASIQUE EN FONCTION DE L'INPUT ET CHRONOLOGIQUE
       if (this.searchingSwitch === "post" && this.selected === "default") {
-        console.log('PORTE 1')
         return publicationsObject.filter((publicationsTitle) => {
           return publicationsTitle.title
             .toLowerCase()
@@ -391,7 +390,6 @@ export default {
         );
         //si on  a switcher sur utilisateur, l'input n'est plus pris en compte
       } else if (this.searchingSwitch === "user") {
-        console.log('PORTE 2')
         return publicationsObject;
       }
     },
@@ -400,7 +398,7 @@ export default {
   watch: {
     refresh(newCount, oldCount) {
       // Our fancy notification (2).
-      console.log(`Actualisation ${newCount} `);
+      //console.log(`Actualisation ${newCount} `);
     },
   },
   methods: {
@@ -415,7 +413,7 @@ export default {
     // POST PUBLICATIONS ----------------------------------------------
     async fetchPostPublication() {
       if (!(this.newTitle === "") && !(this.newUrl === "")) {
-        console.log("données :", this.image, this.user.id_user);
+        //console.log("données :", this.image, this.user.id_user);
         const formData = new FormData();
         formData.append("image", this.image);
         formData.append("title", this.newTitle);
@@ -457,7 +455,7 @@ export default {
         this.loading = true;
         this.fetchPostPublication()
           .then((data) => {
-            console.log(data);
+            //console.log(data);
             // rafraichir les données
             this.findAllPublications(this.user.id_user);
             this.alreadyClicked = false;

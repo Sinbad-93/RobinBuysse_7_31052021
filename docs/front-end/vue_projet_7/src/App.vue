@@ -20,7 +20,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
 }
 body {
   background: rgb(233, 44, 19);
@@ -46,6 +46,7 @@ body {
   );
 }
 .grey_btn {
+  color: black;
   cursor: pointer;
   text-align: center;
   text-transform: uppercase;
@@ -89,7 +90,7 @@ background: linear-gradient(90deg, rgba(175,165,165,1) 23%, rgba(215,209,209,1) 
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: black;
 
     &.router-link-exact-active {
       color: #42b983;
@@ -154,7 +155,7 @@ background: linear-gradient(90deg, rgba(175,165,165,1) 23%, rgba(215,209,209,1) 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    color: black;
   }
   .nav {
     opacity: 0.8;

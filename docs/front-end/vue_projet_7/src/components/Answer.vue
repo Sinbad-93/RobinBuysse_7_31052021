@@ -134,7 +134,7 @@ export default {
       }
       //si un champ est resté vide on ne passe pas dans fetch
       else {
-        console.log("veuillez remplir tous les champs");
+        alert("veuillez remplir tous les champs");
       }
     },
 
@@ -144,7 +144,7 @@ export default {
         this.alreadyClicked = true;
         this.fetchPostAnswer(number, comment_id)
           .then((data) => {
-            console.log(data);
+            //console.log(data);
             //fermer la fenetre de publication
             this.postComment = false;
             this.loading = true;
@@ -184,7 +184,7 @@ export default {
     findAllAnswers() {
       this.fetchGetAnswers()
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           this.answersData = [];
           var size = this.objectSize(data["data"]);
           size = size.reverse();

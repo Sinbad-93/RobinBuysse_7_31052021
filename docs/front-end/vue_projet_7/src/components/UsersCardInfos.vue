@@ -1,11 +1,11 @@
 <template>
   <div class="centered">
-    <i @click="$emit('close')" class="far fa-times-circle"></i>
+    <i @click="Close()" class="far fa-times-circle"></i>
     <h3>Carte du profil</h3>
-    <img v-if="!userState.photo" :src="basicUrl" alt="" />
-    <img v-else :src="userState.photo" alt="" />
+    <img v-if="!userState.photo" :src="basicUrl" alt="photo de profile" />
+    <img v-else-if="photo" :src="userState.photo" alt="photo de profile" />
     <span> Prenom : {{ userState.name }}</span>
-    <span> Nom : {{ userState.famillyName }}</span>
+    <span> Nom : {{ userState.familly_name }}</span>
     <span> Email : {{ userState.email }}</span>
   <!-- Citation pour le fun, potentiellement personnalisable par utilisateur !-->
     <span>
@@ -24,10 +24,18 @@ export default {
   data() {
     return {
       basicUrl: require("../assets/userImg.png"),
+      photo : false,
     };
   },
   mounted() {},
-  methods: {},
+  methods: {
+    Close(){
+    this.$emit('close');
+    // permet de mettre un temps d'attente avant de voir l'image, autre methode mieux
+    // serait de dispatch au store pour supprimer la photo au close
+    this.photo = false;
+    }
+  },
   //STORE
   computed: {
     ...mapState({
@@ -35,7 +43,11 @@ export default {
     }),
     // GETTERS STORE
     userState() {
-      console.log(this.$store.getters.getUserPickedInfos);
+      // permet d'attendre que l'image soit chargée
+      //sinon montre l'ancienne image présente dans la variable du store pendant 0.5s
+      setTimeout(() => {
+        this.photo = true;
+      }, 1000);
       return this.$store.getters.getUserPickedInfos;
     },
   },

@@ -22,8 +22,8 @@ function aesDencrypt(txt) {
   return CryptoJS.enc.Utf8.stringify(cipher).toString();
 }
 var tester = aesEncrypt("blabla");
-console.log("encrypt :", tester);
-console.log("decrypt :", aesDencrypt(tester));
+//console.log("encrypt :", tester);
+//console.log("decrypt :", aesDencrypt(tester));
 
 
 export default createStore({
@@ -32,13 +32,11 @@ export default createStore({
     refresh: 0,
     data: null,
     status: "",
-    user: fakeUser21,
-    falseuser: falseuser._returnLastUser(),
     newuser: "New",
     userConnectedInfos: {
       id_user: "0",
       name: "",
-      famillyName: "",
+      familly_name: "",
       email: "",
       password: "",
       admin: 0,
@@ -50,9 +48,10 @@ export default createStore({
     userPickedInfos: {
       id_user: "0",
       name: "0",
-      famillyName: "0",
+      familly_name: "0",
       email: "0",
       password: "0",
+      photo : null,
       userReactions: {},
     },
     allUsers: [],
@@ -79,7 +78,7 @@ export default createStore({
     },
     oneUser(state, data) {
       state.userPickedInfos.name = data[0].name;
-      state.userPickedInfos.famillyName = data[0].familly_name;
+      state.userPickedInfos.familly_name = data[0].familly_name;
       state.userPickedInfos.email = data[0].email;
       state.userPickedInfos.photo = data[0].photo;
     },
@@ -92,15 +91,12 @@ export default createStore({
       }
       //console.log(state.allUsers);
     },
-    saveUser(state) {
-      state.newuser = state.falseuser._returnLastUser();
-    },
     setStatus: function (state, status) {
       state.status = status;
     },
     connectUser: function (state, userInfos) {
       state.userConnectedInfos.name = userInfos.name;
-      state.userConnectedInfos.famillyName = userInfos.familly_name;
+      state.userConnectedInfos.familly_name = userInfos.familly_name;
       state.userConnectedInfos.email = userInfos.email;
       state.userConnectedInfos.id_user = userInfos.id_user;
       state.userConnectedInfos.admin = userInfos.admin;
@@ -178,8 +174,8 @@ export default createStore({
         localStorage.setItem("adminAccess", JSON.stringify(lockString2));
       } else {
         const lockStringCrypted = aesEncrypt(lockString);
-        console.log("basic :", lockString);
-        console.log("encrypted :", lockStringCrypted);
+        //console.log("basic :", lockString);
+        //console.log("encrypted :", lockStringCrypted);
         sessionStorage.setItem("lockAccess", JSON.stringify(lockString));
         localStorage.setItem(
           "lockAccessCrypted",
@@ -230,8 +226,8 @@ export default createStore({
     findUserReactions: ({ commit, dispatch }, id) => {
       dispatch("fetchGetUserReactions", id)
         .then((data) => {
-          console.log("USER REACTIONS");
-          console.log(data);
+          //console.log("USER REACTIONS");
+          //console.log(data);
           commit("formatUserReactions", data);
         })
         .catch((e) => console.log(e));
@@ -264,8 +260,8 @@ export default createStore({
       dispatch("fetchGetReactions", id)
         .then((data) => {
           //console.log(data);
-          console.log("DATA");
-          console.log(data);
+          //console.log("DATA");
+          //console.log(data);
           commit("formatNumberOfReactions", data);
         })
         .catch((e) => console.log(e));
@@ -295,7 +291,7 @@ export default createStore({
     getOneUser: ({ commit, dispatch }, ids) => {
       dispatch("fetchGetOneUser", ids)
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           commit("oneUser", data["data"]);
         })
         .catch((e) => console.log(e));
@@ -368,7 +364,7 @@ export default createStore({
       //et si le back nous retourne bien admin true
       dispatch("fetchGetOneUser", id_user)
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           /* une fois qu'on a notre utilisateur on verifie si il est admin depuis la db
  le front sait déjà si il est admin à la connexion MAIS refaire une verif back à chaque appel
  garantie que même si quelqu'un trafic le localStorage ou une variable du store, 
@@ -376,7 +372,7 @@ export default createStore({
           if (data["data"][0].admin === 1) {
             dispatch("fetchDeletePublication", ids)
               .then((data) => {
-                console.log("publication deleted" + data);
+                //console.log("publication deleted" + data);
                 //actualiser les posts
                 commit("refreshing");
               })

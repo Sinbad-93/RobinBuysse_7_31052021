@@ -96,18 +96,18 @@ exports.verifyToken = (request, response, next) => {
 // UPDATE profile photo ------------------
 const fs = require("fs"); /*file system*/
 exports.postProfilePhoto = (request, response, next) => {
-  console.log('porte 1 '+request.body.user_id);
+  //console.log('porte 1 '+request.body.user_id);
   const post = {
     id: request.body.user_id,
     imageUrl: request.file ? `${request.protocol}://${request.get('host')}/images/${request.file.filename}`: null,
 };
-console.log('porte 2 '+post.id);
+//console.log('porte 2 '+post.id);
 const db = dbService.getDbServiceInstance();
       const result1 = db.getProfilePhoto(post);
       result1
       .then(data => {
         if (data[0].photo !== null) {
-            console.log('get photo : ',data[0].photo);
+            //console.log('get photo : ',data[0].photo);
             const filename = data[0].photo.split('/images/')[1];
             fs.unlink(`images/${filename}`, function(err) { 
               if(err) {
@@ -127,10 +127,10 @@ result2
 //  ----------------------
 exports.cleanFolder = (request, response, next) => {
   const {url} = request.params;
-  console.log(url);
-  console.log('fs');
+  //console.log(url);
+  //console.log('fs');
   const filename = url.split("/images/")[1];
-  console.log(filename);
+  //console.log(filename);
   fs.unlink(`images/${filename}`, function(err) { 
     if(err) {
        console.log("unlink failed", err);
@@ -144,7 +144,7 @@ exports.cleanFolder = (request, response, next) => {
 
 exports.deleteAccount = (request, response, next) => {
   const { id } = request.body;
-  console.log(id);
+  //console.log(id);
   /*creer la demande */
   const db = dbService.getDbServiceInstance();
   /*configure la demande*/

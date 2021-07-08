@@ -11,7 +11,7 @@
         Mon profil
       </ul>
       <li>Prénom : {{ user.name }}</li>
-      <li>Nom : {{ user.famillyName }}</li>
+      <li>Nom : {{ user.familly_name }}</li>
       <li>E-mail : {{ user.email }}</li>
       <!--p>{{user.prenom}} {{user.nom}} {{user.email}}</p!-->
     </div>
@@ -47,15 +47,15 @@
         @click="removeImg"
       />
     </div>
-    <span @click="suppression = true" class="grey_btn"
+    <a href="#anchor" id="linkAnchor"><span @click="suppression = true" class="grey_btn"
       >supprimer mon compte <i class="pi pi-trash"></i
-    ></span>
+    ></span></a>
     <div v-if="suppression">
       <Message severity="warn" :closable="false"
         >êtes vous sur ? cette action est défnitive</Message
       >
       <div class="suppressCont">
-        <Button class="p-button-danger" @click="deleteAccount(user.id_user)"
+        <Button class="p-button-danger" id="anchor" @click="deleteAccount(user.id_user)"
           >confirmer</Button
         >
         <Button class="p-button-info" @click="suppression = false"
@@ -89,7 +89,7 @@ export default {
   methods: {
     // UPDATE PROFILE PHOTO ----------------------------------------------
     async fetchPostNewPhotoUrl() {
-      console.log("données :", this.image, this.user.id_user);
+      //console.log("données :", this.image, this.user.id_user);
       const formData = new FormData();
       formData.append("image", this.image);
       formData.append("user_id", this.user.id_user);
@@ -119,13 +119,12 @@ export default {
     newPhoto() {
       this.fetchPostNewPhotoUrl()
         .then((data) => {
-          console.log(data);
+          //console.log(data);
         })
         .catch((e) => console.log(e));
     },
 
     // FETCH DELETE USER
-
     async fetchDeleteAccount(number) {
       const requestOptions = {
         method: "DELETE",
@@ -157,7 +156,7 @@ export default {
     deleteAccount(id) {
       this.fetchDeleteAccount(id)
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           if (data["data"] === true) {
             this.logout();
           }
@@ -217,7 +216,7 @@ export default {
   },
   //FETCH USER ON REFRESHING PAGE
   created() {
-    console.log("CREATED");
+    //console.log("CREATED");
     // refresh page, vide le store, on utilise le local storage
     if (
       this.$store.state.userConnectedInfos.token === null &&
@@ -225,11 +224,11 @@ export default {
     ) {
       this.fetchVerifyToken()
         .then((data) => {
-          console.log(data);
+          //console.log(data);
           const verifiedUser = data["data"][0];
           const connectedUser = JSON.parse(window.localStorage.connectedUser);
 
-          console.log("VERIFY TOKEN");
+          //console.log("VERIFY TOKEN");
           this.$store.dispatch("login", {
             email: verifiedUser.email,
             name: verifiedUser.name,
@@ -331,6 +330,10 @@ span:active {
 a {
   font-size: 30px;
 }
+#linkAnchor{
+  text-decoration: none;
+  color: black;
+}
 .pi {
   font-size: 20px;
   padding: 5px;
@@ -348,7 +351,8 @@ input[type="file"] {
 
 @media screen and (max-width: 1366px) {
   .photoCont {
-    width: auto;
+    width: 550px;
+    margin: 50px 0px;
   }
   ul,
   li {
@@ -356,6 +360,10 @@ input[type="file"] {
   }
 }
 @media screen and (max-width: 767px) {
+    .photoCont {
+    width: auto;
+    margin: 10px 0px
+  }
   .btn {
     font-size: 18px; /**/
     width: 180px;

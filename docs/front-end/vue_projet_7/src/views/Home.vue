@@ -188,6 +188,9 @@ span {
   width: 200px; /**/
   height: 40px; /**/
 }
+nav {
+  width: 100%;
+}
 .nav {
   padding: 4px 10px;
 }
