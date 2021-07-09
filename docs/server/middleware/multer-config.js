@@ -1,10 +1,8 @@
 //module pour autoriser et controller le téléchargement d'image
 const multer = require("multer");
 /*GESTION DES IMAGES*/
+
 // formats acceptés
-
-
-//controler taille image à faire
 const MIME_TYPES = {
   "image/jpg": "jpg",
   "image/jpeg": "jpg",

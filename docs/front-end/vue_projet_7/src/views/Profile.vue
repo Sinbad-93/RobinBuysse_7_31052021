@@ -87,6 +87,7 @@ export default {
     }),
   },
   methods: {
+
     // UPDATE PROFILE PHOTO ----------------------------------------------
     async fetchPostNewPhotoUrl() {
       //console.log("données :", this.image, this.user.id_user);

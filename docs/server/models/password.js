@@ -14,5 +14,4 @@ passwordSchema
 .is().not(/===|==?|[\$\*\[\]\{\}\<\>]/) 
 .is().not().oneOf(['Passw0rd', 'Password123']);
 
-
 module.exports = passwordSchema;

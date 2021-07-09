@@ -165,6 +165,10 @@ export default {
     },
     // INSCRIPTION ------------------------------------------------
     async fetchPostUser() {
+      if(this.password.includes('<'||'>'||'/'||'\\'||' '||'$'||'=')){
+          alert('les carractères suivants (et les espaces) ne sont pas autorisés : < > / \\ $ =');
+          return
+        };
       
       if (
         !(this.name === "") &&
@@ -207,15 +211,22 @@ export default {
       // FETCH
       this.fetchPostUser()
         .then((data) => {
+
           if (data) {
             this.loginUser();
           }
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e),
+        alert('Le format de votre mot de passe n\'est pas accepté'),
+        location.reload());
     },
 
     // CONNEXION -------------------------------------------------
     async fetchLogin() {
+      if(this.password.includes('<'||'>'||'/'||'\\'||' '||'$'||'=')){
+          alert('les carractères suivants (et les espaces) ne sont pas autorisés : < > / \\ $ =');
+          return
+        };
       if (!(this.password === "") && !(this.email === "")) {
         const requestOptions = {
           method: "POST",
@@ -261,7 +272,9 @@ export default {
             );
           }
         })
-        .catch((e) => console.log(e));
+        .catch((e) => console.log(e),
+        alert('il y a un problème avec votre mot de passe'),
+        location.reload());
     },
 
     // SPEAK WITH STORE WHEN CONNEXION ACCEPTED BY SERVER------------------------------------

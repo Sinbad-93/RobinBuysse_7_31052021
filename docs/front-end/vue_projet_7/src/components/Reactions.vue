@@ -6,7 +6,7 @@
     <!-- EMOT COEUR, COULEUR ET NOMBRES-->
     <div v-if="spinner" class="loader">Loading...</div>
     <i
-      aria-hidden="false"
+      aria-hidden="true"
       v-else-if="connectedUserReactions(0)"
       :id_db="id_db"
       @click="likeFunction(id_db)"
