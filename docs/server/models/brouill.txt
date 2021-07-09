@@ -5,3 +5,5 @@ SELECT id_parent_publication,
     FROM reactions 
     GROUP BY id_parent_publication 
     ORDER BY id_parent_publication
+
+    <script>alert('You are Hacked');</script>

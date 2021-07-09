@@ -32,7 +32,7 @@ class DbService {
   async insertNewUser(name, familly_name, email, password) {
     try {
       const datetime = new Date();
-      response = await new Promise((resolve, reject) => {
+      const response = await new Promise((resolve, reject) => {
         const query =
           "INSERT INTO user (name, familly_name, email, password, datetime) VALUES (?,?,?,?,?);";
         connection.query(

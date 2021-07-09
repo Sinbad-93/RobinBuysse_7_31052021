@@ -11,3 +11,7 @@ meme si la requete fonctionne
 
 -----------------------------------------------------------
 notes :
+
+suggestion pour encore plus de sécurité :
+stocker le JWT en deux partie, une dans le localStorage, une dans les cookies
+et/ou encore  le crypter avant de le stocker

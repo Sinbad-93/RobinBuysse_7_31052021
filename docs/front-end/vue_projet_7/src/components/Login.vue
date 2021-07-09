@@ -165,6 +165,7 @@ export default {
     },
     // INSCRIPTION ------------------------------------------------
     async fetchPostUser() {
+      
       if (
         !(this.name === "") &&
         !(this.familly_name === "") &&

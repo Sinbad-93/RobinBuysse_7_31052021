@@ -23,7 +23,12 @@ function aesDencrypt(txt) {
 
   return CryptoJS.enc.Utf8.stringify(cipher).toString()
 };
-var tester = aesEncrypt('blabla');
+
+function isKeyExist(obj, key) {
+  return obj.hasOwnProperty(key);
+}
+
+//var tester = aesEncrypt('blabla');
 //console.log('encrypt :', tester );
 //console.log('decrypt :', aesDencrypt(tester) )
 
@@ -39,7 +44,8 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Home.vue"),
       beforeEnter(to, from, next){
-        console.log('from local : ',JSON.parse(window.sessionStorage.lockAccess));
+        if(isKeyExist(sessionStorage, "currentUser")){
+        //console.log('from local : ',JSON.parse(window.sessionStorage.lockAccess));
         let currentUser = JSON.parse(window.sessionStorage.currentUser);
         let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
         let lockAccessCrypted = JSON.parse(window.localStorage.lockAccessCrypted);
@@ -49,12 +55,16 @@ const routes = [
         //console.log(lockAccessDecrypted);
         if(currentUser && lockAccess && 
           (lockAccess === lockAccessDecrypted) ){
-            //console.log('true');
+            console.log('true');
           next();
-        }
+          }
+          else {
+            console.log('false');
+            next("/403")
+          }}
         else {
-          //console.log('false');
-          next("/")
+          console.log('false');
+          next("/403")
         }
       },
   },
@@ -66,6 +76,7 @@ const routes = [
   
       beforeEnter(to, from, next){
         //console.log('from local : ',JSON.parse(window.localStorage.lockAccessCrypted));
+        if(isKeyExist(sessionStorage, "currentUser")){
         let currentUser = JSON.parse(window.sessionStorage.currentUser);
         let lockAccess = JSON.parse(window.sessionStorage.lockAccess);
         let lockAccessCrypted = JSON.parse(window.localStorage.lockAccessCrypted);
@@ -74,11 +85,32 @@ const routes = [
           (lockAccess === lockAccessDecrypted) ){
           next();
         }
+        else {
+          next("/403")
+        }}
       else {
-        next("/")
+        next("/403")
       }
     },
-}
+},
+
+{
+  path: "/404",
+  name: "Notfound",
+  component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Notfound.vue"),
+},
+{
+  path: "/403",
+  name: "Notauthorized",
+  component: () =>
+    import(/* webpackChunkName: "about" */ "../views/Notauthorized.vue"),
+},
+{ 
+  path: "/:catchAll(.*)",
+  name : 'Redirection', 
+  redirect: '/404' 
+},  
 ];
 
 const router = createRouter({

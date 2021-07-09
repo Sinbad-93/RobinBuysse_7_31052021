@@ -17,7 +17,7 @@
     </div>
     <div class="form-row">
       <router-link to="/"
-        ><button @click="logout()" class="btn grey_btn">
+        ><button class="btn grey_btn">
           Déconnexion <i class="pi pi-sign-out"></i></button
       ></router-link>
     </div>

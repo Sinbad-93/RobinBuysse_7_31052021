@@ -12,7 +12,7 @@
         </li>
         <li>
           <router-link to="/"
-            ><button @click="logout()" class="btn grey_btn">
+            ><button class="btn grey_btn">
               Déconnexion <i class="pi pi-sign-out"></i></button
           ></router-link>
         </li>
@@ -117,11 +117,7 @@ export default {
       return await response.json();
     },
   },
-  logout() {
-    localStorage.clear();
-    sessionStorage.clear();
-    this.$router.push("/");
-  },
+  
 
   //VERIFY TOKEN ON REFRESHING PAGE
   created() {

@@ -1,9 +1,5 @@
 travail restant :
 
--si je tape manuellement /home ou / profile m'affiche une page vierge plutot 
-que de me ramener automatiquement au login, pourquoi ?
-creer un 404 not found ?
-
 ----MOT DE PASSE (inscription format, connexion faux)
 gerer en front mot de passe format incorrect ? ( à la fin car test renvoi d'erreur ?)
 voir p5 pour aller plus vite -> pas besoin de faire des indications ? déjà maitrisé
@@ -15,12 +11,6 @@ comment faire pour avertir en front l'utilisateur
 de la nature du problème ?
 (si le back contient un message d'erreur l'intercepter et l'afficher avec le front )
 à faire
-
-Sur requete deleteAccount renvoi dbservice : TypeError: Assignment to constant variable.
-meme si la requete fonctionne
-( à voir la prochaine fois)
-
-tester inscription et suppression de compte
 
 faut il decrire une icone ? accessibilité
 Pourquoi mes icones sont automatiquement en aria-hidden="true" et comment enlver ça
