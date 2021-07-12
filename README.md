@@ -8,6 +8,7 @@ npm run serve
 
 -----------------------
 Lancer le back-end :
+créer le dossier images (server/images) vide pour pouvoir stocker les photos publiées
 
 cd docs/server 
 npm install 
