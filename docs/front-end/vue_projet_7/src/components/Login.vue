@@ -216,9 +216,7 @@ export default {
             this.loginUser();
           }
         })
-        .catch((e) => console.log(e),
-        alert('Le format de votre mot de passe n\'est pas accepté'),
-        location.reload());
+        .catch((e) => console.log(e))
     },
 
     // CONNEXION -------------------------------------------------
@@ -272,9 +270,7 @@ export default {
             );
           }
         })
-        .catch((e) => console.log(e),
-        alert('il y a un problème avec votre mot de passe'),
-        location.reload());
+        .catch((e) => console.log(e))
     },
 
     // SPEAK WITH STORE WHEN CONNEXION ACCEPTED BY SERVER------------------------------------
