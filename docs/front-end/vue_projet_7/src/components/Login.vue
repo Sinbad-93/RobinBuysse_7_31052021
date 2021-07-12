@@ -192,10 +192,10 @@ export default {
           requestOptions
         );
         if (!response.ok) {
+          alert("une erreur innattendue s'est produite, veuillez vérifier que le format des informations est correct");
           // get error message from body or default to response status
           const error = (data && data.message) || response.status;
           //console.log('not response ok, error : ' + error);
-          alert("une erreur innattendue s'est produite");
           return Promise.reject(error);
         }
         return await response.json();
@@ -236,12 +236,13 @@ export default {
           requestOptions
         );
         if (!response.ok) {
+          alert("une erreur innattendue s'est produite, veuillez vérifier que vos identifiants sont corrects");
           // get error message from body or default to response status
           const error = (data && data.message) || response.status;
           //console.log('not response ok, error : ' + error);
-          alert("une erreur innattendue s'est produite");
           return Promise.reject(error);
         }
+        console.log('porte 2');
         return await response.json();
       } //si un champ est resté vide on ne passe pas dans fetch
       else {
