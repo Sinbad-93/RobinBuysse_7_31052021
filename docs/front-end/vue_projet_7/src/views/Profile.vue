@@ -155,6 +155,9 @@ export default {
 
     // DELETE USER
     deleteAccount(id) {
+      // à rajouter un appel au store this.fetchPostNewPhotoUrl() 
+      //pour delete user photo des images avant de deleteAccount
+      // Autre solution implementer la suppression d'image dans le controller deleteAccount
       this.fetchDeleteAccount(id)
         .then((data) => {
           //console.log(data);

@@ -601,7 +601,7 @@ export default {
     },
     
     // TRIER : Function pour formater nos données pour pouvoir ensuite les classer
-    // nous permet de recuperer un objet sous cette forme : {id publi, classement },{id publi, classement }
+    // nous permet de recuperer un objet sous cette forme : {id publi, nb d'emot },{id publi, nb d'emot }
     sortWithMap(loopsBox, numberOfReactions, allIdMap, numb) {
       // si >2 alors on a envoyé 3 exprès pour préciser qu'on parle du total
       if (numb > 2) {
