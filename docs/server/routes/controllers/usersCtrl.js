@@ -31,9 +31,18 @@ exports.signup = (request, response, next) => {
     const { name, familly_name, email, password } = request.body;
     const db = dbService.getDbServiceInstance();
      const result = db.insertNewUser(name, familly_name, email, pass);
+     
 result
-    .then(data => response.json({ data: data}))
-    .catch(err => console.log(err))
+    .then(data => 
+      {if (data){
+        response.json({ data: data})
+       }
+      else {
+        return response.status(401).json({ error: 'identifiant non disponible' });
+      }})
+    .catch((err) => {
+      response.status(500).json({ error: err });
+    })
 });});};
 
 // controller pour LE LOGIN ----------------------

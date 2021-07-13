@@ -192,7 +192,7 @@ export default {
           requestOptions
         );
         if (!response.ok) {
-          alert("une erreur innattendue s'est produite, veuillez vérifier que le format des informations est correct");
+          alert("Erreur, identifiants déjà utilisé ou le format des informations est incorrect");
           // get error message from body or default to response status
           const error = (data && data.message) || response.status;
           //console.log('not response ok, error : ' + error);
@@ -211,8 +211,8 @@ export default {
       // FETCH
       this.fetchPostUser()
         .then((data) => {
-
-          if (data) {
+           
+          if (data['data']) {
             this.loginUser();
           }
         })
