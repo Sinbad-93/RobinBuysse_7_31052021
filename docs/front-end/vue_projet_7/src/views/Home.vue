@@ -3,6 +3,9 @@
     <nav>
       <ul>
         <li>
+          <img alt="Groupomania logo" id="logo" src="../assets/groupomania.png" />
+        </li> 
+        <li>
           <span class="name"> {{ userName }} {{ userFamillyName }}</span>
         </li>
         <li>
@@ -171,6 +174,14 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+#logo {
+  position: absolute;
+  border: none;
+  left:0;
+  top: 0;
+  max-width: 100px;
+  max-height: 100px;
+}
 span {
   font-size: 22px;
   font-style: italic;
@@ -229,6 +240,14 @@ a {
     font-size: 15px; /**/
     line-height: initial;
   }
+  #logo {
+  position: absolute;
+  border: none;
+  left:0;
+  top: 0;
+  max-width: 40px;
+  max-height: 40px;
+}
   ul {
     flex-wrap: wrap;
   }

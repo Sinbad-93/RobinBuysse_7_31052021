@@ -1,9 +1,11 @@
 <template>
   <div class="profile">
+     
     <nav>
       <router-link to="Home" class="nav">
         <i class="pi pi-arrow-right"></i> Résau Social Groupomania
       </router-link>
+      <img alt="Groupomania logo" id="logo" src="../assets/groupomania.png" />
     </nav>
     <div class="infoCont">
       <ul class="card__subtitle">
@@ -264,6 +266,14 @@ img {
   max-height: 100%;
   border-radius: 8px;
 }
+#logo {
+  position: absolute;
+  border: none;
+  left: -15px;
+  top: -15px;
+  max-width: 100px;
+  max-height: 100px;
+}
 .infoCont {
   display: flex;
   flex-direction: column;
@@ -373,6 +383,14 @@ input[type="file"] {
     width: 180px;
     height: 40px;
   }
+  #logo {
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  border: none;
+  max-width: 30px;
+  max-height: 30px;
+}
   ul,
   li {
     font-size: 18px; /**/
